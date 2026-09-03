@@ -443,6 +443,15 @@ const ENTRY_ALPHABET="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const cv=document.getElementById("c"), ctx=cv.getContext("2d");
 let W=0,H=0,DPR=1;
+// ═════════════════════════════════════════════════
+//  THE PHONE PROFILE (Sum, 3 Sep 2026 — "go"). Portrait only: taller than wide. The desk is untouched.
+//  Why: at phone width the 9-column grid was ~348px in a 393px field — 45px of side room against ~500px on a desk — so the
+//  formation hit an edge almost every step and every hit lurched it half a cell down. Same tuning, no room. So: smaller aliens
+//  and tighter gaps (three times the side room), a cheaper lurch and creep (the same march takes ~2× as long to reach you), a
+//  touch slower everywhere, and no bombs from the mouse tier on — the conveyor is still a fight, just a shooting one.
+const PORTRAIT=()=>W<H;
+const PHONE={ cellMul:0.85, cellMin:22, gapX:0.35, edgeDropMul:0.30, driftPxFrame:0.08, tempo:1.25, descentMul:0.8, bombsUntilTier:4 };
+const knob=(k)=>(PORTRAIT()&&PHONE[k]!=null)?PHONE[k]:CONFIG[k];
 
 function resize(){
   DPR=Math.min(window.devicePixelRatio||1,2);
@@ -905,9 +914,10 @@ function speedMul(){
 }
 
 // build the wave for the CURRENT level. shape depends on the tier's form.
+try{window.__ozPeek=()=>{const a=G.enemies.filter(e=>e.alive);return {W,H,portrait:PORTRAIT(),cell:G.cell,level:G.level,tier:curTier().n,alive:a.length,minX:a.length?Math.min(...a.map(e=>e.x)):null,maxX:a.length?Math.max(...a.map(e=>e.x)):null,bombs:G.bombs.length}}}catch(_){}   // a peephole for the desk's rig — reads only
 function buildWave(){
   const m=Math.min(W,H);
-  const cell=Math.max(26,Math.round(m/16));   // glyph box size (also the sprite size)
+  const cell=PORTRAIT()?Math.max(PHONE.cellMin,Math.round(m/16*PHONE.cellMul)):Math.max(26,Math.round(m/16));   // glyph box size (also the sprite size); smaller on a phone
   G.cell=cell;
   G.enemies=[];
   G.bullets=[]; G.bombs=[]; G.parts=[];
@@ -921,7 +931,7 @@ function buildWave(){
   if(tier.form==="grid"){
     const rows=tier.n;                        // ONE row on tier 1, up to five on tier 5
     const cols=CONFIG.cols;
-    const gapX=cell*0.55, gapY=cell*0.42;
+    const gapX=cell*(PORTRAIT()?PHONE.gapX:0.55), gapY=cell*0.42;
     const formW=cols*cell+(cols-1)*gapX;
     const startX=(W-formW)/2+cell/2;
     const startY=Math.max(74,H*0.13)+cell/2;
@@ -1241,12 +1251,12 @@ function stepGrid(dt){
   if(alive.length===0){ nextLevel(); return; }
 
   // continuous slow downward creep
-  const dy=CONFIG.driftPxFrame*dt;
+  const dy=knob('driftPxFrame')*dt;
   for(const e of G.enemies)e.y+=dy;
 
   // side-march: interval speeds up with level (from tier 5) and as fewer remain
   const ratio=alive.length/G.enemies.length;
-  const base=CONFIG.baseStepSpeed*speedMul();
+  const base=CONFIG.baseStepSpeed*speedMul()*(PORTRAIT()?PHONE.tempo:1);
   const stepInterval=Math.max(CONFIG.stepFloor, base*(0.30+ratio*0.70));
   const stepPx=G.cell*0.22;
 
@@ -1260,7 +1270,7 @@ function stepGrid(dt){
     const hitEdge=(G.dir>0&&maxX+stepPx>=W-G.cell*0.6)||(G.dir<0&&minX-stepPx<=G.cell*0.6);
     if(hitEdge){
       G.dir*=-1;
-      for(const e of G.enemies)e.y+=G.cell*CONFIG.edgeDropMul;
+      for(const e of G.enemies)e.y+=G.cell*knob('edgeDropMul');
       minX=Infinity;maxX=-Infinity;
       for(const e of alive){minX=Math.min(minX,e.x);maxX=Math.max(maxX,e.x);}
     }else{
@@ -1272,7 +1282,8 @@ function stepGrid(dt){
   // bombs — one per living ROW rhythm (so rows×bombs scales exactly)
   const rowsAlive=new Set(alive.map(e=>e.row)).size;
   G.bombTimer+=dt*16.667;
-  if(G.bombTimer>=bombInterval(rowsAlive)){
+  const bombsOn=!(PORTRAIT()&&curTier().n>PHONE.bombsUntilTier);   // phone: bombs only through tier 4 (blue alien); the mouse on is a shooting fight
+  if(bombsOn && G.bombTimer>=bombInterval(rowsAlive)){
     G.bombTimer=0;
     const shooter=alive[(Math.random()*alive.length)|0];
     G.bombs.push({x:shooter.x,y:shooter.y+G.cell*0.4,vy:bombSpeed()});
@@ -1298,7 +1309,7 @@ function stepConveyor(dt){
   }
 
   // march straight down at the level's descent speed × per-level multiplier
-  const vy=cfg.descent*speedMul()*1.0;
+  const vy=cfg.descent*(PORTRAIT()?PHONE.descentMul:1)*speedMul()*1.0;
   for(const e of G.enemies)e.y+=vy*dt;
 
   // bombs — one per living ROW-equivalent (living lanes)
