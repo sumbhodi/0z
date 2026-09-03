@@ -91,8 +91,9 @@
     //            whole glass (skin/mobile.css); the ⏸ floats over the game. Every touch inside the frame is the game's.
     //    PAUSE → the attribute goes: the pane, the nav, ‹ arcade · ▶ resume, the curtain. Back to the arcade lives here only.
     //    No gesture does either. The shim inside the frame holds the game's timers while paused (cabinet.js).
-    const setPaused = on => {
+    const setPaused = (on, why) => {
       paused = !!on
+      try { (window.__ozArcadeLog = window.__ozArcadeLog || []).push({ t: Date.now(), paused, why: why || '?' }); if (window.__ozArcadeLog.length > 30) window.__ozArcadeLog.shift() } catch (_) {}   // 13:10 — who paused the desk, for the rig (Sum: "something is turning off nav on rotate")
       try { frame.contentWindow && frame.contentWindow.postMessage({ oz: 'cabinet-ctl', cmd: paused ? 'pause' : 'resume' }, '*') } catch (_) {}
       curtain.hidden = true   // 3 Sep 10:55 — no curtain: the paused game stays visible in its card with its own pause screen and buttons (Sum: "no new thing")
       pauseBtn.textContent = paused ? '▶ resume' : '⏸ pause'; pauseBtn.setAttribute('aria-pressed', String(paused))
@@ -105,14 +106,14 @@
       if (!paused) { try { frame.contentWindow && frame.contentWindow.focus() } catch (_) {} }
       setTimeout(fit, 0)
     }
-    pauseBtn.addEventListener('click', () => setPaused(!paused))
-    fab.addEventListener('click', () => setPaused(!paused))
-    home.addEventListener('click', () => { const back = () => body.querySelector('.arc-back').click(); if (!paused) { setPaused(true); setTimeout(back, 160) } else back() })   // pause first: a game with its own pause autosaves on it (Butcher)
-    curtain.addEventListener('click', () => setPaused(false))
+    pauseBtn.addEventListener('click', () => setPaused(!paused, 'play bar'))
+    fab.addEventListener('click', () => setPaused(!paused, 'fab'))
+    home.addEventListener('click', () => { const back = () => body.querySelector('.arc-back').click(); if (!paused) { setPaused(true, 'joystick'); setTimeout(back, 160) } else back() })   // pause first: a game with its own pause autosaves on it (Butcher)
+    curtain.addEventListener('click', () => setPaused(false, 'curtain'))
     // the game's own pause button / P key → the desk follows (cabinet.js posts cabinet-paused). Idempotent: an echo changes nothing.
     window.addEventListener('message', e => { try { if (e.source !== frame.contentWindow) return; const d = e.data; if (!d) return
       if (d.oz === 'cabinet-side') { try { if (d.side) document.documentElement.dataset.gameSide = String(d.side); else delete document.documentElement.dataset.gameSide } catch (_) {} return }   // 3 Sep: a game says which side the player holds — the column goes to the other (skin/mobile.css)
-      if (d.oz !== 'cabinet-paused') return; if (!!d.paused !== paused) setPaused(!!d.paused) } catch (_) {} })
+      if (d.oz !== 'cabinet-paused') return; if (!!d.paused !== paused) setPaused(!!d.paused, 'game said ' + (d.paused ? 'pause' : 'play')) } catch (_) {} })
     // 3 Sep 10:30 — THE VISIBLE VIEWPORT. On his iPhone Chrome's bottom bar clipped the board: the pinned stage was 100dvh and the
     //    bar did not count against it. visualViewport is the honest number; the stage takes it while a game plays and lets go on pause.
     const stage = body.querySelector('.arc-stage')
@@ -135,14 +136,14 @@
         if (window.OZ_CABINET) window.OZ_CABINET.opened(g.key, frame, body.querySelector('.arc-pbar'))
         menu.style.display = 'none'; play.style.display = 'flex'
         try { document.documentElement.dataset.arcade = 'play'; document.documentElement.dataset.game = 'play' } catch (_) {}   // the play view, for the whole game
-        setPaused(false)   // portrait: the hull goes near-fullscreen for the game (skin/mobile.css)
+        setPaused(false, 'open')   // portrait: the hull goes near-fullscreen for the game (skin/mobile.css)
       })
       grid.appendChild(c)
     })
     body.querySelector('.arc-back').addEventListener('click', () => {
       if (window.OZ_CABINET) window.OZ_CABINET.closed()   // the 🤖 controls leave with the game
       frame.srcdoc = ''; play.style.display = 'none'; menu.style.display = 'block'   // stop the running game
-      setPaused(true); try { delete document.documentElement.dataset.arcade; delete document.documentElement.dataset.game; delete document.documentElement.dataset.gamePaused; delete document.documentElement.dataset.gameSide } catch (_) {}   // leaving: the desk returns, flags off
+      setPaused(true, 'back'); try { delete document.documentElement.dataset.arcade; delete document.documentElement.dataset.game; delete document.documentElement.dataset.gamePaused; delete document.documentElement.dataset.gameSide } catch (_) {}   // leaving: the desk returns, flags off
     })
 
     return window.makeCard({ id: 'games', icon: 'cards/games/games.png', title: 'ARCADE', body, bottom: true })

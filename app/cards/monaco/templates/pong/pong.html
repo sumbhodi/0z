@@ -1101,9 +1101,14 @@ END IC SHIP PASS
   function togglePause(){ paused ? resume() : pause(); }
   // 3 Sep 2026 — on a phone, turning upright pauses (the scoreboard is the pause screen); turning back does not resume — the
   //    player taps ▶ or the court, as always. Coarse pointer only, so a desktop window that happens to be tall is left alone.
+  // 13:05 (Sum: "still can't start game from rotate") — the desk had Ping frozen from the portrait pause and Ping had no way to
+  //    say it was live again. Two fixes in one: (1) Ping joins the desk's one-pause handshake by exposing what Butcher and
+  //    Colonialism expose — a global togglePause and a `state` that reads pause / play — so the desk's ⏸/▶ drive THIS pause and
+  //    the desk hears Ping's own; (2) turning sideways RESUMES (upright still pauses). Standalone this changes nothing.
+  try { window.togglePause = togglePause; Object.defineProperty(window, 'state', { get: function () { return paused ? 'pause' : 'play' }, configurable: true }) } catch (_) {}
   try {
     const upright = matchMedia('(pointer: coarse) and (orientation: portrait)');
-    const onTurn = () => { if (upright.matches) pause(); };
+    const onTurn = () => { if (upright.matches) pause(); else if (paused) resume(); };
     if (upright.addEventListener) upright.addEventListener('change', onTurn); else if (upright.addListener) upright.addListener(onTurn);
   } catch (_) {}
 
