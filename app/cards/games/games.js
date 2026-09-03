@@ -123,7 +123,13 @@
     //    the visual viewport starts ~50–75px down the layout (vv.offsetTop). fit() pushed the stage down by that much and left its CSS
     //    height alone, so the same amount fell off the bottom. Whatever offset the stage takes at the top it now gives back at the
     //    bottom: height = calc(100dvh - gutter - offsetTop). offsetTop is 0 in portrait (bar at the bottom), so the 10:45 rule holds there.
-    const fit = () => { try { const vv = window.visualViewport; if (document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { const off = Math.round(vv.offsetTop || 0); stage.style.top = off + 'px'; stage.style.height = off ? 'calc(100dvh - var(--play-gutter) - ' + off + 'px)' : '' } else { stage.style.top = ''; stage.style.height = '' } stage.style.height = '' } catch (_) {} }
+    // ⚠ CORRECTION 15:15 — the 14:05 line above was half right and the 14:50 CSS reserve (76px) doubled it: Sum's screenshot had the
+    //    court ending 31px short with a black band under it. Read off the glass: layout viewport 393 tall, shifted ~45px under Chrome's
+    //    top bar; visible = layout 30..348; vv.offsetTop = 30. Subtracting BOTH the offset and a 76px reserve from 100dvh left 287. The
+    //    honest number is visualViewport.height itself (318): when Chrome has shifted the visual viewport (offsetTop > 0) it is tracking
+    //    the bar, so the stage takes its top AND its height from it and no CSS reserve applies. offsetTop 0 (portrait, the Pixel, the
+    //    pane) keeps the CSS height and the 10:45 gutter — that geometry is the bottom-bar overlay, where vv.height is the one that lies.
+    const fit = () => { try { const vv = window.visualViewport; if (document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { const off = Math.round(vv.offsetTop || 0); stage.style.top = off + 'px'; stage.style.height = off ? Math.round(vv.height) + 'px' : '' } else { stage.style.top = ''; stage.style.height = '' } stage.style.height = '' } catch (_) {} }
     try { if (window.visualViewport) { window.visualViewport.addEventListener('resize', fit); window.visualViewport.addEventListener('scroll', fit) } } catch (_) {}
     window.addEventListener('resize', fit)
 

@@ -135,8 +135,13 @@
        is still off screen in play — is there a way to just let it fill y?"). The court already fills 100dvh; what it lacked was the
        glass's real height. -webkit-touch-callout exists only on iOS WebKit, so this reserve is iPhone-only — the Pixel keeps its 8px
        (0zapk/NOTE-apk.md: the same space to grab back). An installed PWA has no bar, so standalone re-takes the 8px right after. */
-    @supports (-webkit-touch-callout: none) { html[data-game="play"] { --play-gutter: 76px; } }
-    @media (display-mode: standalone) { html[data-game="play"] { --play-gutter: max(env(safe-area-inset-bottom), 8px); } }
+    /* ⚠ CORRECTION 15:15 — WITHDRAWN. The 76px reserve doubled up with games.js fit(), which already pushes the stage down by
+       visualViewport.offsetTop: Sum's next screenshot had the court 31px short with a black band under it ("we got gutter — keep
+       the court on screen and lose the gutter"). fit() now takes the visual viewport's own top AND height whenever Chrome has shifted
+       it, so no CSS reserve is needed here; the 8px line above stands for every landscape. The iOS-only @supports trick is still a
+       good tool — it is just not this fix. Kept for the trail:
+       @supports (-webkit-touch-callout: none) { html[data-game="play"] { --play-gutter: 76px; } }
+       @media (display-mode: standalone) { html[data-game="play"] { --play-gutter: max(env(safe-area-inset-bottom), 8px); } } */
     html[data-game="play"] .card[data-card="games"] .arc-hud { top: 0; bottom: 0; height: auto; width: 44px; left: env(safe-area-inset-left, 0px); flex-direction: column; justify-content: flex-start; padding: 6px 0 0; gap: 6px; }
     html[data-game="play"] .card[data-card="games"] .arc-hud .arc-fab, html[data-game="play"] .card[data-card="games"] .arc-hud .arc-home { width: 40px; margin: 0 2px; }
     html[data-game="play"][data-game-side="left"] .card[data-card="games"] .arc-hud { left: auto; right: env(safe-area-inset-right, 0px); }   /* the player holds the left → the column steps to the right (Ping's ⇄) */
