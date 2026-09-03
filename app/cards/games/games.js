@@ -92,7 +92,8 @@
     const setPaused = on => {
       paused = !!on
       try { frame.contentWindow && frame.contentWindow.postMessage({ oz: 'cabinet-ctl', cmd: paused ? 'pause' : 'resume' }, '*') } catch (_) {}
-      curtain.hidden = !paused; pauseBtn.textContent = paused ? '▶ resume' : '⏸ pause'; pauseBtn.setAttribute('aria-pressed', String(paused))
+      curtain.hidden = true   // 3 Sep 10:55 — no curtain: the paused game stays visible in its card with its own pause screen and buttons (Sum: "no new thing")
+      pauseBtn.textContent = paused ? '▶ resume' : '⏸ pause'; pauseBtn.setAttribute('aria-pressed', String(paused))
       try { if (paused) delete document.documentElement.dataset.game; else document.documentElement.dataset.game = 'play' } catch (_) {}
       if (!paused) { try { frame.contentWindow && frame.contentWindow.focus() } catch (_) {} }
       setTimeout(fit, 0)
