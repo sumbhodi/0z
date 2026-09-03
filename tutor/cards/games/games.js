@@ -57,6 +57,7 @@
       .arc-curtain[hidden]{display:none}
       .arc-pause[aria-pressed="true"]{border-color:#48d597;color:#48d597}
       .arc-cabinet{margin-left:auto;display:flex;align-items:center;gap:8px}
+      .arc-fab{display:none;position:absolute;top:8px;left:8px;width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(11,14,19,.72);color:#e9eef3;font-size:20px;cursor:pointer;z-index:2;place-items:center}
     `
     document.head.appendChild(s)
   }
@@ -72,7 +73,7 @@
       </div>
       <div class="arc-play" style="display:none">
         <div class="arc-pbar"><button class="arc-back">‹ arcade</button><button class="arc-back arc-pause" aria-pressed="false">⏸ pause</button><span class="arc-title"></span></div>
-        <div class="arc-stage"><iframe class="arc-frame" allow="autoplay"></iframe><button class="arc-curtain" hidden>paused — tap to resume</button></div>
+        <div class="arc-stage"><iframe class="arc-frame" allow="autoplay"></iframe><button class="arc-fab" aria-label="pause" title="pause — the desk comes back">⏸</button><button class="arc-curtain" hidden>paused — tap to resume</button></div>
       </div>`
     const grid = body.querySelector('.arc-grid')
     const menu = body.querySelector('.arc-menu'), play = body.querySelector('.arc-play')
@@ -81,15 +82,22 @@
     //    never knows: cabinet.js rigs EVERY game with a timer shim (rAF · setInterval · setTimeout hold while paused) and
     //    listens for cabinet-ctl pause/resume; the curtain covers the frame so a thumb cannot poke a frozen board. Same
     //    button resumes; tapping the curtain resumes. Leaving the game clears it.
-    const pauseBtn = body.querySelector('.arc-pause'), curtain = body.querySelector('.arc-curtain')
+    const pauseBtn = body.querySelector('.arc-pause'), curtain = body.querySelector('.arc-curtain'), fab = body.querySelector('.arc-fab')
     let paused = false
+    // ⭐ 3 Sep 2026 — THE PAUSE BUTTON TOGGLES THE NAV (Sum: "pause button toggles nav, done"). Two states, one switch:
+    //    PLAY  → html[data-game="play"]: on the phone the nav, the card head and the play bar fold away and the frame owns the
+    //            whole glass (skin/mobile.css); the ⏸ floats over the game. Every touch inside the frame is the game's.
+    //    PAUSE → the attribute goes: the pane, the nav, ‹ arcade · ▶ resume, the curtain. Back to the arcade lives here only.
+    //    No gesture does either. The shim inside the frame holds the game's timers while paused (cabinet.js).
     const setPaused = on => {
       paused = !!on
       try { frame.contentWindow && frame.contentWindow.postMessage({ oz: 'cabinet-ctl', cmd: paused ? 'pause' : 'resume' }, '*') } catch (_) {}
       curtain.hidden = !paused; pauseBtn.textContent = paused ? '▶ resume' : '⏸ pause'; pauseBtn.setAttribute('aria-pressed', String(paused))
+      try { if (paused) delete document.documentElement.dataset.game; else document.documentElement.dataset.game = 'play' } catch (_) {}
       if (!paused) { try { frame.contentWindow && frame.contentWindow.focus() } catch (_) {} }
     }
     pauseBtn.addEventListener('click', () => setPaused(!paused))
+    fab.addEventListener('click', () => setPaused(true))
     curtain.addEventListener('click', () => setPaused(false))
 
     GAMES.forEach(g => {
@@ -112,7 +120,7 @@
     body.querySelector('.arc-back').addEventListener('click', () => {
       if (window.OZ_CABINET) window.OZ_CABINET.closed()   // the 🤖 controls leave with the game
       frame.srcdoc = ''; play.style.display = 'none'; menu.style.display = 'block'   // stop the running game
-      setPaused(false); try { delete document.documentElement.dataset.arcade } catch (_) {}
+      setPaused(true); try { delete document.documentElement.dataset.arcade; delete document.documentElement.dataset.game } catch (_) {}   // leaving: nav on, flags off
     })
 
     return window.makeCard({ id: 'games', icon: 'cards/games/games.png', title: 'ARCADE', body, bottom: true })

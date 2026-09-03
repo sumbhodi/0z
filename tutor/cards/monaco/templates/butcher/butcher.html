@@ -157,6 +157,7 @@ END IC SHIP PASS
 const COLS=10, ROWS=20;
 const cv=document.getElementById("c"), ctx=cv.getContext("2d");
 let DPR=1, cell=24, ox=0, oy=0, W=0, H=0;
+let PORTRAIT=false, TOP=0;   // 3 Sep 2026 — portrait: the HUD is a strip across the top (TOP px), the board takes the full width
 
 // ── the seven species — one wood per SHAPE. beige country: tans, creams and
 // light grays only (no reds, no dark browns), warm/cool alternated so the
@@ -442,7 +443,32 @@ function drawSlab(cells,type,alpha,px,py,size){
   ctx.globalAlpha=1;
 }
 
+// the portrait strip (3 Sep 2026): one translucent line across the top. Text starts at x=60 (the desk's floating ⏸ sits
+// top-left over the frame) and NEXT hugs the right, clear of this game's own ⏸ at top-right.
+function drawHUDStrip(){
+  ctx.fillStyle="rgba(10,8,5,0.82)"; ctx.fillRect(0,0,W,TOP);
+  ctx.textBaseline="middle"; ctx.textAlign="left";
+  const y=TOP/2; let x=60;
+  const put=(lbl,val)=>{
+    ctx.fillStyle="#7a6a4c"; ctx.font='11px "Trebuchet MS",sans-serif'; ctx.fillText(lbl,x,y-9); 
+    ctx.fillStyle="#f0e2c0"; ctx.font='bold 15px "Trebuchet MS",sans-serif'; ctx.fillText(val,x,y+6);
+    x+=Math.max(ctx.measureText(val).width, ctx.measureText(lbl).width)+16;
+  };
+  put("SCORE",String(score)); put("LINES",String(lines)); put("LEVEL",String(level)); put("BLOCK",blockRows.length+'"');
+  if(flashT>0){ ctx.fillStyle="#e7c98a"; ctx.font='bold 13px "Trebuchet MS",sans-serif'; ctx.fillText(flash,x,y); }
+  // NEXT — a thumbnail slab of its species, right of centre, left of this game's ⏸ (38px at 10px)
+  const box=Math.floor((TOP-10)/4), bw=box*4+6, bx=W-58-bw, by=Math.floor((TOP-(box*4+6))/2);
+  ctx.fillStyle="#1c1710"; ctx.fillRect(bx,by,bw,box*4+6);
+  const sh=SHAPES[nextType][0];
+  let minx=4,maxx=0,miny=4,maxy=0;
+  for(const [cx,cy] of sh){minx=Math.min(minx,cx);maxx=Math.max(maxx,cx);miny=Math.min(miny,cy);maxy=Math.max(maxy,cy);}
+  const offx=(4-(maxx-minx+1))/2-minx, offy=(4-(maxy-miny+1))/2-miny;
+  drawSlab(sh.map(([cx,cy])=>[cx+offx,cy+offy]),nextType,1,bx+3,by+3,box);
+  ctx.textAlign="left"; ctx.textBaseline="top";
+}
+
 function drawHUD(){
+  if(PORTRAIT){ drawHUDStrip(); return; }
   const hx=ox+COLS*cell+cell*0.7;
   ctx.textBaseline="top";
   ctx.fillStyle="#e7d6b3";
@@ -574,10 +600,15 @@ function resize(){
   cv.style.width=W+"px"; cv.style.height=H+"px";
   cv.width=Math.floor(W*DPR); cv.height=Math.floor(H*DPR);
   ctx.setTransform(DPR,0,0,DPR,0,0);
-  const hudCols=7;
-  cell=Math.max(10,Math.floor(Math.min((H-40)/ROWS,(W-20)/(COLS+hudCols))));
+  // 3 Sep 2026 — PORTRAIT (Sum, on his iPhone: "the score line, levels, next block can be an overlay at top of screen and
+  //    leave full phone width for game"). Taller than wide → no HUD column beside the board; a 44px strip across the top
+  //    carries score · lines · level · block and a thumbnail of NEXT, and the board is sized to the full width under it.
+  //    Landscape and the desktop are exactly as before: seven HUD columns to the right.
+  PORTRAIT = W < H; TOP = PORTRAIT ? 44 : 0;
+  const hudCols = PORTRAIT ? 0 : 7;
+  cell=Math.max(10,Math.floor(Math.min((H-40-TOP)/ROWS,(W-20)/(COLS+hudCols))));
   ox=Math.max(8,Math.floor((W-(COLS+hudCols)*cell)/2));
-  oy=Math.max(8,Math.floor((H-ROWS*cell)/2));
+  oy=Math.max(8+TOP,Math.floor((H-ROWS*cell+TOP)/2));
 }
 window.addEventListener("resize",resize);
 

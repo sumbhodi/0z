@@ -98,6 +98,17 @@
      and the game's own portrait pass (score strip as an overlay, full-width board, touch controls) is the game's — riffed,
      not built here. games.js still stamps html[data-arcade="play"] for whatever that pass needs. */
 
+  /* 🕹️ PLAY (Sum, 3 Sep 2026: "in game switch nav to game, on pause back to normal nav… pause button toggles nav, done").
+     games.js stamps html[data-game="play"] while a game RUNS (not while paused). Then: the nav folds away, the games card
+     loses its head and play bar, and the frame is pinned to the whole visible glass, full width, full height — the ⏸ floats
+     top-left (Butcher's own ⏸ sits top-right). Pause removes the attribute and everything here stops applying: the pane,
+     the nav, ‹ arcade · ▶ resume, the curtain. No gesture enters or leaves play; the game gets every touch. */
+  html[data-game="play"] #topbar, html[data-game="play"] #subbar, html[data-game="play"] #greenroom-bar { display: none; }
+  html[data-game="play"] .card[data-card="games"] .card-head, html[data-game="play"] .card[data-card="games"] .arc-pbar { display: none; }
+  html[data-game="play"] .card[data-card="games"] .arc-stage { position: fixed; inset: 0; height: 100dvh; z-index: 60; background: #000; }
+  html[data-game="play"] .card[data-card="games"] .arc-frame { width: 100%; height: 100%; }
+  html[data-game="play"] .card[data-card="games"] .arc-fab { display: grid; top: calc(8px + env(safe-area-inset-top)); }
+
   /* the notch / dynamic island (standalone PWA draws under the status bar) */
   #topbar { padding-top: max(6px, env(safe-area-inset-top)); }
   #desk { padding-bottom: env(safe-area-inset-bottom); }
