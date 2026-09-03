@@ -739,12 +739,15 @@ cv.addEventListener("mousedown",e=>{
 //   ≥ 24px), so a long slow drag that ends still never hard-drops, and a slow drag that ENDS in a flick does.
 let tStartX=0,tStartY=0,tStartT=0,tMoved=false;
 let gSamples=[];   // the gesture's tail: {t, y, col} per touchmove, col = the piece's column as that sample arrived
+let gPiece=null;   // 3 Sep — the piece the gesture began on. softDrop() LOCKS a piece that cannot fall and spawns the next, so a fast
+                   //   drag to the floor lands piece one through its own soft drops and the release flick used to slam piece two
+                   //   (Sum: "flick to drop will sometimes drop two in a row"). Once the piece changes mid-gesture, the gesture is spent.
 function tStart(e){
   const t=e.touches?e.touches[0]:e;
   if(state==="start"){ startGame(); e.preventDefault(); return; }
   if(state==="over"){ tStartY=t.clientY; tStartT=Date.now(); e.preventDefault(); return; }
   tStartX=t.clientX; tStartY=t.clientY; tStartT=Date.now(); tMoved=false;
-  gSamples=[{t:tStartT,y:t.clientY,col:cur?cur.x:0}];
+  gSamples=[{t:tStartT,y:t.clientY,col:cur?cur.x:0}]; gPiece=cur;
   e.preventDefault();
 }
 function tMove(e){
@@ -753,6 +756,7 @@ function tMove(e){
     scrollPx+=tStartY-t.clientY; tStartY=t.clientY; clampScroll(); e.preventDefault(); return;
   }
   if(state!=="play") return;
+  if(gPiece!==cur){ e.preventDefault(); return; }   // the piece this gesture started on has landed — nothing more from this finger
   gSamples.push({t:Date.now(),y:t.clientY,col:cur?cur.x:0}); if(gSamples.length>12) gSamples.shift();
   const dx=t.clientX-tStartX, dy=t.clientY-tStartY;
   if(Math.abs(dx)>=cell){ move(dx>0?1:-1); tStartX=t.clientX; tMoved=true; }
@@ -772,7 +776,7 @@ function tEnd(e){
   // THE FLICK — speed over the gesture's last 120ms; the column is the one it had when that window began
   const win=gSamples.filter(s=>now-s.t<=120);
   const first=win.length?win[0]:gSamples[gSamples.length-1];
-  if(first){
+  if(first && gPiece===cur){   // a flick only drops the piece it began on — never the one that just spawned
     const dyW=t.clientY-first.y, dtW=Math.max(1,now-first.t);
     if(dyW>=24 && dyW/dtW>=0.9){
       if(cur && first.col!==cur.x && !collides(cur.type,cur.rot,first.col,cur.y)) cur.x=first.col;
