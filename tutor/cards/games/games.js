@@ -105,7 +105,9 @@
     // 3 Sep 10:30 — THE VISIBLE VIEWPORT. On his iPhone Chrome's bottom bar clipped the board: the pinned stage was 100dvh and the
     //    bar did not count against it. visualViewport is the honest number; the stage takes it while a game plays and lets go on pause.
     const stage = body.querySelector('.arc-stage')
-    const fit = () => { try { const vv = window.visualViewport; if (!paused && document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { stage.style.height = Math.round(vv.height) + 'px'; stage.style.top = Math.round(vv.offsetTop || 0) + 'px' } else { stage.style.height = ''; stage.style.top = '' } } catch (_) {} }
+    // 10:45 — the stage's HEIGHT is CSS now (top 0 → bottom var(--play-gutter)): Chrome iOS overlays its bottom bar and every JS
+    //    height counts the strip under it. fit() only follows the visual viewport's top offset (the collapsing URL bar).
+    const fit = () => { try { const vv = window.visualViewport; if (!paused && document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { stage.style.top = Math.round(vv.offsetTop || 0) + 'px' } else { stage.style.top = '' } stage.style.height = '' } catch (_) {} }
     try { if (window.visualViewport) { window.visualViewport.addEventListener('resize', fit); window.visualViewport.addEventListener('scroll', fit) } } catch (_) {}
     window.addEventListener('resize', fit)
 
