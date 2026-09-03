@@ -733,12 +733,18 @@ cv.addEventListener("mousedown",e=>{
 });
 
 // touch — play gestures; paused/over drags scroll; start/over taps begin
+// 3 Sep 2026 (Sum): tap = rotate · drag sideways = move · DRAG DOWN = a controlled fast drop that follows the finger (one row per
+//   cell of travel — drag faster, it falls faster) · FLICK DOWN = hard drop, in the column the piece was in when the flick began,
+//   so the flick itself cannot drift it sideways. The flick is read off the last 120ms of the gesture (speed ≥ 0.9 px/ms and
+//   ≥ 24px), so a long slow drag that ends still never hard-drops, and a slow drag that ENDS in a flick does.
 let tStartX=0,tStartY=0,tStartT=0,tMoved=false;
+let gSamples=[];   // the gesture's tail: {t, y, col} per touchmove, col = the piece's column as that sample arrived
 function tStart(e){
   const t=e.touches?e.touches[0]:e;
   if(state==="start"){ startGame(); e.preventDefault(); return; }
   if(state==="over"){ tStartY=t.clientY; tStartT=Date.now(); e.preventDefault(); return; }
   tStartX=t.clientX; tStartY=t.clientY; tStartT=Date.now(); tMoved=false;
+  gSamples=[{t:tStartT,y:t.clientY,col:cur?cur.x:0}];
   e.preventDefault();
 }
 function tMove(e){
@@ -747,6 +753,7 @@ function tMove(e){
     scrollPx+=tStartY-t.clientY; tStartY=t.clientY; clampScroll(); e.preventDefault(); return;
   }
   if(state!=="play") return;
+  gSamples.push({t:Date.now(),y:t.clientY,col:cur?cur.x:0}); if(gSamples.length>12) gSamples.shift();
   const dx=t.clientX-tStartX, dy=t.clientY-tStartY;
   if(Math.abs(dx)>=cell){ move(dx>0?1:-1); tStartX=t.clientX; tMoved=true; }
   if(dy>=cell){ softDrop(); tStartY=t.clientY; tMoved=true; }
@@ -759,11 +766,19 @@ function tEnd(e){
     e.preventDefault(); return;
   }
   if(state!=="play"){ e.preventDefault(); return; }
-  const dt=Date.now()-tStartT;
+  const now=Date.now(), dt=now-tStartT;
   const t=(e.changedTouches&&e.changedTouches[0])||e;
-  const dy=t.clientY-tStartY;
-  if(!tMoved && dt<250) tryRotate(1);
-  else if(dy>cell*4) hardDrop();
+  if(!tMoved && dt<250){ tryRotate(1); e.preventDefault(); return; }
+  // THE FLICK — speed over the gesture's last 120ms; the column is the one it had when that window began
+  const win=gSamples.filter(s=>now-s.t<=120);
+  const first=win.length?win[0]:gSamples[gSamples.length-1];
+  if(first){
+    const dyW=t.clientY-first.y, dtW=Math.max(1,now-first.t);
+    if(dyW>=24 && dyW/dtW>=0.9){
+      if(cur && first.col!==cur.x && !collides(cur.type,cur.rot,first.col,cur.y)) cur.x=first.col;
+      hardDrop();
+    }
+  }
   e.preventDefault();
 }
 cv.addEventListener("touchstart",tStart,{passive:false});

@@ -78,11 +78,11 @@
   <div class="deck" id="deck" hidden><button class="cut" id="cut" type="button">fresh scroll</button><span class="count" id="count"></span><span class="book" id="book"></span></div>
   <div id="body"></div>
 </div>
-<script src="../myview/fill-sort.js?v=20260903112603"></script>
-<script src="../myview/wires.js?v=20260903112603"></script>
-<script src="../myview/wire-db.js?v=20260903112603"></script>
-<script src="../myview/hulls.js?v=20260903112603"></script>
-<script src="bible.js?v=20260903112603"></script>   <!-- the bible as one text, shared with the gear (shell/settings.js) -->
+<script src="../myview/fill-sort.js?v=20260903113205"></script>
+<script src="../myview/wires.js?v=20260903113205"></script>
+<script src="../myview/wire-db.js?v=20260903113205"></script>
+<script src="../myview/hulls.js?v=20260903113205"></script>
+<script src="bible.js?v=20260903113205"></script>   <!-- the bible as one text, shared with the gear (shell/settings.js) -->
 <script>
 'use strict'
 const $ = id => document.getElementById(id)
@@ -398,5 +398,5 @@ function bookLine() {
 $('cut').addEventListener('click', showAsk)
 ;(function landing() { const mine = latest('editions/feedline-'); if (mine && mine.lines) draw(mine); else showAsk() })()
 </script>
-<script src="../myview/breakdown.js?v=20260903112603"></script>
+<script src="../myview/breakdown.js?v=20260903113205"></script>
 </body></html>
