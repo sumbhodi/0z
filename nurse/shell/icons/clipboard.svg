@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="a clipboard">
+  <defs>
+    <linearGradient id="cb-board" x1=".15" y1="0" x2=".85" y2="1">
+      <stop offset="0" stop-color="#d9a878"/><stop offset=".5" stop-color="#bd8552"/><stop offset="1" stop-color="#8d5c30"/>
+    </linearGradient>
+    <linearGradient id="cb-page" x1=".1" y1="0" x2=".9" y2="1">
+      <stop offset="0" stop-color="#fffdf7"/><stop offset=".6" stop-color="#f4eee0"/><stop offset="1" stop-color="#ded6c4"/>
+    </linearGradient>
+    <linearGradient id="cb-clip" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eef2f6"/><stop offset=".45" stop-color="#b3bec9"/><stop offset="1" stop-color="#6c7885"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="128" cy="240" rx="66" ry="8" fill="#000" opacity=".15"/>
+
+  <rect x="36" y="30" width="184" height="204" rx="16" fill="url(#cb-board)"/>
+  <rect x="36" y="30" width="184" height="204" rx="16" fill="none" stroke="#6f4620" stroke-width="3" opacity=".4"/>
+  <rect x="52" y="56" width="152" height="164" rx="6" fill="url(#cb-page)"/>
+
+  <g fill="#a49a86">
+    <rect x="70" y="92" width="116" height="9" rx="4.5"/>
+    <rect x="70" y="116" width="94" height="9" rx="4.5"/>
+    <rect x="70" y="140" width="110" height="9" rx="4.5"/>
+    <rect x="70" y="164" width="78" height="9" rx="4.5"/>
+  </g>
+  <rect x="52" y="56" width="152" height="52" rx="6" fill="#fff" opacity=".35"/>
+
+  <rect x="96" y="30" width="64" height="30" rx="7" fill="url(#cb-clip)"/>
+  <path d="M112 30 a16 16 0 0 1 32 0 v8 h-9 v-8 a7 7 0 0 0 -14 0 v8 h-9 z" fill="url(#cb-clip)"/>
+  <rect x="96" y="34" width="64" height="8" rx="4" fill="#fff" opacity=".45"/>
+</svg>

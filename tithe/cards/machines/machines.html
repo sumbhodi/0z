@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the machines</title>
+<!-- THE MACHINES (Sum 2026-07-24: "webview never got newsie? bot had a page with BYOK, HIL —
+     explained what key unlocks") — the web paper's key door. Was a 'coming soon' stub. Explains
+     the deal plainly, takes keys into the READER'S OWN browser, wakes the staff on save. -->
+<style>
+  :root { --paper:#f4efe2; --ink:#232019; --rule:#c9bfa4; --red:#a3202a; --dim:#7a7263; }
+  * { box-sizing: border-box; margin: 0; }
+  body { font: 16px/1.55 Georgia, serif; background: var(--paper); color: var(--ink); padding: 22px 18px 60px; max-width: 640px; margin: 0 auto; }
+  h1 { font-size: 24px; display: flex; align-items: center; gap: 10px; }
+  h1 img { width: 40px; height: 40px; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .13em; color: var(--red); border-bottom: 2px solid var(--rule); padding-bottom: 5px; margin: 26px 0 10px; }
+  p { margin: 0 0 10px; }
+  .note { font-size: 13px; color: var(--dim); line-height: 1.5; }
+  ul { margin: 0 0 10px 20px; }
+  li { margin-bottom: 6px; }
+  label { display: block; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--dim); margin: 12px 0 4px; }
+  input { width: 100%; font: inherit; font-size: 15px; padding: 10px; border: 2px solid var(--rule); border-radius: 8px; background: #fff; }
+  button { font: inherit; font-size: 16px; font-weight: 700; padding: 12px 22px; background: var(--red); color: #fff; border: 0; border-radius: 8px; cursor: pointer; margin-top: 16px; min-height: 44px; }
+  .ok { color: #2e6b2e; font-weight: 700; margin-top: 10px; display: none; }
+  .pay { font-size: 11px; letter-spacing: .04em; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--rule); text-transform: none; }
+  .pay.free { color: #2e6b2e; border-color: #2e6b2e; }
+  .pay.payg { color: var(--dim); }
+  .getkey { float: right; color: var(--red); text-decoration: none; font-weight: 700; text-transform: none; letter-spacing: 0; }
+  .getkey:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <button id="x" type="button" aria-label="close the machines" style="position:fixed;top:10px;right:12px;z-index:9;font:inherit;font-size:18px;line-height:1;background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:8px 12px;cursor:pointer;min-height:40px">✕</button>
+  <h1><img src="../../agents/newsie/newsie-roll-sm.png" alt="" onerror="this.remove()"> the machines</h1>
+  <p class="note">API · HIL · your keys — the honest deal, in plain words.</p>
+
+  <h2>the paper is free. forever. no key needed.</h2>
+  <p>Everything you can read, prune, toggle, and flip stays free and keyless.
+  A key doesn't unlock the news — it hires <b>staff</b>.</p>
+
+  <h2>what a key unlocks</h2>
+  <ul>
+    <li><b>the newsie</b> — the kid on the corner: reads any page to you clean past the wall, re-voices stories, answers "what's on the front page?"</li>
+    <li><b>make new</b> — the press in the back room prints <i>your</i> kōans, jokes, poems, advice — your doctrine, set in type, in every studio.</li>
+      </ul>
+  <p class="note">Free tickets exist: <b>Groq</b> and <b>Gemini</b> both hand out no-cost keys. Anthropic works too.</p>
+
+  <h2>HIL — the human stays in the loop</h2>
+  <p>No machine here publishes, posts, buys, or speaks <i>for</i> you. Bots propose; <b>you dispose</b>.
+  Every generated line lands where you can prune it, and nothing leaves your browser without your hand on it.</p>
+
+  <h2>your keys stay yours</h2>
+  <p class="note">Keys are saved in <b>your browser's own storage</b> — this paper has no server, no accounts,
+  no logs, nothing to subpoena. Clear your browser data and they're gone. We never see them.</p>
+
+  <label for="k-anthropic">Anthropic key <span class="pay payg">pay as you go</span> <a class="getkey" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">get a key ↗</a></label>
+  <input id="k-anthropic" type="password" placeholder="sk-ant-…" autocomplete="off">
+  <label for="k-groq">Groq key (free tier exists) <span class="pay free">free · limited</span> <a class="getkey" href="https://console.groq.com/keys" target="_blank" rel="noopener">get a key ↗</a></label>
+  <input id="k-groq" type="password" placeholder="gsk_…" autocomplete="off">
+  <label for="k-gemini">Gemini key (free tier exists) <span class="pay free">free · limited</span> <span class="pay payg">images need prepay</span> <a class="getkey" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">get a key ↗</a></label>
+  <input id="k-gemini" type="password" placeholder="AIza… (text free-tier; IMAGES need Google prepay on)" autocomplete="off">
+  <label for="k-openai">OpenAI key (images: gpt-image) <span class="pay payg">pay as you go</span> <a class="getkey" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">get a key ↗</a></label>
+  <input id="k-openai" type="password" placeholder="sk-…" autocomplete="off">
+  <label for="k-xai">xAI key (images: grok) <span class="pay payg">pay as you go</span> <a class="getkey" href="https://console.x.ai/" target="_blank" rel="noopener">get a key ↗</a></label>
+  <input id="k-xai" type="password" placeholder="xai-…" autocomplete="off">
+
+  <button id="save" type="button">save my keys — wake the staff</button>
+  <div class="ok" id="ok">✓ saved. the staff clocks in on the next page load…</div>
+  <button id="close2" type="button" style="background:var(--paper);color:var(--ink);border:1px solid var(--rule)">close — back to the paper</button>
+
+<script>
+(function () {
+  'use strict'
+  const PROVS = ['anthropic', 'groq', 'gemini', 'openai', 'xai']
+  PROVS.forEach(p => { try { const v = localStorage.getItem('toto_' + p + '_key'); if (v) document.getElementById('k-' + p).value = v } catch (e) {} })
+  document.getElementById('save').addEventListener('click', () => {
+    PROVS.forEach(p => {
+      const v = document.getElementById('k-' + p).value.trim()
+      try { v ? localStorage.setItem('toto_' + p + '_key', v) : localStorage.removeItem('toto_' + p + '_key') } catch (e) {}
+    })
+    document.getElementById('ok').style.display = 'block'
+    setTimeout(() => { try { parent.location.reload() } catch (e) { location.reload() } }, 900)
+  })
+  const closeMachines = () => {
+    try { const b = parent.document.querySelector('[data-card="machines"]'); if (b) { b.click(); return } } catch (e) {}
+    try { const L = JSON.parse(parent.localStorage.getItem('toto_layout') || '{}'); L.active = (L.active || []).filter(x => x !== 'machines'); parent.localStorage.setItem('toto_layout', JSON.stringify(L)); parent.location.reload() } catch (e) { try { parent.location.reload() } catch (e2) { location.reload() } }
+  }
+  document.getElementById('x').addEventListener('click', closeMachines)
+  document.getElementById('close2').addEventListener('click', closeMachines)
+})()
+</script>
+</body>
+</html>

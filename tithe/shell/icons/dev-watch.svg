@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="a watch"><defs><linearGradient id="bd" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#5a636e"/><stop offset=".45" stop-color="#343b45"/><stop offset="1" stop-color="#1a1f26"/></linearGradient><linearGradient id="sc" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#7fd8ef"/><stop offset=".5" stop-color="#3f9fc4"/><stop offset="1" stop-color="#1e5f80"/></linearGradient><linearGradient id="mt" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#eef2f6"/><stop offset=".45" stop-color="#a9b4c0"/><stop offset="1" stop-color="#5e6a78"/></linearGradient></defs>
+<ellipse cx="128" cy="240" rx="50" ry="7" fill="#000" opacity=".15"/>
+<rect x="98" y="14" width="60" height="66" rx="12" fill="#4a525c"/>
+<rect x="98" y="176" width="60" height="66" rx="12" fill="#4a525c"/>
+<rect x="60" y="60" width="136" height="136" rx="34" fill="url(#bd)"/>
+<rect x="74" y="74" width="108" height="108" rx="26" fill="url(#sc)"/>
+<path d="M74 100 v-2 a26 26 0 0 1 26 -24 h82 v34 c-34 14 -70 -14 -108 -8 z" fill="#fff" opacity=".18"/>
+<rect x="196" y="104" width="14" height="34" rx="7" fill="url(#mt)"/>
+</svg>

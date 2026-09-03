@@ -1,0 +1,31 @@
+{
+  "id": "uni",
+  "name": "UNI corn",
+  "icon": {
+    "img": "agents/uni/uni.png"
+  },
+  "nav": [],
+  "also": "all",
+  "tools": [
+    "route",
+    "create_queue",
+    "update_patient_bio",
+    "ui_open",
+    "ui_dock",
+    "ui_zoom",
+    "ui_skin",
+    "ui_access",
+    "ui_explain",
+    "ui_help",
+    "smoke_test"
+  ],
+  "caps": [
+    "delegate",
+    "clock",
+    "house",
+    "furniture"
+  ],
+  "_": "⚠ TOTO AND UNI ARE SEPARATE AND DISTINCT (Sum, 31 Aug 2026): \"toto and unicorn are separate and distinct, only 'swap' is there footing in the ui on theme, both get same tools for now.\" Not a reskin, not a variant. Two characters; the THEME decides which one holds the house chair, and nothing else about either changes.\n ⚠ TOOLS AND CAPS ARE TOTO'S, VERBATIM AND ON PURPOSE. Copied from agents/toto/toto.json, not re-derived — same eleven tools, same four caps. Sum: \"both get same tools for now.\" If toto's list changes, this one is a candidate to change with it, but that is a decision, not a sync.\n ⚠ THE ARCH ANGEL ROLE IS NOT BUILT. Sum: \"skip never acts only asks till true.\" When it turns on, most tools get stripped and handed out — web_search becomes ask newsie for the latest and dria for the record; add-file becomes route it to a bot to open and look first. The reason is a THREAT MODEL, not a temperament: it can turn the lights on and read the diary, so it must never parse spam or a page carrying hidden instructions. Authority plus untrusted text is the whole attack surface. Until that is real this record stays plain.\n ⚠ house: \"unicorn\" is the ONLY line that makes any of this work. registry.js houseFor(skin) looks for D[id].house === skin, and topbar.js:230 says adding the unicorn's bot is a line in ITS json and nothing else changes. Do not add a name to any fallback anywhere.",
+  "house": "unicorn",
+  "modelTwin": "toto"
+}

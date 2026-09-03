@@ -1,0 +1,84 @@
+/* uni.css — UNI corn's BAR DRESS. the street shot, 2048×260.
+   Sum 2026-08-31: "still need street shot for top bar."
+
+   ⚠⚠ THIS IS THE BOT'S SKIN, NOT THE APP'S THEME. They are two different things that both
+   happen to be about a unicorn, and conflating them is the trap this file exists to avoid:
+
+     skin/unicorn.css   the GLOBAL app theme  → html[data-skin="unicorn"]  (purple + gold, every card)
+     skin/uni.css       ONE BOT's dress       → .agent-bar[data-skin="uni"] (this file)
+
+   I first set UNI's AGENT_BARS skin to 'unicorn' and that was wrong — it would have made a bot's
+   bar art a property of the whole app's theme, so every bot's bar would wear the corn street the
+   moment anyone picked the purple theme. Corrected same hour to its own id, 'uni', which is the
+   same shape aoladdin · vogel · alpha · muskett already use: a bot skin is named for the BOT.
+   ⭐ The two stay independent on purpose — UNI keeps its street under ANY app theme, and the
+   unicorn theme dresses every OTHER bot without touching this one.
+
+   ⚠ house ≠ skin, a third thing again. "house": "unicorn" in uni.json is what earns UNI its seat
+   at the end of the top bar when the unicorn THEME is worn (topbar.js mountSkinSeat). That field
+   is about the theme; this file is about the bar. Do not merge them.
+
+   THE ART: uni-topbar.jpg, right here beside its css — where every other bar band lives
+   (aoladdin-topbar · vogel-topbar · muskett-topbar · alpha-topbar).
+   ⚠ CORRECTION 31 Aug: this line used to read "agents/uni/uni-topbar.jpg, COPIED here", and the
+   copy at agents/uni/ was real — 118 KB that NOTHING ever loaded. The url()s below are relative
+   to skin/, so the skin/ copy was always the live one. Orphan recycled to
+   _recycle/2026-08-31-dupe-art/. ⭐ THE LESSON: art belongs beside the CSS that draws it, not
+   beside the bot that owns it. The bot owns the DECISION; the stylesheet owns the FILE.
+   ⚠ Masters and the alternates are in 0zcom/_etsy/unicorn/ — uni-topbar-v2-{a..f}.png, all
+   2048×260. Swapping the band is a copy, never a re-render.
+   ⭐ THE SHIPPING BAND (31 Aug, final): cut from **unistreet-wide-v2.png** (6336×2688) —
+   crop (0, 1400) to (6336, 2204), resized to 2048×260. His call: "use lowest crop that cuts car."
+   ⚠ v2 is the DIFFERENT PHOTOGRAPH — the one with the aubergine hatchback parked across the
+   street and the sunflower row. v1 (unistreet-wide.png) has neither. Do not swap the master.
+   ⭐ The car IS cut, deliberately. The ear on the bottom edge outranks it.
+   ⚠ CORRECTION worth keeping: my first cut sat at top=1516 and I then went LOWER on the word
+   "lower crop" — wrong direction. Moving the crop window UP is what puts the corn DOWN. The ear
+   now sits on the bottom edge, which is his rule: "corn needs to live on bottom." Re-cut from
+   those numbers; do not eyeball it.
+   ⭐ WHY THIS PHOTOGRAPH: it is the origin story with nothing added. He grew genetically altered
+   corn in his front yard and photographed it — corn at the kerb, the gutter, the bike lane,
+   parked cars. The banner IS the premise, not an illustration of it. */
+
+.agent-bar[data-skin="uni"] .ab-head {
+  background-image: url('uni-topbar.jpg');
+  /* ⚠ CORRECTION 31 Aug, same hour, and the note it replaces is kept below because the REASONING
+     was right and the CALL was wrong. I switched this to `auto 100%` to stop the band zooming on
+     resize. Sum, looking at it live: "isn't resizing anymore, keep resize." The scaling is WANTED
+     — it is what makes the strip read as a photograph instead of a squeezed ribbon. The fix was
+     never the sizing; it was always the crop.
+       (superseded: `auto 100%` pins the band to the head's height and slides it horizontally, so
+        the chosen crop survives every width. True, and not what he wants here.)
+     ⭐ AND HERE IS THE MEASUREMENT THAT ENDED THE GUESSING. .ab-head renders about 720×102 — call
+     it 7:1 — against a band that is 2048×260, or 7.9:1. They are nearly the SAME ASPECT, so
+     `cover` shows almost the whole band at once. Judging crops at full 2048 width told us nothing
+     about what lands in the bar. ⚠ PREVIEW AT 720×102, NEVER AT 2048. Three rounds of crops were
+     picked against a preview the app never renders.
+     `bottom` anchoring keeps the ear — the reason the photograph is the origin story — in frame
+     whenever the head crops vertically. */
+  background-position: left bottom; background-size: cover; background-repeat: no-repeat;
+  border-bottom: 2px solid #7a5ab4;
+  box-shadow: inset 0 -30px 24px -20px rgba(0,0,0,.7);   /* the ink well the name sits in — same trick as aoladdin L77 */
+}
+.agent-bar[data-skin="uni"] { background: #200834; border-color: #7a5ab4; }
+.agent-bar[data-skin="uni"] .ab-name,
+.agent-bar[data-skin="uni"] .ab-grip,
+.agent-bar[data-skin="uni"] .ab-add { color: #f8e060; text-shadow: 0 1px 4px #000; }
+
+.convo[data-skin="uni"] { background: #200834; border: 2px solid #7a5ab4; border-radius: 6px; }
+.convo[data-skin="uni"] .convo-screen { background: transparent; color: #f4e8fb; }
+.convo[data-skin="uni"] .msg.bot { border-inline-start: 4px solid #f8e060; color: #f8efd6; }
+.convo[data-skin="uni"] .msg.u   { border-inline-start: 4px solid #7a5ab4; color: #efe4f6; }
+.convo[data-skin="uni"] .convo-head {
+  background: url('uni-topbar.jpg') left bottom / cover no-repeat;   /* MUST match .ab-head above exactly — position AND size. The two headers showing different thirds of the street is the trap aoladdin.css L85 records having fallen into. */
+  border-bottom: 2px solid #7a5ab4; box-shadow: inset 0 -30px 24px -20px rgba(0,0,0,.7);
+}
+.convo[data-skin="uni"] .head-title { color: #f8e060; text-shadow: 0 1px 4px #000; }
+
+/* ── CLEAN TIER (clinical + corporate) — no png, same law as aoladdin.css: the bot keeps its
+      colour, it just stops being a photograph. Solid stops, no opacity on text. ── */
+html[data-tier="clean"] .agent-bar[data-skin="uni"] .ab-head,
+html[data-tier="clean"] .convo[data-skin="uni"] .convo-head {
+  background: linear-gradient(180deg, #6e4696 0%, #4e1d5c 100%);
+  box-shadow: none;
+}

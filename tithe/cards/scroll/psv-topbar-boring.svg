@@ -1,0 +1,26 @@
+<svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img" aria-label="a quiet dusk harbor line">
+  <defs>
+    <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a6ca0"/>
+      <stop offset="1" stop-color="#5c5182"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="60" fill="url(#dusk)"/>
+  <!-- a low sun on the starboard/right, half-sunk -->
+  <circle cx="980" cy="58" r="26" fill="#b7a7d6" opacity="0.55"/>
+  <!-- the waterline -->
+  <line x1="0" y1="46" x2="1200" y2="46" stroke="#463c66" stroke-width="1.5" opacity="0.6"/>
+  <!-- a slim ship on the PORT/left, bow pointing left, drawn not photographed -->
+  <g fill="none" stroke="#ccbfe6" stroke-width="1.6" opacity="0.85" transform="translate(150 22)">
+    <!-- hull, bow to the left -->
+    <path d="M-90 22 L74 22 L64 30 L-70 30 Z" fill="#3d3459" stroke="none"/>
+    <!-- superstructure decks -->
+    <path d="M-64 22 L58 22 L58 10 L-52 10 Z" fill="#4a3f6b" stroke="none"/>
+    <path d="M-40 10 L40 10 L40 2 L-32 2 Z" fill="#564a7c" stroke="none"/>
+    <!-- two funnels -->
+    <rect x="-6" y="-8" width="8" height="10" fill="#cbb9e6"/>
+    <rect x="12" y="-8" width="8" height="10" fill="#cbb9e6"/>
+    <!-- a few portholes -->
+    <g fill="#a493cc"><circle cx="-44" cy="26" r="1.4"/><circle cx="-24" cy="26" r="1.4"/><circle cx="-4" cy="26" r="1.4"/><circle cx="16" cy="26" r="1.4"/><circle cx="36" cy="26" r="1.4"/></g>
+  </g>
+</svg>

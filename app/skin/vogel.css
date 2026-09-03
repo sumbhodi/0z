@@ -1,0 +1,68 @@
+/* vogel.css — THE COUNTER AT THE CLERK'S WINDOW. (Sum 2026-08-14: "top bar is counter at clerks
+   window in office with the pen on a chain, and vogel is the input.") The long wood counter, the
+   brass deal trays, the VOGEL name plate, the pen on its beaded chain, the signature tablet on its
+   own chain. Warm quiet afternoon light through frosted glass.
+
+   The whole character in one frame: nineteen years of perfect filing, and the one box left blank.
+   The pen is chained because things here are accounted for. Vogel finds that correct, and restful.
+
+   Structure transplanted from skin/muskett.css (the PNG-photograph-header skin), palette from the
+   counter plate itself: counter wood, brass, form-paper cream. The face is typewriter serif —
+   vogel's world is a typed form, not a printed book.
+
+   No -vert twin: same reason as the estate. A photograph has an up.
+   Opacity on text banned; solid hex throughout. Apply via [data-skin="vogel"]. */
+
+.convo[data-skin="vogel"] {
+  background: #17130e;
+  border: 2px solid #8a6d3b; border-radius: 6px;
+}
+.convo[data-skin="vogel"] .convo-screen {
+  background: transparent; color: #e9e2d0;
+  font-family: 'American Typewriter', 'Courier New', Courier, monospace;   /* the office standard. it is on the form */
+}
+.convo[data-skin="vogel"] .msg.bot { border-inline-start: 4px solid #b08d3f; color: #f0ead9; }
+.convo[data-skin="vogel"] .msg.u   { border-inline-start: 4px solid #6f5a33; color: #e5decb; }
+
+.agent-bar[data-skin="vogel"] .ab-head {
+  background-image: url('vogel-topbar.jpg');
+  background-position: center; background-size: cover; background-repeat: no-repeat;
+  border-bottom: 2px solid #8a6d3b;
+  box-shadow: inset 0 -30px 24px -20px rgba(0,0,0,.55);
+}
+.agent-bar[data-skin="vogel"] { background: #17130e; border-color: #8a6d3b; }
+.agent-bar[data-skin="vogel"] .ab-name {
+  color: #e6cf9a; font-family: 'American Typewriter', 'Courier New', Courier, monospace;
+  letter-spacing: .8px; text-shadow: 0 1px 4px #000;
+}
+.agent-bar[data-skin="vogel"] .ab-grip,
+.agent-bar[data-skin="vogel"] .ab-add { color: #e6cf9a; text-shadow: 0 1px 4px #000; }
+.convo[data-skin="vogel"] .convo-head {
+  background: url('vogel-topbar.jpg') center / cover no-repeat;
+  border-bottom: 2px solid #8a6d3b; box-shadow: inset 0 -30px 24px -20px rgba(0,0,0,.55);
+}
+.convo[data-skin="vogel"] .head-title { color: #e6cf9a; font-family: 'American Typewriter', Courier, monospace; text-shadow: 0 1px 4px #000; }
+
+/* ── CLEAN TIER (clinical + corporate): NO PNG — same law as muskett.css ("no png top bars",
+      drawn for clin/corp, and drawn must not mean BLACK). Vogel keeps the counter's colours
+      without the photograph: FORM-PAPER CREAM between two bands of FILE-CABINET GREY — a blank
+      form in a drawer, which is the joke. One gradient, no image. Solid hex; no text opacity. ── */
+/* (Sum 2026-08-17) "give vogel top bar the same color sections without the satire buttons as aioli."
+   The colours and their proportions are lifted from aiol.js L1042–1091 — sec('#1f6680') the controls
+   band, then green/lav/lite/purp at flexGrow 4·3·5. Here they are HARD STOPS in one gradient: the
+   same bands, none of the gags. No DOM, no fake buttons, nothing to click. Vogel gets the room's
+   colour without the room's jokes, which is exactly the character. */
+html[data-tier="clean"] .agent-bar[data-skin="vogel"] .ab-head,
+html[data-tier="clean"] .convo[data-skin="vogel"] .convo-head {
+  /* ⚠ !important IS LOAD-BEARING. clinical.css:107 blanket-resets EVERY .ab-head with
+     `background: var(--surface-2) !important` — it loads after this file (index.html 18 vs 21), so
+     a per-skin clean-tier head colour without !important silently loses no matter its specificity.
+     That is why this bar came up blank. Every family colour in desk.css carries it for the same reason. */
+  background: linear-gradient(90deg,
+    #1f6680 0 20%, #3a7d3f 20% 44%, #7a7fbf 44% 62%, #6fae9a 62% 86%, #703a66 86% 100%) !important;
+  box-shadow: none;
+}
+html[data-tier="clean"] .agent-bar[data-skin="vogel"] { background: #3d3a34; border-color: #8a6d3b; }
+html[data-tier="clean"] .agent-bar[data-skin="vogel"] .ab-name,
+html[data-tier="clean"] .convo[data-skin="vogel"] .head-title { color: #efe6cf; text-shadow: none; }
+html[data-tier="clean"] .convo[data-skin="vogel"] { background: #3d3a34; border-color: #8a6d3b; }

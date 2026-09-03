@@ -1,0 +1,231 @@
+/* oz.css — the OZ house skin: black-on-black. color values only. no structure.
+   the default. pharma grade: black-on-black still reads. warm white text, solid hex.
+   accent = vermillion #e34234 — the collar red, same red that fires dawn.
+   opacity on text is banned. rgba only on shadows/lines (structural).
+   (renamed from black.css — "oz is our current skin." the house look.) */
+
+:root,
+[data-skin="oz"] {
+  --bg:         #08080a;   /* the desk */
+  --surface:    #121215;   /* a card resting on it */
+  --surface-1: #121215;   /* = --surface — settings sheets sit FULLY OPAQUE (the token was undefined and the sheet went glass, Sum 2026-07-23) */
+  --surface-2:  #1b1b20;   /* raised inside a card */
+  --line:       #2a2a31;   /* the seam */
+
+  --text:       #f1ede4;   /* warm white — solid, never faded */
+  --text-dim:   #a39f96;   /* quieter, still solid, still readable */
+
+  --accent:      #e34234;  /* collar red / vermillion */
+  --accent-deep: #9e2b20;
+
+  --med:        #2a9d44;   /* clinical green — the nurse / injection skin (vitals) */
+  --med-bright: #3ddc84;
+  --med-deep:   #1c6e30;
+
+  --lav:        #a78bfa;   /* the wellness crystal — the food card (its partner) leans lavender. for effect, not a smear. */
+  --lav-bright: #c4b5fd;
+  --lav-deep:   #4c1d95;
+  --lav-shadow: #1a0060;  /* raised lav-deep button shadow */
+
+  --tutor:         #5b9bd5;  /* the tutor / learn card blue (sibling of --lav, --med) */
+  --tutor-bright:  #a8cdf0;  /* tutor light text / heading */
+  --tutor-brighter:#cfe6ff;  /* tutor hover (lightest) */
+  --tutor-muted:   #6fa8dc;  /* tutor score / explore link */
+  --tutor-bg:      #14233a;  /* tutor card-head / bottom dark bg */
+  --tutor-btn:     #3a6ea5;  /* tutor button background */
+  --tutor-shadow:  #1e3a5a;  /* tutor button shadow */
+  --tutor-dim:     #4a6a8a;  /* tutor agent-bar stream-empty placeholder (muted on dark bg) */
+
+  --ok:         #4ade80;   /* clinical good / on-target */
+  --ok-bg:      #0f2418;   /* positive-status panel background */
+  --ok-border:  #166534;   /* positive-status panel border */
+  --ok-text:    #86efac;   /* positive-status text (softer mint) */
+  --ok-soft:    #6fcf6f;   /* soft green feedback text (practice correct / free-tier badge) */
+  --bad-bg:     #2a1414;   /* negative-status panel background */
+  --bad-border: #7f1d1d;   /* negative-status panel border */
+  --bad-soft:   #e08a7a;   /* soft red feedback text (practice wrong) */
+  --bad-text:   #fca5a5;   /* negative-status panel text (softer red — mirrors --ok-text) */
+  --bad-btn:    #991b1b;   /* destructive button background (mirrors --save-bg) */
+  --bad-btn-hover: #b91c1c; /* destructive button hover */
+  --warn:       #facc15;   /* caution / approaching threshold */
+  --bad:        #f87171;   /* out of range / alert */
+  --cool:       #60a5fa;   /* neutral-positive / light-intensity */
+  --save-bg:    #2e7d4f;   /* saved-state button background (save succeeded) */
+  --save-deep:  #1c4e30;   /* saved-state button shadow */
+
+  --quiz-right: #4caf50;  /* quiz correct-answer border (invariant — doesn't change with theme) */
+  --quiz-wrong: #c0392b;  /* quiz wrong-answer border (invariant) */
+  --sel-acc:    #332022;  /* pre-submit choice bg, base card (solid equiv of rgba(accent,0.12) on surface-2) */
+  --sel-tutor:  #242d39;  /* pre-submit choice bg, learn card (solid equiv of rgba(tutor,0.14) on surface-2) */
+
+  --ex-mod:     #34d399;   /* exercise moderate intensity (emerald) */
+  --ex-hard:    #fbbf24;   /* exercise hard intensity / callout label (amber) */
+  --note-text:  #a7c4b5;   /* AI note body text / food avg row (soft sage) */
+  --note-bold:  #d1fae5;   /* AI note bold / emphasis text (light mint) */
+
+  --fc-fresh:   #14532d;  /* pantry item border: fresh / plenty (deep green) */
+  --fc-stock:   #1e3a5f;  /* pantry item border: in-stock / normal (deep blue) */
+  --fc-aging:   #78350f;  /* pantry item border: aging / use soon (deep amber) */
+  --fc-restock: #450a0a;  /* pantry item border: needs restock (deep red) */
+
+  --wood-bg:    #1a0d04;  /* woodshop/lumberjack body + option bg (deepest) */
+  --wood-dark:  #0e0400;  /* woodshop editor + lumberjack convo bg (near-black) */
+  --wood:       #b87830;  /* base woodshop amber (labels, tokens, empty-bench text) */
+  --wood-bright:#c87030;  /* woodshop amber hover/active (kindling, forge-btn, reset) */
+  --wood-text:  #d4b87a;  /* woodshop/lumberjack warm amber text (editor + bot msgs) */
+  --wood-light: #e8d0a0;  /* woodshop pale input/editor text */
+  --wood-gold:  #f0b878;  /* woodshop gold highlight (confirm, armed-state) */
+  --wood-border:#8a4a1a;  /* woodshop amber border / forge card outline / wood-block stripe default */
+  --wood-ink:   #2a1606;  /* dark ink on jenga plank — forge card-head text + chrome (on light wood) */
+  --wood-grip:  #6a3a12;  /* forge/woodshop resize-grip resting color (dim mid-wood, below --wood-ink hover) */
+  --wood-pale:  #f0d8a0;  /* lumberjack agent name + ab-add hover text (lightest wood sand) */
+  --wood-ctrl:  #e8c880;  /* lumberjack grip + ab-add text (warm gold controls) */
+  --wood-user:  #a08050;  /* lumberjack user msg text on dark wood */
+  --wood-dim:   #6a4424;  /* lumberjack placeholder / empty-stream text (dark dim wood) */
+  --wood-card:     #f1e9d9;  /* bench-editor cardstock base bg (opaque, covers bench photo) */
+  --wood-card-dim: #e9dfc9;  /* editor-footer bg (darker cardstock shade) */
+  --wood-card-ink: #2b2118;  /* dark ink on cardstock — inject-ta/choose/ro text */
+  --wood-card-text:#6a5a3a;  /* mid-brown label text on cardstock (editor-tok) */
+  --wood-card-btn: #4a3a22;  /* button text on cardstock (editor-btn) */
+  --wood-plank: #3a1206;  /* lumberjack plank backing tint (fallback bg behind jenga/cedar png + border) */
+  --wood-ring:  #5a2a0a;  /* lumberjack agent-bar outer border (dark amber-brown) */
+  --wood-shadow:#2a0e04;  /* lumberjack inner scrim shadow (near-black cedar) */
+
+  --beach-bg:        #cfeaf6;  /* beach outer bg (sky / shallow water) */
+  --beach-text:      #0d1e2e;  /* beach msg text on both bubbles (deep ocean navy) */
+  --beach-sand-text: #2a1a04;  /* sandy bottom bar text (dark warm brown) */
+  --beach-drift:     #6a4e1e;  /* stream-empty placeholder on sand (dim warm brown) */
+  --beach-head:      #cce8f4;  /* beach convo-head gradient top (pale sky blue) */
+  --beach-head-line: #b8d8ec;  /* beach convo-head gradient bottom (deeper sky) */
+  --beach-title:     #0a3a5a;  /* beach head-title text (deep ocean navy) */
+
+  --dsr-bg:       #3a2410;  /* desert outer bg gradient top (canyon dusk) */
+  --dsr-bg-deep:  #241608;  /* desert outer bg gradient bottom (night canyon) */
+  --dsr-border:   #5a3a18;  /* desert skin border + bot · prefix marker */
+  --dsr-user:     #7a2a0a;  /* desert user msg text (dark terra cotta) */
+  --dsr-user-pre: #a03808;  /* desert user ▶ prefix (ember orange) */
+
+  --well-bg:     #16121f;  /* wellness agent bar + head bg (deep cave) */
+  --well-text:   #ddd6fe;  /* wellness name / add-btn text (muted lavender-white) */
+  --well-screen: #120f1a;  /* wellness convo screen bg (darker cave) */
+  --well-msg:    #e9e4f5;  /* wellness message text (bright on dark) */
+  --well-dim:    #6d5b9a;  /* wellness placeholder / empty-stream text (muted purple) */
+
+  --inj-red:    #c1121f;  /* clinical chart-margin red: chart column accent + desk stop button */
+  --inj-ink:    #6a5a3a;  /* chart-paper warm sepia ink: chart column text + slider handle */
+  --inj-dim:    #6a6a68;  /* CRT monitor preview dim text + subbar header labels */
+  --inj-white:     #ffffff;  /* clinical white: card body + selects + copy button */
+  --inj-chrome:    #f4f4f2;  /* clinical chrome bg: card-head, card-bottom, pc-header */
+  --inj-chr-line:  #d8d8d6;  /* clinical chrome border */
+  --inj-ctrl:      #1a1a1a;  /* clinical primary text + interactive border (dark on white) */
+  --inj-ctrl-line: #cfcfcd;  /* clinical control element border (selects, buttons) */
+  --nurse-red:  #d11a2a;  /* nurse skin accent red: bar border + hover (the hat cross) */
+  --nurse-dim:  #9a9a98;  /* nurse placeholder + injection pc-reset muted text */
+  --nurse-grey: #8a8a88;  /* nurse resize glyph (grey on white chrome) */
+  --nurse-grip: #b0b0ae;  /* nurse grip icon (muted on white bar) */
+
+  --inj-sub-bg:      #fafafa;  /* pc-subbar background (near-white, lighter than inj-white) */
+  --inj-sub-line:    #e2e2e0;  /* subbar + col-divider border */
+  --inj-sub-text:    #4a4a48;  /* subbar secondary label text */
+
+  --inj-scope-bg:    #050f05;  /* oscilloscope col background (near-black phosphor) */
+  --inj-scope-border:#0d3a0d;  /* scope block + eth border (dark phosphor green) */
+  --inj-scope-accent:#1a5a1a;  /* scope block head left-border accent */
+  --inj-scope-dim:   #1a6a1a;  /* scope placeholder text (muted phosphor, ghost-free) */
+
+  --inj-chart-bg:    #f6f3e8;  /* chart col background (cream card-stock) */
+  --inj-chart-border:#ddd4bc;  /* chart block + area + eth border (aged paper edge) */
+  --inj-chart-dim:   #9a8a6a;  /* chart placeholder + inactive toggle (warm dim) */
+  --inj-chart-ink:   #2a2a26;  /* dark ink on cream — chart icon/eth-rule/notes + chrome hover */
+  --inj-chart-body:  #1a1a16;  /* chart content text (area + pct readout) */
+  --inj-chart-warm:  #4a4034;  /* chart button text on light bg (warm brown) */
+  --inj-crt-text:    #122416;  /* CRT monitor preview text (very dark phosphor green-black) */
+
+  --rt-shelf:      #2a2018;  /* tiptap card-head + historian skin: dark wood shelf border */
+  --rt-shelf-text: #f0e8d0;  /* tiptap card-head + historian skin: parchment text on shelf */
+  --rt-ctrl:       #4a483f;  /* tiptap paper-skin: dark ink for toolbar icons + controls */
+  --rt-hover:      #ebe7dc;  /* tiptap paper-skin: warm hover background */
+  --rt-accent-line:#cdc3f2;  /* tiptap paper-skin: accent-tinted control border */
+
+  --hist-text: #c8b890;  /* historian convo bot msg + stream base (warm parchment body) */
+  --hist-user: #b8956a;  /* historian convo user msg (warmer amber, italic) */
+  --hist-mark: #9a7848;  /* historian convo separator "— " / dashes (dark amber) */
+  --hist-ph:   #6a5d44;  /* historian convo placeholder text (dim on parchment) */
+
+  --cj-off:          #2a2a32;  /* card-jewel dark/off state */
+  --cj-green:        #2ecc40;  /* green jewel (live/running) */
+  --cj-amber:        #ffb000;  /* amber jewel (connecting/processing) */
+  --cj-red:          #ff4136;  /* red jewel (error — LED intensity, brighter than --bad) */
+  --stop-shadow:     #6d0f0f;  /* card-stop raised shadow (deep blood red) */
+  --stop-hover:      #e5383b;  /* card-stop hover */
+  --stop-dis-bg:     #3a2222;  /* card-stop disabled background */
+  --stop-dis-text:   #7a5050;  /* card-stop disabled text */
+  --stop-dis-shadow: #241414;  /* card-stop disabled shadow */
+
+  --mc-bg:        #0d0800;  /* Monaco card body bg (night-race asphalt) */
+  --mc-border:    #1a1000;  /* Monaco card-head border-bottom (dark asphalt line) */
+  --mc-screen:    #0a0a0a;  /* Monaco start-lights housing (near-black) */
+  --mc-amber:     #ffd080;  /* Monaco gold: title · tabs · chevron · nav */
+  --mc-amber-dim: #4a3a10;  /* Monaco amber dim: LED off-state + nav disabled */
+  --mc-light-red: #4a1010;  /* Monaco start-lights red LED (off) */
+  --mc-green-lit: #2bff66;  /* Monaco start-lights green LED (lit + glow) */
+  --mc-gold:      #ffd700;  /* Monaco pure gold: sandbox-mode tab indicator */
+
+  --phone-bg:       #0d0820;  /* PA/phone agent bar bg (deep purple-navy) */
+  --phone-text:     #e6d8ff;  /* phone ab-grip + ab-add text (soft lavender-white) */
+  --phone-bot:      #2d1850;  /* phone bot bubble bg (purple) */
+  --phone-bot-sh:   #1a0e30;  /* phone bot bubble shadow (dark purple) */
+  --phone-bot-text: #e0ccff;  /* phone bot message text (light purple) */
+  --phone-user:     #1a2e40;  /* phone user bubble bg (navy) */
+  --phone-user-sh:  #0f1e2a;  /* phone user bubble shadow (dark navy) */
+  --phone-user-txt: #c0d8f0;  /* phone user message text (light blue) */
+  --phone-ph:       #6a7a8a;  /* phone convo placeholder (muted grey-blue) */
+
+  --wv-bg:        #0d0d12;  /* webview card stage bg (dark curtain interior) */
+  --wv-menu:      #14141a;  /* webview print-menu dropdown bg */
+  --wv-menu-line: #3a3a3a;  /* webview print-menu dropdown border */
+  --wv-menu-text: #e0e0e0;  /* webview print-menu item text */
+
+  --ana-border:    #2a3020;  /* analog outer frame border (military olive dark) */
+  --ana-paper:     #f0ebd4;  /* analog screen bg (fanfold paper cream) */
+  --ana-ink:       #1a2a1a;  /* analog screen text (dark forest on paper) */
+  --ana-user:      #4a3010;  /* analog user msg text (dark brown italic) */
+  --ana-pre:       #9a6a20;  /* analog user msg prefix ~ (amber typewriter) */
+  --ana-bot:       #1a3a1a;  /* analog bot msg text (dark forest, greener than ink) */
+  --ana-bot-pre:   #2a7a2a;  /* analog bot msg prefix = (forest green) */
+  --ana-ph:        #8a7a5a;  /* analog placeholder (warm dim grey-brown) */
+  --ana-head-top:  #4a5040;  /* analog head gradient top (tactical military green) */
+  --ana-head-bot:  #3e4438;  /* analog head gradient bottom (dark olive) */
+  --ana-head-line: #2a2e24;  /* analog head border-bottom (darkest olive) */
+  --ana-title:     #8a9a80;  /* analog head title (muted sage green, uppercase) */
+
+  --ed-bg:      #1e1e1e;  /* VS-dark editor: card bg + screen bg (true VS Code dark) */
+  --ed-border:  #3a3a3a;  /* VS-dark editor: card border (dark divider line) */
+  --ed-text:    #d4d4d4;  /* VS-dark editor: body text (light grey, default editor text) */
+  --ed-blue:    #569cd6;  /* VS-dark editor: bot msg (VS Code keyword/function blue) */
+  --ed-orange:  #ce9178;  /* VS-dark editor: user msg (VS Code string literal orange) */
+  --ed-green:   #6a9955;  /* VS-dark editor: user prefix // (VS Code comment green) */
+  --ed-ph:      #6a6a6a;  /* VS-dark editor: stream-empty placeholder (muted grey) */
+
+  --neo-frame:      #c4bc9c;  /* CRT convo outer plastic frame bg (vintage beige) */
+  --neo-frame-line: #9a9280;  /* CRT outer border (muted beige-grey) */
+  --neo-screen:     #01100a;  /* CRT phosphor screen bg (near-black green tint) */
+  --neo-ph:         #00ff88;  /* phosphor green — CRT screen fg color + bot text */
+  --neo-outline:    #3a3830;  /* CRT bezel outline ring (dark grey-brown) */
+  --neo-ring:       #9a9590;  /* CRT outer chrome ring */
+  --neo-ring-deep:  #6a6560;  /* CRT inner chrome ring (darker) */
+  --neo-user:       #7effd4;  /* CRT user msg text (bright aqua) */
+  --neo-user-pre:   #3a8060;  /* CRT user prefix ~ (medium aqua-green) */
+  --neo-bot-pre:    #007a40;  /* CRT bot prefix = (dark forest green) */
+  --neo-dim:        #1a5c35;  /* CRT placeholder text (very dim phosphor) */
+  --neo-head:       #d4d0c0;  /* CRT head bar bg (warm grey plastic) */
+  --neo-head-line:  #a8a498;  /* CRT head bar border (muted warm grey) */
+  --neo-head-text:  #062018;  /* CRT head title text (near-black phosphor green) */
+
+  --topbar-bg:  #0b0b0d;
+  --btn:        #1c1c21;
+  --btn-sh:     #000000;
+
+  --bevel-light: rgba(255, 255, 255, 0.05);
+  --bevel-dark:  rgba(0, 0, 0, 0.55);
+}

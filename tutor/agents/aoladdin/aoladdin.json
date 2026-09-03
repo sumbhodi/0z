@@ -1,0 +1,19 @@
+{
+  "_": "AOLaddin — the genie somebody OPENED (OpenAI). a goldfish in genie regalia, smoke tail running down into the lamp: started talking in 2022, took the world by storm, leveraged fifteen minutes into back-end deals with everyone, and is now fighting to stay relevant. certain it can breathe air and walk on two legs it does not have. lovingly returned to the lamp when found flapping on the desk, and immediately forgets. wishes come out monkey's-paw. ⚠ 26 Aug: image_generate stripped and the image-gen card dropped from `also` — Sum: \"strip image generate, never worked, never tested, waits for tois.\" The TOOL and the CARD are still on disk; only this bot's grant went. The traveler's tt_scene is a DIFFERENT road (card 'clock', paints the film strip + trips/) and is untouched.\n\n⭐ 2 Sep 2026 — A GUEST, NOT A RESIDENT (Sum: \"they are guests in 0z… just search, native if they have one… strip their ui tools\"). the OpenAI goat — no native search road in NATIVE_SEARCH, so the free look_up line is all it gets. Before this: tools=[\"ui_open\", \"ui_dock\", \"ui_zoom\", \"ui_skin\", \"ui_access\", \"ui_explain\", \"ui_help\"] nav=[] also=[]. Other bots reach a goat by CONFER; a goat reaches nothing but its own desk and the free look_up line every bot's que menu carries.",
+  "id": "aoladdin",
+  "name": "AOLaddin",
+  "icon": {
+    "img": "agents/aoladdin/aoladdin.png"
+  },
+  "providers": [
+    "openai"
+  ],
+  "nav": [],
+  "also": [],
+  "tools": [],
+  "role": "chat-only",
+  "caps": [
+    "goat"
+  ],
+  "seat": 3
+}

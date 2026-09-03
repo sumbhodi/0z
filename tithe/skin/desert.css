@@ -1,0 +1,27 @@
+/* desert.css — jackrabbit. canyon dusk → sand, amber terminal text. desert.png is the top-bar panorama. */
+.convo[data-skin="desert"] {
+  background: linear-gradient(180deg, var(--dsr-bg) 0%, var(--dsr-bg-deep) 100%);
+  border: 1px solid var(--dsr-border);
+  border-radius: 6px;
+  padding: 6px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+}
+.convo[data-skin="desert"] .convo-screen {
+  background: linear-gradient(180deg, #e8a85a 0%, #c87838 28%, #8a4e22 60%, #4a2c12 100%);
+  font-family: ui-monospace, 'SF Mono', monospace;
+  color: var(--wood-ink);
+  line-height: 1.6;
+  padding: 16px;
+}
+.convo[data-skin="desert"] .msg-u   { color: var(--dsr-user); }
+.convo[data-skin="desert"] .msg-u::before   { content: '▶ '; color: var(--dsr-user-pre); }
+.convo[data-skin="desert"] .msg-bot { color: var(--wood-ink); }
+.convo[data-skin="desert"] .msg-bot::before { content: '· '; color: var(--dsr-border); }
+.convo[data-skin="desert"] .msg-stream:empty::before { color: var(--wood-dim); }
+/* the convo box's own top bar — the canyon panorama */
+.convo[data-skin="desert"] .convo-head {
+  background-size: cover; background-position: center;
+  box-shadow: inset 0 -38px 28px -20px rgba(0,0,0,0.55);
+  background-image: url('desert.png');
+}
+.convo[data-skin="desert"] .head-title { color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.9); }

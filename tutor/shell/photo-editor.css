@@ -1,0 +1,37 @@
+/* photo-editor.css — OZ_EDIT. MS-Paint-in-Win97: big blocky 2px borders, chunky buttons, it just works. */
+
+.oz-edit-veil { position: fixed; inset: 0; z-index: 10090; background: rgba(8,6,14,.86); display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px); }  /* above the loupe/poster */
+.oz-edit { width: min(880px, 96vw); max-height: 92vh; display: flex; flex-direction: column; background: #16121f; border: 2px solid #b388ff; border-radius: 10px; overflow: hidden; box-shadow: 0 20px 70px rgba(0,0,0,.6); }  /* max-height re-capped in JS to the REAL viewport (WKWebView over-reports vh) */
+
+.oz-edit-bar { flex-shrink: 0; display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: rgba(124,77,255,.2); border-bottom: 2px solid rgba(179,136,255,.4); }
+.oz-edit-title { font: 800 var(--fs-ui) system-ui; color: #e8e3ff; margin-right: auto; }
+.oz-edit-cancel, .oz-edit-save { height: 30px; padding: 0 16px; border: 2px solid rgba(179,136,255,.5); border-radius: 7px; font: 700 var(--fs-ui) system-ui; cursor: pointer; }
+.oz-edit-cancel { background: #1c1830; color: #cfc7ee; }
+.oz-edit-cancel:hover { background: #241d3a; }
+.oz-edit-save { background: rgba(95,224,154,.2); color: #b9f5d3; border-color: rgba(95,224,154,.55); }
+.oz-edit-save:hover { background: rgba(95,224,154,.34); }
+
+.oz-edit-stage { flex: 1; min-height: 0; display: grid; place-items: center; background: #0c0a14; padding: 16px; overflow: auto; }   /* image fits the flex height; scrolls if huge — bar + tools stay pinned */
+.oz-edit-frame { display: inline-flex; position: relative; max-width: 100%; max-height: 100%; }
+
+/* crop-by-drag — overlay sits exactly over the image (frame wraps tight); marquee dims everything outside the box */
+.oz-edit-crop { position: absolute; inset: 0; display: none; overflow: hidden; border-radius: 4px; cursor: crosshair; }
+.oz-edit-frame.cropping .oz-edit-crop { display: block; }
+.oz-edit-marquee { position: absolute; display: none; box-sizing: border-box; border: 1px solid #f0ecff; box-shadow: 0 0 0 9999px rgba(8,6,14,.6); pointer-events: none; }
+.oz-edit-marquee::after { content: ''; position: absolute; inset: 0; border: 1px dashed rgba(124,77,255,.9); }
+.oz-edit-frame.cropped { height: 100%; max-height: 100%; width: auto; overflow: hidden; border-radius: 4px; outline: 2px dashed rgba(201,179,255,.5); outline-offset: 3px; }
+.oz-edit-img { max-width: 100%; max-height: 100%; border-radius: 4px; transition: filter .1s, transform .12s; }
+.oz-edit-frame.cropped .oz-edit-img { width: 100%; height: 100%; object-fit: cover; max-width: none; max-height: none; }
+.oz-edit-fmt { height: 30px; min-width: 40px; padding: 0 11px; border: 2px solid rgba(179,136,255,.4); border-radius: 6px; background: #1c1830; color: #e8e3ff; font: 700 var(--fs-ui) system-ui; cursor: pointer; }
+.oz-edit-fmt:hover { background: rgba(124,77,255,.3); }
+.oz-edit-fmt.on { background: rgba(124,77,255,.5); border-color: #c9b3ff; }
+
+.oz-edit-tools { flex-shrink: 0; display: flex; flex-wrap: wrap; gap: 18px; padding: 12px 14px; background: #1a1626; border-top: 2px solid rgba(179,136,255,.3); }
+.oz-edit-grp { display: flex; align-items: center; gap: 8px; }
+.oz-edit-lab { font: 700 var(--fs-ui) system-ui; letter-spacing: .06em; text-transform: uppercase; color: #9a90c4; }
+.oz-edit-grp label { display: inline-flex; align-items: center; gap: 5px; color: #cfc7ee; font: var(--fs-ui) system-ui; }
+.oz-adj { width: 82px; accent-color: #7c4dff; }
+.oz-edit-filts { display: flex; gap: 5px; flex-wrap: wrap; }
+.oz-edit-filt, .oz-edit-btn { height: 30px; min-width: 36px; padding: 0 11px; border: 2px solid rgba(179,136,255,.4); border-radius: 6px; background: #1c1830; color: #e8e3ff; font: 700 var(--fs-ui) system-ui; cursor: pointer; }
+.oz-edit-filt:hover, .oz-edit-btn:hover { background: rgba(124,77,255,.3); }
+.oz-edit-filt.on { background: rgba(124,77,255,.5); border-color: #c9b3ff; }

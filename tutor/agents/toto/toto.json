@@ -1,0 +1,32 @@
+{
+  "id": "toto",
+  "name": "toto",
+  "icon": {
+    "img": "agents/toto/collar.png"
+  },
+  "nav": [],
+  "also": "all",
+  "tools": [
+    "route",
+    "create_queue",
+    "update_patient_bio",
+    "ui_open",
+    "ui_dock",
+    "ui_zoom",
+    "ui_skin",
+    "ui_access",
+    "ui_explain",
+    "ui_help",
+    "smoke_test",
+    "thesaurus_add"
+  ],
+  "caps": [
+    "delegate",
+    "clock",
+    "house",
+    "furniture"
+  ],
+  "_": "⭐ 1 Sep 2026 — modelTwin repaired. settings.js:228 warned about exactly this: \"the day one of them gets renamed or benched the other silently keeps writing to a dead key.\" That day came. ⚠ toto named 'pa', PARKED 29 Aug — every model change on toto was writing toto_bot_pa_model, a key nothing reads. And the pair was ASYMMETRIC: uni named toto, toto named pa, so changing UNI moved toto but changing toto never moved UNI. The law in that comment is 'each names the other'; now they do. ⚠ 26 Aug: capabilities moved OFF hard-lists in shared code and ONTO this record (Sum: \"bots should all be pretty much identical with different tools and permissions and persona and rules\"). caps are read by REG.hasCap/withCap — delegate (route · queue · confer) · shell (the file-shell CLI cue) · file (the portable window.SANDBOX interface) · forge (the woodshop CLI lane) · no-web (web_search withheld). mounts is the read-only lane grant (oz-lane.js).\n ⚠ 26 Aug, THIRD pass — \"route\" and \"create_queue\" are BACK, and the removal an hour earlier was wrong on the facts. Sum: \"route and create que, I think I might want those back on, recon further.\" He was right and the recon says so plainly. They are not phantoms and they are not the delegate cap's machinery: they are TOTO'S ONLY TWO TOOLS and the reason it exists — toto-toolkit.md, line 3: \"the conductor — the front door. routes to specialists · spawns queues. owns no card.\" Both are LIVE and shipping; they simply do not ride the bean road. route IS the ```cards fence and create_queue IS the ```que fence, both taught and caught in conductor.js, exactly the way web_search rides the ```search fence. All three (and confer) are marked card: null in TOOLKITS with the note \"they act on AGENTS + the QUEUE, not a card ... the queue layer runs them.\" WHAT I DID WRONG: build.js checks a tools list against REGISTERED BEANS and knew about exactly one fence tool, by name, in a hand-kept line (live.add('web_search')). It cried wolf on the other three and I believed the linter instead of reading the toolkit. That hand-kept exception is now a rule — card: null means fence, not missing. NO RUNTIME CHANGED EITHER WAY: toolLines() filters on tools[t].card === card, and null is never in a bot's card list, so these never surfaced through this array at all. The record was the thing that was wrong — toto's roster stopped saying what toto is.\n ⚠ confer is the third of the family (window.confer, conductor.js:696) and is NOT listed here. It was not listed before either, so it was left alone rather than added on my own judgement — flagged for Sum.",
+  "house": "oz",
+  "modelTwin": "uni"
+}

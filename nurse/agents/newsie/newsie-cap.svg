@@ -1,0 +1,27 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="the newsie — a flat newsboy cap">
+  <defs>
+    <linearGradient id="wool" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b7a184"/>
+      <stop offset="1" stop-color="#8f7a5f"/>
+    </linearGradient>
+    <linearGradient id="brim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7c6a52"/>
+      <stop offset="1" stop-color="#5f5140"/>
+    </linearGradient>
+  </defs>
+  <!-- the crown — a soft slouched panel cap -->
+  <path d="M96 300 C96 196 176 150 268 150 C360 150 428 196 428 258 C428 286 410 300 384 300 Z" fill="url(#wool)"/>
+  <!-- panel seams -->
+  <g stroke="#7a664c" stroke-width="4" fill="none" opacity="0.55">
+    <path d="M268 152 C238 210 214 258 200 298"/>
+    <path d="M300 152 C300 214 316 262 340 298"/>
+    <path d="M150 196 C210 226 320 232 404 236"/>
+  </g>
+  <!-- the little top button -->
+  <circle cx="256" cy="150" r="13" fill="#6f5c44"/>
+  <!-- the peaked brim, front-left -->
+  <path d="M92 300 C70 306 60 322 78 336 C150 356 316 356 386 336 C402 330 400 304 384 300 Z" fill="url(#brim)"/>
+  <path d="M92 300 C150 314 320 314 384 300" stroke="#4c4030" stroke-width="3" fill="none" opacity="0.5"/>
+  <!-- a soft shadow under the brim -->
+  <ellipse cx="238" cy="352" rx="150" ry="10" fill="#000" opacity="0.10"/>
+</svg>

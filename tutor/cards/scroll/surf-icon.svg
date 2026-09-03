@@ -1,0 +1,21 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="surf the web — a surfboard on a wave">
+  <defs>
+    <linearGradient id="board" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ef8f7c"/>
+      <stop offset="0.45" stop-color="#ffd27a"/>
+      <stop offset="1" stop-color="#9a86d8"/>
+    </linearGradient>
+  </defs>
+  <g transform="rotate(-16 256 256)">
+    <!-- the board -->
+    <path d="M256 60 C300 130 316 250 316 330 C316 392 292 430 256 430 C220 430 196 392 196 330 C196 250 212 130 256 60 Z" fill="url(#board)" stroke="#5a4a7a" stroke-width="5"/>
+    <!-- stringer + a stripe -->
+    <line x1="256" y1="72" x2="256" y2="424" stroke="#5a4a7a" stroke-width="3" opacity="0.5"/>
+    <rect x="198" y="238" width="116" height="34" fill="#ffd27a" opacity="0.9"/>
+    <!-- fin -->
+    <path d="M256 428 C262 452 272 466 288 474 C270 470 258 462 250 448 Z" fill="#7ee0c8" stroke="#5a4a7a" stroke-width="3"/>
+  </g>
+  <!-- a little curl of wave at the base -->
+  <path d="M92 452 C150 400 210 420 250 452 C300 420 360 430 420 452 C420 480 96 480 92 452 Z" fill="#bcd6f2" stroke="#8fb0e6" stroke-width="4"/>
+  <path d="M150 452 C170 420 210 424 236 448" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+</svg>

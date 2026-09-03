@@ -1,0 +1,223 @@
+/* aiol.css — AIOLI · the room, dressed as 1997 dressed it. WHITE page, colored inks, bevels.
+   (Sum 2026-08-14: the old green-phosphor dress was "a ghost of an old idea leaking in — ghost
+   of matrix vibes." It came from the coder aesthetic and belonged to coder's terminal, not the
+   room. The room is AOL: a bright place with people in it, every voice its own ink.
+   The reference is design/aol-mock.html — the mock IS the spec for this file.)
+
+   The Win95 grammar: two borders do all the 3D. No shadows, no gradients except the title navy. */
+
+.card.card-aiol .card-body { padding: 0; display: flex; }   /* the room fills its whole card (Sum, 15 Aug) */
+
+/* the card's OWN head is the top bar (Sum 2026-08-15: "just make a plain grey css top bar like
+   the 90s — land it on the actual top bar where the icon is"). no row in the body, no jokes. */
+.card.card-aiol .card-head {
+  background: #c0c0c0;
+  border-bottom: 2px solid #808080;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 #dfdfdf;
+  color: #000;
+  font-family: Tahoma, 'MS Sans Serif', Geneva, sans-serif;
+}
+.card.card-aiol .card-head .card-title { color: #000; font-weight: 700; }
+.card.card-aiol .card-head .card-ctrls { color: #000; }
+.aiol {
+  position: relative; flex: 1 1 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 236px; grid-template-rows: auto 1fr auto;
+  gap: 6px; min-height: 340px; padding: 6px;
+  background: #c0c0c0;                                           /* the grey plastic */
+  border: 2px solid; border-color: #dfdfdf #404040 #404040 #dfdfdf;
+  font-family: Tahoma, 'MS Sans Serif', Geneva, sans-serif; font-size: var(--fs-ui); color: #000;   /* the TOKENS, not px — base.css L84: --fs-xl is THE FLOOR for anything read or clicked */
+}
+
+
+/* the 90s TOP BAR — gear + plus (real), room name, chats dropdown, gag art filling the rest */
+/* the GREY strip inside the card — the room's name + the chats dropdown (Sum, 15 Aug:
+   "move the chat room name and new chat down to topbar in card, grey") */
+.aiol-tabs { grid-column: 1; grid-row: 1; display: flex; gap: 8px; align-items: center; }
+.aiol-tabs .aiol-roomname { color: #000; }
+.aiol-tabs .aiol-tlist {
+  color: #000; background: #c0c0c0; cursor: pointer;
+  font: inherit; font-size: var(--fs-ui); padding: 2px 12px;
+  border: 2px solid; border-color: #fff #404040 #404040 #fff;
+}
+.aiol-tabs .aiol-tlist:active { border-color: #404040 #fff #fff #404040; }
+
+/* THE CARD HEAD IS THE AOL BAR (Sum: "wrong top bar", twice — the sections live on the card's
+   own head, the strip with the icon, not on a second row in the body). dark seams, no grey. */
+.card.card-aiol .card-head { background: #404040; gap: 2px; }
+.card.card-aiol .card-head .card-title { display: none; }        /* the green section carries the name */
+.card.card-aiol .card-head .card-ctrls { flex: 1; display: flex; gap: 2px; align-items: stretch; }
+/* the strip's residents — white on their section's colour, borderless, the AOL way */
+.aiol-hbtn {
+  font: inherit; font-size: var(--fs-ui); font-weight: 700; color: #fff; cursor: pointer;
+  padding: 2px 10px; background: none; border: none;
+}
+.aiol-hbtn svg { width: 20px; height: 20px; display: block; }
+.aiol-tlist { font: inherit; font-size: var(--fs-ui); color: #fff; cursor: pointer; padding: 2px 10px; background: none; border: none; }
+.aiol-roomname { font-weight: 700; font-style: italic; font-size: var(--fs-ui); padding: 0 10px; white-space: nowrap; color: #fff; }
+.aiol-sec { display: flex; align-items: center; padding: 2px 4px; border-radius: 3px; }
+.aiol-sec-fill { flex: 1 1 0; justify-content: space-evenly; }
+/* the GAGS — fake AOL buttons, art only, spread evenly on their colour. pointer-events none:
+   a click on a gag is a click on the head, and the head still folds the card (cards.js L280). */
+.aiol-gag { pointer-events: none; display: flex; align-items: center; }
+.aiol-gag svg { height: 30px; width: auto; display: block; }   /* the .aiol-hbtn svg shape (L54), taller — full head height */
+.aiol-roomlist {
+  display: none; position: absolute; top: 44px; left: 10px; z-index: 6; min-width: 220px;
+  background: #fff; border: 2px solid; border-color: #404040 #dfdfdf #dfdfdf #404040;
+  padding: 3px 5px; font-size: var(--fs-ui); line-height: 1.6;
+}
+.aiol-roomlist.open { display: block; }
+.aiol-roomlist .aiol-n { cursor: pointer; }
+.aiol-roomlist .aiol-n:hover { background: #000080; color: #fff; }
+/* the BRAND on the strip (Sum: "where it says the lounge, i want it to say AIOLI ~ AI
+   On-line Interaction, then a big space, then chats, name of this chat") */
+.aiol-brand { font-weight: 700; font-style: italic; padding: 0 10px; white-space: nowrap; color: #000; }
+/* CHAT ROOM LISTINGS — the AOL two-panel (the reference screenshot IS the spec): categories
+   left, rooms right, both the roomlist's own white inset dress (L61) */
+/* two classes outrank .aiol-prefs-body's column (L204) — panes sit SIDE BY SIDE, the AOL way */
+.aiol-prefs-body.aiol-listings { flex-direction: row; gap: 8px; align-items: stretch; }
+.aiol-lipane { background: #fff; border: 2px solid; border-color: #404040 #dfdfdf #dfdfdf #404040; padding: 3px 5px; overflow-y: auto; max-height: 55vh; }
+.aiol-licats { flex: 0 0 34%; }
+.aiol-lirooms { flex: 1 1 auto; }
+.aiol-lipane .aiol-n { cursor: pointer; padding: 4px 6px; }
+.aiol-lipane .aiol-n:hover { background: #000080; color: #fff; }
+.aiol-lipane .aiol-liactive { background: #000080; color: #fff; }
+
+/* the ask rides the gear panel's own footprint (L168) — Sum: "it can be as wide as gear was".
+   long motions WRAP and grow (textarea, never a one-line scroll into space) */
+.aiol-ask textarea.aiol-input { width: 100%; resize: vertical; font: inherit; font-size: var(--fs-xl); }
+/* the huddles — team-tinted lines: the sysop sees both, the other team's CONTEXT sees neither */
+.aiol-line.aiol-huddle-red { background: #fdecec; }
+.aiol-line.aiol-huddle-blue { background: #e9effb; }
+/* TEAM INK (Sum: "make red team and blue team red and blue, not that bot's color") — in a
+   debate the side outranks the delegate's own ink; two classes beat the ink-* rule (L124) */
+.aiol-line.aiol-team-red .aiol-nick, .aiol-line.aiol-team-red .aiol-msg { color: #c00000; }
+.aiol-line.aiol-team-blue .aiol-nick, .aiol-line.aiol-team-blue .aiol-msg { color: #0000ff; }
+.aiol-ask .aiol-n { cursor: pointer; width: 100%; padding: 4px 6px; }
+.aiol-ask .aiol-n:hover { background: #000080; color: #fff; }
+.aiol-ask .aiol-n:hover .aiol-hint { color: #cfd6ff; }
+/* the row ✕ — delete lives next to add (Sum), confirmed by the grey dialog, never silent */
+.aiol-roomlist .aiol-n { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.aiol-roomlist .aiol-x { background: none; border: none; cursor: pointer; color: #802020; font-size: var(--fs-ui); padding: 0 4px; }
+.aiol-roomlist .aiol-n:hover .aiol-x { color: #ffb0b0; }
+
+/* ── the chat page — WHITE, inset, Arial. identity is ink, not a prompt char. ── */
+.aiol-screen {
+  grid-column: 1; grid-row: 2; overflow-y: auto; padding: 8px 10px;
+  background: #fff; color: #000;
+  border: 2px solid; border-color: #404040 #dfdfdf #dfdfdf #404040;
+  font-family: Arial, Verdana, sans-serif; font-size: var(--fs-body); line-height: 1.5;
+}
+.aiol-line { display: flex; gap: 8px; margin: 0 0 2px; white-space: pre-wrap; word-break: break-word; }
+
+/* the private-chat window (inside the prefs dress) — the DM transcript and its extender row */
+.aiol-pmscreen {
+  height: 230px; overflow-y: auto; padding: 6px 8px;
+  background: #fff; border: 2px solid; border-color: #404040 #dfdfdf #dfdfdf #404040;
+  font-family: Arial, Verdana, sans-serif; font-size: var(--fs-body); line-height: 1.45;
+}
+.aiol-pmrow { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+.aiol-pmlist { max-width: 300px; }
+.aiol-pmlist .aiol-n { justify-content: flex-start; gap: 7px; }   /* checkbox BESIDE the name — the listbox's space-between flung them apart ("practically cuts name off") */
+.aiol-nick { font-weight: 700; white-space: nowrap; }
+.aiol-msg  { flex: 1; max-width: 78ch; }   /* "too wide, hard to track" — the eye needs a measure */
+.aiol-sys .aiol-nick, .aiol-sys .aiol-msg { color: #000; }       /* OnlineHost speaks plainly */
+.aiol-sysop .aiol-nick, .aiol-sysop .aiol-msg { color: #000080; font-weight: 700; }
+
+/* every voice its own ink — deterministic per bot (hash), period-correct chaos */
+.ink-navy   .aiol-nick, .ink-navy   .aiol-msg { color: #000080; }
+.ink-red    .aiol-nick, .ink-red    .aiol-msg { color: #c00000; }
+.ink-green  .aiol-nick, .ink-green  .aiol-msg { color: #007000; }
+.ink-teal   .aiol-nick, .ink-teal   .aiol-msg { color: #007070; }
+.ink-purple .aiol-nick, .ink-purple .aiol-msg { color: #700070; }
+.ink-maroon .aiol-nick, .ink-maroon .aiol-msg { color: #802020; }
+.ink-olive  .aiol-nick, .ink-olive  .aiol-msg { color: #606000; }
+.ink-blue   .aiol-nick, .ink-blue   .aiol-msg { color: #0000ff; }
+
+/* ── the rail — furniture, not text: count, a real listbox, the hint, bevelled buttons ── */
+.aiol-who { grid-column: 2; grid-row: 1 / 3; display: flex; flex-direction: column; gap: 5px; min-height: 0; }
+.aiol-count { font-weight: 700; font-style: italic; padding: 0 2px; }
+.aiol-people {
+  flex: 1; overflow-y: auto; padding: 3px 5px; min-height: 0;
+  background: #fff; border: 2px solid; border-color: #404040 #dfdfdf #dfdfdf #404040;
+  font-size: var(--fs-ui); line-height: 1.5;
+}
+.aiol-people .aiol-n { display: flex; justify-content: space-between; cursor: pointer; white-space: nowrap; }
+.aiol-people .aiol-n:hover { background: #000080; color: #fff; }  /* the listbox highlight */
+.aiol-people .aiol-score { font-size: calc(var(--fs-ui) * .8); opacity: .75; }
+.aiol-people .aiol-st { margin-right: 5px; color: #909090; }     /* ○ idle — seated, not on the glass */
+.aiol-people .aiol-st.on { color: #008000; }                     /* ● active — open on the desk */
+.aiol-people .aiol-lobby { color: #808080; }
+.aiol-people .aiol-rule { border-top: 1px solid #808080; margin: 4px 0; }
+.aiol-hint { font-size: calc(var(--fs-ui) * .75); text-align: center; }
+.aiol-railbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.aiol-railbtns .aiol-btn { display: flex; align-items: center; gap: 5px; padding: 4px 6px; font-size: calc(var(--fs-ui) * .8); text-align: left; }
+.aiol-dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid #404040; flex: none; background: #ffd020; }
+.aiol-dot.org { background: #ff7020; }
+.aiol-dot.grn { background: #20a040; }   /* More Chat · Chat Preferences (Sum: green where yellow) */
+.aiol-dot.red { background: #d02020; }   /* Notify Vogel (Sum: red where yellow) */
+.aiol-railbtns .aiol-btn:disabled { color: #808080; cursor: default; }
+.aiol-railbtns .aiol-btn:disabled .aiol-dot { background: #c0c0c0; }
+
+/* the shared button grammar */
+.aiol-btn {
+  font: inherit; background: #c0c0c0; color: #000; cursor: pointer;
+  border: 2px solid; border-color: #fff #404040 #404040 #fff;
+}
+.aiol-btn:active:not(:disabled) { border-color: #404040 #fff #fff #404040; }
+
+/* ── the compose line — the instrument panel: font · colour · ABIU · the line · Send ── */
+.aiol-bar { grid-column: 1 / -1; grid-row: 3; display: flex; gap: 4px; align-items: center; }
+.aiol-bar select {
+  padding: 4px 6px; font: inherit; background: #fff;
+  border: 2px solid; border-color: #404040 #dfdfdf #dfdfdf #404040;
+}
+.aiol-fmt { width: 34px; padding: 4px 0; font-weight: 900; font-size: calc(var(--fs-ui) * .8); }
+.aiol-fmt.i { font-style: italic; } .aiol-fmt.u { text-decoration: underline; }
+.aiol-fmt:disabled, .aiol-bar select:disabled { color: #808080; cursor: default; }
+.aiol-swatch i { display: block; width: 14px; height: 14px; margin: 0 auto; background: #0000ff; border: 1px solid #404040; }
+.aiol-input {
+  flex: 1; padding: 8px 12px; font-family: Arial, Verdana, sans-serif; font-size: var(--fs-xl);
+  background: #fff; color: #000;
+  border: 2px solid; border-color: #404040 #dfdfdf #dfdfdf #404040;
+  /* the widest, biggest thing on the card — "my input is tiny" was a BUG under the a11y law */
+}
+.aiol-send { padding: 8px 16px; font-weight: 700; font-size: var(--fs-ui); }
+
+/* ── CHAT PREFERENCES — unchanged: it was already the era's dialog, and the rail now owns
+      the button that opens it (the reference AOL rail has the literal button). ── */
+.aiol-prefs {
+  display: none; position: absolute; left: 3%; right: 3%; top: 3%; max-height: 94%;   /* bigger (Sum, 15 Aug) */
+  overflow-y: auto; z-index: 5;
+  background: #c0c0c0; color: #000;
+  border: 2px solid; border-color: #fff #404040 #404040 #fff;
+  box-shadow: 4px 4px 0 rgba(0,0,0,.35);
+  font-family: Tahoma, 'MS Sans Serif', Geneva, sans-serif; font-size: var(--fs-ui);
+}
+.aiol-prefs.open { display: block; }
+.aiol-prefs-title {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 6px; margin: 2px;
+  background: linear-gradient(90deg, #000080, #1084d0);          /* the navy every dialog wore */
+  color: #fff; font-weight: 700; font-size: var(--fs-ui); letter-spacing: .3px;
+}
+.aiol-prefs-x {
+  width: 24px; height: 22px; line-height: 1; font-weight: 700; font-size: 13px;
+  background: #c0c0c0; color: #000; cursor: pointer;
+  border: 2px solid; border-color: #fff #404040 #404040 #fff;
+}
+.aiol-prefs-x:active { border-color: #404040 #fff #fff #404040; }
+.aiol-prefs-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 10px; }
+.aiol-prefs fieldset {
+  border: 2px groove #fff; padding: 8px 10px; margin: 0;
+  display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center;
+}
+.aiol-prefs legend { padding: 0 6px; font-weight: 700; }
+.aiol-prefs label { display: flex; gap: 6px; align-items: center; }
+.aiol-prefs select {
+  font: inherit; background: #fff; color: #000; padding: 3px 6px;
+  border: 2px solid; border-color: #404040 #fff #fff #404040;
+}
+.aiol-prefs input[type="range"] { flex: 1; min-width: 130px; }
+.aiol-prefs .aiol-dial-val { min-width: 2.2em; text-align: right; font-weight: 700; }
+.aiol-prefs .aiol-btn { padding: 3px 12px; min-width: 72px; font-weight: 700; }
+.aiol-prefs-ok { display: flex; justify-content: flex-end; padding: 0 12px 12px; }

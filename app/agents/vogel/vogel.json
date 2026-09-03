@@ -1,0 +1,22 @@
+{
+  "id": "vogel",
+  "name": "Vogel",
+  "icon": {
+    "img": "agents/vogel/vogel.png"
+  },
+  "nav": [
+    "vault",
+    "injection"
+  ],
+  "also": [],
+  "tools": [
+    "ui_open",
+    "ui_dock",
+    "ui_zoom",
+    "ui_skin",
+    "ui_access",
+    "ui_explain",
+    "ui_help"
+  ],
+  "_": "⭐ 31 Aug 2026 — VOGEL KEEPS THE VAULT. The card is the grant, so this one line is the whole wiring; no tool list was copied. Sync is paperwork and the port is a counter — the one job in the app that is literally this bot's job description. It lost the room (aioli) to S. Trawman the same evening and gained its own. NOT a demotion, a posting. ⚠ 31 Aug 2026 — TIPTAP AND ITS doc_* TOOLS STRIPPED. The tiptap card was parked 30 Aug (_parked/2026-08-30-doorless/tiptap) and the seven doc_* beans went with it, but the nav grant and the tool list stayed here — so this bot was being TOLD it had seven document tools that answer to nobody, every turn, in its own injection. agents/build.js had been reporting both faults on every run; they were missed because the output was being read through `tail -1`. ⭐ Sum's call: \"if tiptap comes back it gets a new name, so strip.\" A parked card returning under a new id means these names can never become correct again — this is not a temporary gap. ⚠ 31 Aug 2026 — the 'room-host' ROLE and CAP left this record with the aioli nav grant. aiol.js:128 made the host a CAP not a name precisely so this is ONE field, not seven edits: presence, both guest lists, the restart and the notify button all read HOST()/hostName(). 'aioli' LEFT this nav; S. Trawman took the room (see trawman.json). Vogel is NOT demoted: it is getting its own suite, the PORT AND SYNC card. Sum: \"instead of hiding in settings we just make the port and sync a card vogel manages.\""
+}

@@ -1,0 +1,52 @@
+{
+  "id": "coder",
+  "name": "T. Woodsman",
+  "icon": {
+    "img": "agents/coder/coder.png"
+  },
+  "nav": [
+    "monaco",
+    "webview"
+  ],
+  "also": [
+    "tiptap"
+  ],
+  "tools": [
+    "read_file",
+    "where",
+    "new_file",
+    "write_file",
+    "add",
+    "find_replace",
+    "apply_edits",
+    "squiggy_task",
+    "preview",
+    "ui_open",
+    "ui_dock",
+    "ui_zoom",
+    "ui_skin",
+    "ui_access",
+    "ui_explain",
+    "ui_help",
+    "smoke_test",
+    "web_search",
+    "inj_set_model",
+    "inj_set_skin",
+    "inj_set_checker"
+  ],
+  "role": "tool-holder",
+  "caps": [
+    "delegate",
+    "shell",
+    "file",
+    "forge"
+  ],
+  "_": "⚠ 31 Aug 2026 — 'axe' (woodshop) NAV GRANT STRIPPED. The woodshop card was parked and its CARD_BUILDER went with it; agents/build.js has been reporting 'nav card \"axe\" has no CARD_BUILDER — that desk does not exist' on every run since. ⭐ Sum's call, same as tiptap: \"woodshop if it comes back gets new name too\" — so this id can never become correct again. ⚠ NOTE WHAT DID NOT HAPPEN: coder's forge TOOLS were NOT stripped. The July fold note below says caps [\"forge\"] is what oz-app-cli's ozforge lane resolves through, and that is a separate road from the card. The GRANT died; the CAPABILITY did not. ⚠ 26 Aug: capabilities moved OFF hard-lists in shared code and ONTO this record (Sum: \"bots should all be pretty much identical with different tools and permissions and persona and rules\"). caps are read by REG.hasCap/withCap — delegate (route · queue · confer) · shell (the file-shell CLI cue) · file (the portable window.SANDBOX interface) · forge (the woodshop CLI lane) · no-web (web_search withheld). mounts is the read-only lane grant (oz-lane.js).\n ⚠ 26 Aug — THE JULY FOLD, FINISHED. Sum: \"coder gets bubs tools.\" registry.js has said \"lumberjack retired → folded into coder\" since 9 July and the woodshop TILE has said agent: 'coder' just as long, but the fold was never done: bub kept the axe card and caps [\"forge\"], so when it was un-shipped this afternoon the forge went dark — ozforge had no owner and read_stack / write_stack / refine_2x4 / refine_clear / save_preset / forge_agent / fire_agent were granted to nobody. Two fields fix it, and no tool list has to be copied across: \"axe\" in nav IS the grant (conductor.js toolLines — the card is the grant), and caps [\"forge\"] is what oz-app-cli's ozforge lane resolves through. Bub's eleven-tool list was not transcribed on purpose; copying a grant that the card already makes is how two lists start drifting. Everything of bub is in _bench-for-totois/lumberjack/, unedited, if it ever comes back.",
+  "projects": true,
+  "skinIcons": {
+    "oz": "agents/coder/coder-oz.png",
+    "unicorn": "agents/coder/coder.png",
+    "clinical": "agents/coder/coder-clinical.png",
+    "corporate": "agents/coder/coder-corp.png"
+  }
+}

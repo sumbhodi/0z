@@ -1,0 +1,62 @@
+/* app-card.css — the iframe that fills a card body (any app run through the card builder) +
+   the one modular pop-up overlay (ozPopup) every tip uses. */
+
+.app-frame { width: 100%; height: 100%; min-height: 440px; border: none; display: block; background: #1e1e2e; }
+.app-frame[hidden] { display: none; }   /* the papers under the one on top (app-card.js papers): display:block above would otherwise beat the hidden attribute */
+
+.oz-pop { position: fixed; inset: 0; z-index: 9000; display: flex; align-items: center; justify-content: center; padding: var(--space-lg); background: rgba(0,0,0,.5); }
+.oz-pop-box { position: relative; max-width: 380px; width: 100%; background: var(--surface-2, #1c1c22); border: 1px solid var(--line); border-radius: var(--r-md); padding: var(--space-lg); box-shadow: 0 12px 36px rgba(0,0,0,.55); animation: ozPopIn .14s ease-out; }
+@keyframes ozPopIn { from { transform: scale(.94); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.oz-pop-x { position: absolute; top: 8px; right: 10px; background: transparent; border: none; color: var(--text-dim); font-size: 16px; cursor: pointer; }
+.oz-pop-x:hover { color: var(--text); }
+.oz-pop-head { display: flex; align-items: center; gap: 8px; margin-bottom: var(--space-md); }
+.oz-pop-head:empty { display: none; }
+.oz-pop-icon { font-size: 26px; line-height: 1; }
+.oz-pop-title { font-weight: 700; color: var(--text); letter-spacing: .04em; }
+.oz-pop-meta { margin-left: auto; color: var(--accent); font-weight: 700; }
+.oz-pop-body { font-size: var(--fs-label); line-height: 1.55; color: var(--text); }
+
+/* the paper strip in an app card's head (app-card.js papers / tabs). sizes ride the same --tab-h / --fs-tab every tab uses (desk.css). */
+.card-tabs { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+.card-tab { display: inline-flex; align-items: center; gap: 6px; height: var(--tab-h); padding: 0 12px; border-radius: 5px; border: 1px solid var(--line); background: none; color: var(--text); font: 700 var(--fs-tab)/1 inherit; cursor: pointer; white-space: nowrap; }
+.card-tab[aria-pressed="true"] { background: var(--surface-2); border-color: var(--accent); }
+.card-tab:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.card-tab-ico { width: var(--head-gear); height: var(--head-gear); object-fit: contain; -webkit-user-drag: none; }
+
+/* THE STACK OF PAPERS (Sum 2026-08-22): three glyphs, no words, no box, no dimming ("I hate low opacity").
+   The paper you are reading stands on a TAB: a plain square of newsprint, rounded top corners, rising from
+   the bottom edge of the bar behind the glyph, as if that sheet is the one pulled up out of the pile. No
+   outline (tried, "nah"), no shadow (tried, vanished). The tab is a ::before anchored to the bar's bottom so
+   every glyph stays centred on the same line; only the paint moves. .card-ctrls AND the strip stretch to the
+   head's full height, or the tab can never reach the bottom. Every button is the SAME square, glyph centred.
+   STATE NOT LOCKED: the tokens below are the whole decision. */
+:root { --paper-tab-bg: #f4efe1; --paper-tab-size: 36px; --paper-tab-r: 7px; }   /* one square for every paper: the mirror is narrow, its tab is not (Sum 2026-08-22) */
+.card-ctrls:has(.card-paper), .card-tabs:has(.card-paper) { align-self: stretch; }
+.card-tabs:has(.card-paper) { gap: 8px; }
+.card-paper { position: relative; display: inline-flex; align-items: center; justify-content: center; height: 100%; width: var(--paper-tab-size); border: 0; background: none; cursor: pointer; padding: 0; }
+.card-paper:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }   /* keyboard only; a mouse press never paints this */
+.card-paper-ico { position: relative; z-index: 1; height: var(--head-gear); width: auto; object-fit: contain; -webkit-user-drag: none; display: block; }
+.card-paper[aria-pressed="true"]::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: var(--paper-tab-size); background: var(--paper-tab-bg); border-radius: var(--paper-tab-r) var(--paper-tab-r) 0 0; }
+.card-paper.busy .card-paper-ico { animation: paperTurn 2.4s linear infinite; }   /* the newsie is cutting: its roll turns until the sheet says ready */
+@keyframes paperTurn { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .card-paper-ico { transition: none; animation: none; } }
+
+/* ══ COOKIES AND MILK (Sum 2026-08-22): you left through a headline; when the window comes back the strip rises over
+   that paper: pup thumbs-up · the unimpressed cat · the sad pup, each with its SVG tell beside it. A press writes
+   ONE line to the reading log (reads/log.json: when · paper · source · category · keywords · angle · rating). No press,
+   nothing written. Click anywhere outside the card, or Esc, and it folds away. Sits inside .card-body (position:relative). */
+:root { --milk-h: 64px; }
+.milk { position: absolute; top: 0; left: 0; right: 0; z-index: 20; background: #f4efe1; color: #14140f; border-bottom: 3px double #14140f; padding: 10px 16px 8px; font-family: Georgia, 'Times New Roman', serif; box-shadow: 0 8px 22px rgba(0,0,0,.35); animation: milkIn .22s ease-out; }
+@keyframes milkIn { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .milk { animation: none; } }
+.milk-q { font: 700 12px/1.4 'Courier New', Courier, monospace; letter-spacing: .22em; text-transform: uppercase; color: #6b6558; }
+.milk-hed { font-size: 17px; font-weight: 700; line-height: 1.25; margin: 4px 0 8px; }
+.milk-row { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.milk-b { display: inline-flex; align-items: center; gap: 8px; height: var(--milk-h); padding: 0 10px; border: 0; background: none; cursor: pointer; border-radius: 10px; }
+.milk-b:hover { background: rgba(20,20,15,.06); }
+.milk-b:focus-visible { outline: 3px solid #8e1f12; outline-offset: 2px; }
+.milk-b img { height: calc(var(--milk-h) - 8px); width: auto; -webkit-user-drag: none; }
+.milk-b .milk-svg { height: calc(var(--milk-h) * .55); }
+.milk-note { font-size: 12px; color: #6b6558; line-height: 1.4; margin-top: 6px; }
+.milk-x { position: absolute; top: 6px; right: 10px; border: 0; background: none; font-size: 18px; cursor: pointer; color: #6b6558; padding: 4px 8px; }
+.milk-x:focus-visible { outline: 3px solid #8e1f12; }

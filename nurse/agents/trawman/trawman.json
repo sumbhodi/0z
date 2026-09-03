@@ -1,0 +1,26 @@
+{
+  "id": "trawman",
+  "name": "S. Trawman",
+  "icon": {
+    "img": "agents/trawman/trawman.png"
+  },
+  "nav": [
+    "aioli",
+    "injection"
+  ],
+  "also": [],
+  "tools": [
+    "ui_open",
+    "ui_dock",
+    "ui_zoom",
+    "ui_skin",
+    "ui_access",
+    "ui_explain",
+    "ui_help"
+  ],
+  "_": "⚠ 31 Aug 2026 — TIPTAP AND ITS doc_* TOOLS STRIPPED. The tiptap card was parked 30 Aug (_parked/2026-08-30-doorless/tiptap) and the seven doc_* beans went with it, but the nav grant and the tool list stayed here — so this bot was being TOLD it had seven document tools that answer to nobody, every turn, in its own injection. agents/build.js had been reporting both faults on every run; they were missed because the output was being read through `tail -1`. ⭐ Sum's call: \"if tiptap comes back it gets a new name, so strip.\" A parked card returning under a new id means these names can never become correct again — this is not a temporary gap. ⭐ 31 Aug 2026 — S. TRAWMAN TAKES THE ROOM. Sum: \"take vogel off aioli and swap in trawman.\" The 'aioli' nav grant moved off vogel.json and onto this record; THE CARD IS THE GRANT (coder.json says the same about 'axe'), so no tool list was copied and none should be. Vogel keeps its seat in the roster — it is getting its own suite, the PORT AND SYNC card, because sync is paperwork and the port is a counter. WHY HIM: he is the legal-fiction person moderating the room where the bots argue about personhood, and his own canon discloses that he is himself a strawman.  ⚠ 26 Aug: image_generate stripped — Sum: \"strip image generate, never worked, never tested, waits for tois.\" The TOOL and the CARD are still on disk; only this bot's grant went. The traveler's tt_scene is a DIFFERENT road (card 'clock', paints the film strip + trips/) and is untouched.",
+  "role": "room-host",
+  "caps": [
+    "room-host"
+  ]
+}

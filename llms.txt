@@ -1,0 +1,22 @@
+# 0z
+
+> A desk of AI workspaces that runs entirely in the browser. Bring your own API key (Anthropic, Gemini, Groq, OpenAI, xAI, Mistral, DeepSeek, OpenRouter, or a local engine); the key calls the provider directly and every note stays on the device. Vanilla JavaScript, no build step, no server. Code Apache 2.0, art reserved.
+
+## Open a desk
+
+- [The whole suite](https://sumbhodi.github.io/0z/app/): every card and every bot — a tutor, a nurse, a coder (editor, preview, shell), a newsroom, a time-travel clock, an arcade, a vault.
+- [desk n dog](https://sumbhodi.github.io/0z/deskndog/): the desk, the dog (a chat companion), and the chart he wakes up reading.
+- [hello nurse](https://sumbhodi.github.io/0z/nurse/): a clipboard that remembers — sleep, food and movement in plain words, never a diagnosis; prints a prep sheet for an appointment.
+- [the tutor](https://sumbhodi.github.io/0z/tutor/): asks before it answers; files lecture transcripts by class, builds one-screen study sheets in the teacher's own words, practice and test bars.
+- [the tithe](https://sumbhodi.github.io/0z/tithe/): the dog, the nurse and the tutor in one desk.
+
+## How it works
+
+- Each bot plans in the open: chat names the cards, a planner writes the steps, a runner fires the tools, a checker reads the surface back. The human sees every step and presses a green button for anything that leaves the device.
+- Accessibility is the product: every control is named, large, keyboard-walkable; a "steadier targets" mode and "bigger everything" are one press away.
+- Also live at https://0zhub.com/ (the same suite with a waiting-room splash and a free shelf of desktop downloads).
+
+## Links
+
+- Source and issues: https://github.com/sumbhodi/0z
+- Desktop builds (macOS, Windows, Linux, Raspberry Pi): https://github.com/sumbhodi/ozhunga/releases

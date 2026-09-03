@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="thumbs up: liked it">
+  <!-- a hand, thumb up, drawn as one fat outline so it reads at 20px -->
+  <g fill="#f4efe1" stroke="#14110c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M24 30 L24 54 L12 54 L12 30 Z"/>
+    <path d="M24 32 C24 26 28 22 30 14 C31 9 38 10 38 16 L37 26 L50 26 C55 26 56 32 52 34 C55 36 55 41 51 42 C54 45 52 49 48 50 C50 53 47 56 43 56 L24 54 Z"/>
+  </g>
+</svg>

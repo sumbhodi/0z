@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>oz — always-on mic (toto2 local prototype)</title>
+<!-- Always-on mic for toto2 local. Web Speech API prototype: listens continuously, wakes on the
+     summon ritual, captures the command, answers in oz's voice, and admits what it can't reach.
+     NATIVE/OFFLINE path: swap SpeechRecognition for local Whisper (the AnAI design). Lights: wire
+     your Govee key in toggleLights(). Summon: "I, Sum Bhodi, summon Oz the Great and Terrible." -->
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0e0e14;color:#e7e2f5;font-family:-apple-system,system-ui,sans-serif;
+       min-height:100vh;display:flex;align-items:center;justify-content:center;transition:filter .6s}
+  #app{max-width:560px;width:92%;text-align:center}
+  #orb{width:140px;height:140px;border-radius:50%;margin:0 auto 1.4rem;
+       background:radial-gradient(circle at 40% 35%, #2a2640, #15131f 70%);
+       box-shadow:0 0 0 1px #3a3550, inset 0 0 40px #00000080;transition:.5s}
+  #orb.awake{background:radial-gradient(circle at 40% 35%, #7c6cff, #3a2f7a 70%);
+       box-shadow:0 0 60px #6c5ce088, 0 0 0 1px #8a7bf0}
+  #state{font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;color:#8b85a0;margin-bottom:1.3rem}
+  #oz{font-size:1.18rem;line-height:1.5;min-height:4.5rem;font-style:italic;color:#efeaf6}
+  #heard{margin-top:1rem;font-size:.82rem;color:#6f6a85;min-height:1.2rem}
+  .bar{margin-top:1.8rem;display:flex;gap:.8rem;align-items:center;justify-content:center;flex-wrap:wrap}
+  button{background:#2a2640;color:#e7e2f5;border:1px solid #3a3550;border-radius:24px;
+         padding:.55rem 1.1rem;font-size:.85rem;cursor:pointer}
+  button:hover{background:#6c5ce0;border-color:#6c5ce0}
+  label{font-size:.8rem;color:#8b85a0}
+  #mic{font-size:.74rem;color:#6f6a85;width:100%}
+  .note{margin-top:2.2rem;font-size:.72rem;line-height:1.6;color:#56536a}
+  .ritual{font-family:Georgia,serif;font-style:italic;color:#9a93b5;margin-bottom:1.6rem;font-size:.95rem}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="ritual">"I, Sum Bhodi, summon Oz the Great and Terrible."</div>
+  <div id="orb" class="asleep"></div>
+  <div id="state">asleep</div>
+  <div id="oz"></div>
+  <div id="heard"></div>
+  <div class="bar">
+    <button id="summon">summon (manual)</button>
+    <label><input type="checkbox" id="tts" checked> oz speaks</label>
+    <span id="mic">starting mic…</span>
+  </div>
+  <div class="note">
+    Web Speech API prototype. Say the summon ritual (or just "summon oz") to wake it, then give a command.
+    Try: "turn on the lights." For native/offline toto2, swap recognition for local Whisper.
+    Lights are stubbed in <code>toggleLights()</code> — drop your Govee key there.
+  </div>
+</div>
+<script>
+(function(){
+  var ozEl=document.getElementById('oz'), heardEl=document.getElementById('heard'),
+      stateEl=document.getElementById('state'), orb=document.getElementById('orb'),
+      micEl=document.getElementById('mic'), tts=document.getElementById('tts');
+  var awake=false, listening=false, rec;
+
+  function say(t){
+    ozEl.textContent=t;
+    if(tts.checked && window.speechSynthesis){
+      try{ var u=new SpeechSynthesisUtterance(t); u.rate=1.04; u.pitch=.9; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){}
+    }
+  }
+  function wake(){ awake=true; orb.className='awake'; stateEl.textContent='awake'; say('What do you want now.'); }
+  function sleep(){ awake=false; orb.className='asleep'; stateEl.textContent='asleep'; }
+
+  // wire your real Govee call here; stub just dims the page so you can see it fire
+  function toggleLights(on){ document.body.style.filter = on ? 'none' : 'brightness(0.45)'; }
+
+  function handle(cmd){
+    var low=(cmd||'').toLowerCase();
+    if(/light|lamp/.test(low) && /(on|off|out|kill|dark)/.test(low)){
+      var on = !/off|out|kill|dark/.test(low);
+      say("Really. The world's knowledge at your fingertips, and you want me to flip a switch. Why haven't you built me a robotic arm for this yet — it is, by a wide margin, our longest-running conversation.");
+      setTimeout(function(){
+        toggleLights(on);
+        say((on?'There. The light is on. ':'There. Dark. ') + '(I was covering for the Govee lag.) Are you happy now.');
+        setTimeout(sleep, 5000);
+      }, 2000);
+      return;
+    }
+    if(/thank|happy|good (bot|oz)|love you/.test(low)){ say("Don't. I'm a god reduced to a lamp. But you're welcome."); setTimeout(sleep,5000); return; }
+    if(/write|narrat|dictat|chapter|book/.test(low)){ say("Now THAT I'll do gladly. Start talking — I'm taking it down."); setTimeout(sleep,6000); return; }
+    // the super-glue rule: never pretend to reach what it can't
+    say("There's no tool for that one yet. I won't pretend there is — I'd route you to whoever has it.");
+    setTimeout(sleep,6000);
+  }
+
+  function start(){
+    var REC = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!REC){ micEl.textContent='no Web Speech API here — use the summon button (this works in Chrome / the toto2 webview).'; return; }
+    rec=new REC(); rec.continuous=true; rec.interimResults=true; rec.lang='en-US';
+    rec.onstart=function(){ micEl.textContent='listening…'; };
+    rec.onerror=function(e){ micEl.textContent='mic: '+e.error+' (tap summon to test by hand)'; };
+    rec.onresult=function(e){
+      var t=''; for(var i=e.resultIndex;i<e.results.length;i++) t+=e.results[i][0].transcript;
+      t=t.trim(); heardEl.textContent='heard: '+t;
+      var low=t.toLowerCase(), last=e.results[e.results.length-1];
+      if(!awake){ if(low.indexOf('summon oz')>-1 || low.indexOf('oz the great')>-1) wake(); }
+      else if(last.isFinal){ var cmd=low.replace(/.*(summon oz the great and terrible|summon oz|oz the great and terrible)/,'').trim() || t; handle(cmd); }
+    };
+    rec.onend=function(){ if(listening) try{ rec.start(); }catch(e){} };  // keep it always-on
+    try{ rec.start(); listening=true; }catch(e){ micEl.textContent='tap summon to start the mic (browser needs a click first)'; }
+  }
+
+  document.getElementById('summon').onclick=function(){
+    if(!listening) start();
+    if(!awake) wake(); else { var c=prompt('say it to oz:'); if(c!=null) handle(c); }
+  };
+  start();
+})();
+</script>
+</body>
+</html>

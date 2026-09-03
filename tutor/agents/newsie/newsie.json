@@ -1,0 +1,35 @@
+{
+  "_": "the newsie — the caretaker smart-paper that runs The Port Side View (mom's traditional print, still alive; he keeps them both fed). rides the scroll (PSV) card. ⚠ 26 Aug: capabilities moved OFF hard-lists in shared code and ONTO this record (Sum: \"bots should all be pretty much identical with different tools and permissions and persona and rules\"). caps are read by REG.hasCap/withCap — delegate (route · queue · confer) · shell (the file-shell CLI cue) · file (the portable window.SANDBOX interface) · forge (the woodshop CLI lane) · no-web (web_search withheld). mounts is the read-only lane grant (oz-lane.js).",
+  "id": "newsie",
+  "name": "the newsie",
+  "icon": {
+    "img": "agents/newsie/newsie-roll-sm.png"
+  },
+  "nav": [
+    "scroll"
+  ],
+  "also": "all",
+  "tools": [
+    "psv_read",
+    "psv_radar",
+    "psv_settings",
+    "psv_toggle",
+    "psv_mute",
+    "psv_search",
+    "psv_readout",
+    "psv_make",
+    "feedline_note",
+    "psv_read_aloud",
+    "feed_read",
+    "koans",
+    "ui_open",
+    "ui_explain",
+    "ui_skin",
+    "ui_access"
+  ],
+  "role": "tool-holder",
+  "caps": [
+    "delegate",
+    "paper"
+  ]
+}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0z — a place for everything</title>
+<meta name="description" content="0z is a cognitive-prosthetic desk that runs in your browser: a tutor that asks before it answers, a nurse with a clipboard that remembers, a coder, a newsroom, an arcade. Bring your own key. Nothing leaves your device.">
+<meta property="og:title" content="0z — a place for everything">
+<meta property="og:description" content="A desk of AI workspaces that runs in the browser. Bring your own key; nothing leaves your device. The whole suite and four free strips.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sumbhodi.github.io/0z/">
+<meta name="theme-color" content="#0b0e13">
+<link rel="canonical" href="https://sumbhodi.github.io/0z/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"0z","applicationCategory":"ProductivityApplication","operatingSystem":"Any (browser)","url":"https://sumbhodi.github.io/0z/","author":{"@type":"Person","name":"James Davis (Sum Bhodi)","url":"https://ozhunga.com"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A desk of AI workspaces that runs entirely in the browser. Bring your own API key; nothing leaves your device.","license":"https://www.apache.org/licenses/LICENSE-2.0","codeRepository":"https://github.com/sumbhodi/0z"}
+</script>
+<style>
+  :root { color-scheme: dark; --bg: #0b0e13; --card: #141922; --line: #2a3140; --text: #e9eef3; --dim: #9fb0bf; --accent: #e5484d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 18px/1.5 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 40px 20px 60px; }
+  h1 { font-size: 40px; letter-spacing: 4px; margin: 0 0 6px; }
+  .tag { color: var(--dim); margin: 0 0 32px; }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  a.door { display: block; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); color: var(--text); text-decoration: none; min-height: 72px; }
+  a.door:hover, a.door:focus-visible { border-color: var(--accent); outline: none; }
+  a.door:focus-visible { box-shadow: 0 0 0 3px var(--accent); }
+  .door b { display: block; font-size: 22px; margin-bottom: 2px; }
+  .door span { color: var(--dim); }
+  .suite b::after { content: " · the whole suite"; color: var(--accent); font-weight: 400; font-size: 16px; }
+  .fine { color: var(--dim); font-size: 15px; margin-top: 36px; border-top: 1px solid var(--line); padding-top: 18px; }
+  .fine a { color: var(--text); }
+  .motto { margin-top: 28px; text-align: center; color: var(--dim); }
+  .motto p { margin: 2px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>0z</h1>
+  <p class="tag">A desk of AI workspaces that runs in your browser. Bring your own key. Nothing leaves your device.</p>
+  <nav aria-label="open a desk">
+  <ul>
+    <li><a class="door suite" href="app/"><b>🧠 0z</b><span>every card and every bot on one desk — the tutor, the nurse, the coder, the newsroom, the arcade, the clock.</span></a></li>
+    <li><a class="door" href="deskndog/"><b>🦴 desk n dog</b><span>the desk, the dog, and the chart he wakes up reading.</span></a></li>
+    <li><a class="door" href="nurse/"><b>⚕️ hello nurse</b><span>a clipboard that remembers. sleep, food and movement in plain words, never a diagnosis.</span></a></li>
+    <li><a class="door" href="tutor/"><b>🎓 the tutor</b><span>asks before it answers. for anyone who was told once that they were not a maths person.</span></a></li>
+    <li><a class="door" href="tithe/"><b>🫙 the tithe</b><span>all three at once — the dog, the nurse and the tutor in one desk.</span></a></li>
+  </ul>
+  </nav>
+  <p class="fine">Vanilla JavaScript, no build step, no server: your key calls the provider directly and your notes stay in this browser. Free tickets exist (Groq, Gemini). Also live at <a href="https://0zhub.com/">0zhub.com</a>. Code on <a href="https://github.com/sumbhodi/0z">GitHub</a> — Apache 2.0, art reserved. Built by hand with Claude.</p>
+  <div class="motto"><p>a place for everything</p><p lang="ta">என்ன ரொம்ப ஆட்டம் காட்டுற? ஒழுங்கா வேலைய பாரு</p></div>
+</main>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "id": "learner",
+  "name": "learner",
+  "icon": {
+    "img": "cards/learn/learn.png"
+  },
+  "nav": [
+    "learn"
+  ],
+  "tools": [],
+  "role": "section-builder",
+  "caps": [
+    "registers"
+  ],
+  "docks": false,
+  "_": "⭐ 1 Sep 2026 — tutor and learner are modelTwins now, and this was the live bug. They are ONE study suite and TWO bot ids with TWO model keys. Sum set the model on the LEARNER panel (fable-5) and then chatted with the TUTOR, which reads toto_bot_tutor_model — unset, so settings.js:180 fell to its default, claude-haiku-4-5. The picker said fable, the bot ran haiku. ⚠ AND IT COST A TOOL CALL: on haiku the yt_transcript bean was primed by the goalie, acknowledged by the bot, and then never fired — it reported 'I don't have a tool' when it has one. The bean itself is fine: fired straight through the port the same morning it saved 5936 chars first try. ⚠ 26 Aug — \"docks\": false. The learner has no AGENT_BARS seed in workspace.js and is not supposed to: it never chats, it builds one lesson section per call through engineRaw slim, never through the conductor (registry.js says so, and profile.js seats it for the BOT TAB only). build.js's bar organ flagged it every build and was wrong to — so the bot now states it, and the organ reads the statement. It still needs its profile.js seat; that is a different organ and a real requirement.",
+  "modelTwin": "tutor"
+}

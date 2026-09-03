@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="a ruled page with a text cursor">
+  <defs>
+    <linearGradient id="tt-p" x1=".1" y1="0" x2=".9" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".65" stop-color="#f6f3ec"/><stop offset="1" stop-color="#e2dccd"/>
+    </linearGradient>
+    <linearGradient id="tt-f" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ded7c6"/><stop offset="1" stop-color="#b3ab97"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="128" cy="240" rx="64" ry="8" fill="#000" opacity=".15"/>
+  <path d="M46 16 h114 l50 50 v168 a8 8 0 0 1 -8 8 h-156 a8 8 0 0 1 -8 -8 v-210 a8 8 0 0 1 8 -8 z"
+        fill="url(#tt-p)" stroke="#5d5648" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M160 16 l50 50 h-42 a8 8 0 0 1 -8 -8 z" fill="url(#tt-f)" stroke="#5d5648" stroke-width="6" stroke-linejoin="round"/>
+
+  <rect x="70" y="92" width="70" height="13" rx="3" fill="#3b3529"/>
+  
+  <g fill="#79715f">
+    <rect x="70" y="124" width="116" height="9" rx="4.5"/>
+    <rect x="70" y="150" width="98" height="9" rx="4.5"/>
+    <rect x="70" y="176" width="116" height="9" rx="4.5"/>
+    <rect x="70" y="202" width="62" height="9" rx="4.5"/>
+  </g>
+  <rect x="140" y="196" width="7" height="22" rx="2" fill="#2f6fd0"/>
+</svg>

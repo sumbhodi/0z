@@ -1,0 +1,92 @@
+/* mobile.css — THE MONOHULL (Sum, 2026-08-23): on a phone there is no side-by-side. one vertical hull:
+   scroll down for the bot, up for the card desk, up again for the other wing. full-width everything,
+   bigger text ("i keep forgetting how small text is"). LAYOUT ONLY, media-gated — desktop untouched.
+   loads LAST of the structure css (after shell/desk.css) so it wins ties. tag to code: this file. */
+@media (max-width: 800px) {
+  html { font-size: 17px; }
+  body { font-size: 1.06em; }
+
+  /* the hull — the desk grid becomes one column; zones stack and the PAGE scrolls through them */
+  #desk { display: flex; flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  #desk > * { width: 100%; min-height: 0; flex: none; }
+  #desk > .zone { flex-direction: column; }
+  /* ⚠ the CARD STACK (the middle grid cell) has NO .zone class — in the hull it must size to its content
+     or it collapses to 0 and the cards paint into the void (found on glass, 23 Aug) */
+  #desk > :not(.zone) { height: auto !important; overflow: visible; order: 0; }
+  /* CORRECTION 2026-08-29 late (Sum: "keep top and bottom wings, bots can live there instead —
+     launch top where we had launch left, launch bottom where we had launch right") — the hull's
+     wings REMAP instead of trailing: the LEFT wing renders as the TOP band (right under the nav,
+     where a left-docked bot now lands) and the RIGHT wing as the BOTTOM band. The old order
+     (left 2 · right 3 — both below the desk) is superseded; top/bottom zones keep their posts.
+     Worst case he accepted: top wing + center cards + bottom wing, three stacked regions. */
+  .zone[data-edge="top"]    { order: -2; }
+  .zone[data-edge="left"]   { order: -1; }  /* the top wing — was order 2 */
+  .zone[data-edge="right"]  { order: 4; }   /* the bottom wing — was order 3 */
+  .zone[data-edge="bottom"] { order: 5; }   /* was 4 — stays the floor */
+
+  /* full width, no floors — the 280px open-bar floor and 340px wing width are desktop law only */
+  .zone[data-edge="left"] .agent-bar:not(.collapsed), .zone[data-edge="right"] .agent-bar:not(.collapsed),
+  .zone[data-edge="left"] .card, .zone[data-edge="right"] .card { width: 100%; min-width: 0; }
+  .agent-bar:not(.collapsed) { max-height: 88vh; max-height: 88dvh; }   /* a bot is a full screen you scroll to, not a sliver (dvh 2 Sep: the VISIBLE screen) */
+  .zone[data-edge="left"] .card.collapsed, .zone[data-edge="right"] .card.collapsed,
+  .agent-bar.collapsed { width: 100% !important; min-width: 0 !important; height: 46px; }   /* a collapsed rail turns strip in the hull */
+
+  .card { margin: 4px 2px; border-radius: 8px; }
+  /* 3 Sep 2026 — NO SLIDERS ON THE PHONE (Sum: "on phone I don't think we need sliders at all, just full size cards"; the
+     toto handle had landed between the bot's controls and the arcade). Every bar and card is full width in the hull, so a
+     resize handle has nothing to resize; it goes. Desktop keeps its sliders. */
+  .ab-resize, .card-resize { display: none; }
+
+  /* 💬 THE ROOM in the hull (2026-08-29, the phone pass): two flex rows refused to shrink and
+     forced the chat screen to 556px inside a 371px card — Vogel's lines clipped mid-word. The
+     room-tab strip and the 1997 format bar (font · swatch · B/I) WRAP instead; the screen then
+     takes the card's width and pre-wrap does the rest. aiol.css untouched — desktop never clips. */
+  .card-aiol .aiol-tabs, .card-aiol .aiol-bar { flex-wrap: wrap; }
+  .card-aiol .aiol-screen { max-width: 100%; }
+
+  /* a crowded card-head (the room seats seven controls) is wider than any phone — it SCROLLS
+     sideways rather than clipping, so every control stays reachable by thumb. hull-only. */
+  .card .card-head { overflow-x: auto; }
+
+  /* 📲 CHROME AWAY lived here for an hour, phone-gated — PROMOTED the same night (Sum, on his
+     desktop: "think I want that feature even in landscape") to shell/topbar.css, ungated, every
+     size. The desk is flex:1, so it GROWS into the freed rows by construction — his vote: "desk
+     grows, wings stay fixed" (wing widths are, and their sliders still adjust them). */
+
+  /* 📱 THE BARS SCROLL, THEY DO NOT WRAP (Sum, 2 Sep 2026, on his iPhone 17: "the top bar is wrapping — I like how the
+     bars scroll instead, works well on phone"). topbar.css's wrap (L69, 29 Aug) is desktop law and stays; in the hull a
+     wrapped nav is three rows of thumb-sized tiles over a 393px desk. One row that scrolls sideways is the phone idiom —
+     the same move .card-head made on 29 Aug. Children hold their size (a tile that shrinks is a tile you cannot hit). */
+  #topbar, #subbar, #greenroom-bar { flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; max-width: 100vw; }
+  #topbar::-webkit-scrollbar, #subbar::-webkit-scrollbar, #greenroom-bar::-webkit-scrollbar { display: none; }
+  #topbar > *, #subbar > *, #greenroom-bar > * { flex: 0 0 auto; }
+  #topbar { min-height: var(--topbar-h); }
+
+  /* 📐 THE FLOOR IS THE GLASS (Sum, 2 Sep 2026, iPhone 17: "desktop is too wide, right side is bleeding off my screen").
+     base.css gives #zoom-root a 360px min-width — the desktop WINDOW floor, so a shrunken window never hides the stop
+     button. On a phone with eat-me at 1.25 the stage lays out 100/1.25vw = 314px, the floor lifts it back to 360, the
+     transform scales that to 450px, and the right 57px hang off a 393px screen. A phone has no window to shrink; its
+     floor is the glass itself, so the 100/z sizing lands the stage exactly on it at every zoom. (zoom.js's overflow
+     clamp is gated the same way.) */
+  #zoom-root { min-width: 0; min-height: 0; }
+
+  /* 🕹️ THE ARCADE IN PORTRAIT — third cut, 3 Sep 2026 09:30. The first two are UNDONE (Sum: "I can not scroll or press a
+     button in butcher block maker… bring scroll back, undo 2 changes back… I want the normal desktop view when I open
+     the card, then if I try and scroll have just the game play window fill the screen; shrinks, buttons come back up").
+     Cut 1 pinned the card under a thin bar (2 Sep); cut 2 put it in flow one screen tall (3 Sep 09:10). Both made the
+     frame the whole glass, and a touch inside an iframe never reaches the desk: Butcher's page is wider and taller than
+     the frame, so the swipe scrolled the GAME's document and the desk never moved. Dead end, not a wall.
+     Now: the card opens looking exactly as it does on the desk. The game fills the glass only while the chrome is AWAY
+     — the same state a scroll-down already produces — and returns into its card the moment the chrome returns. The
+     shim inside every game (cabinet.js) relays the finger to the desk's gesture door, so a swipe INSIDE the game is the
+     swipe that fills it, and the swipe down that shrinks it back. games.js still stamps html[data-arcade="play"]. */
+  html[data-arcade="play"][data-chrome="away"] .card[data-card="games"] .arc-stage { position: fixed; inset: 0; z-index: 60; height: auto; background: #000; }
+  html[data-arcade="play"][data-chrome="away"] .card[data-card="games"] .arc-frame { width: 100%; height: 100%; }
+
+  /* the notch / dynamic island (standalone PWA draws under the status bar) */
+  #topbar { padding-top: max(6px, env(safe-area-inset-top)); }
+  #desk { padding-bottom: env(safe-area-inset-bottom); }
+  /* iOS zooms any input under 16px on focus — hold the floor so the page never jumps */
+  input, textarea, select { font-size: max(1em, 16px); }
+}

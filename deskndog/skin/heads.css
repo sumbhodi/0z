@@ -1,0 +1,20 @@
+/* heads.css — per-agent TOPBAR color slots. structure only, no color.
+   the layout, tokenized: each agent's head reads a named slot; the active
+   skin fills the slot (skin owns color). slot unset → falls back to chrome,
+   so the OZ default is byte-for-byte what it was before this file existed.
+
+   how it works:
+     desk.css   .ab-head  { background: var(--head, var(--surface-2)) }
+     desk.css   .ab-name  { color:      var(--head-ink, var(--text))   }
+     here       map [data-agent] → its slot (--head-<who> / -ink)
+     skin       [data-skin="unicorn"] { --head-coder: <pastel>; ... }
+
+   agents with a PNG head (wellness · lumberjack · pa) or their own paper
+   token (nurse = --inj-white) override .ab-head themselves — they ignore
+   --head and are re-tinted in their own token instead. this file is for the
+   DEFAULT-head agents: toto · coder · writer · tutor. */
+
+.agent-bar[data-agent="toto"]   { --head: var(--head-toto,   var(--surface-2)); --head-ink: var(--head-toto-ink,   var(--text)); }
+.agent-bar[data-agent="coder"]  { --head: var(--head-coder,  var(--surface-2)); --head-ink: var(--head-coder-ink,  var(--text)); }
+.agent-bar[data-agent="writer"] { --head: var(--head-writer, var(--surface-2)); --head-ink: var(--head-writer-ink, var(--text)); }
+.agent-bar[data-agent="tutor"]  { --head: var(--head-tutor,  var(--surface-2)); --head-ink: var(--head-tutor-ink,  var(--text)); }

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="a photo camera">
+  <defs>
+    <linearGradient id="cm-body" x1=".2" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#5c656f"/><stop offset=".45" stop-color="#343b43"/><stop offset="1" stop-color="#181d22"/>
+    </linearGradient>
+    <linearGradient id="cm-top" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e6ebf0"/><stop offset="1" stop-color="#9aa5b0"/>
+    </linearGradient>
+    <radialGradient id="cm-lens" cx=".38" cy=".3" r=".85">
+      <stop offset="0" stop-color="#7fd4e8"/><stop offset=".42" stop-color="#2f7f9e"/><stop offset=".8" stop-color="#1a4a5e"/><stop offset="1" stop-color="#0b1c26"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="128" cy="226" rx="86" ry="10" fill="#000" opacity=".16"/>
+
+  <path d="M92 52 h72 l12 22 h-96 z" fill="#2a3138"/>
+  <rect x="26" y="70" width="204" height="140" rx="20" fill="url(#cm-body)"/>
+  <rect x="26" y="70" width="204" height="30" rx="14" fill="url(#cm-top)" opacity=".9"/>
+  <rect x="38" y="80" width="76" height="10" rx="5" fill="#fff" opacity=".35"/>
+
+  <circle cx="128" cy="146" r="56" fill="#0f1418"/>
+  <circle cx="128" cy="146" r="47" fill="#39424b"/>
+  <circle cx="128" cy="146" r="39" fill="url(#cm-lens)"/>
+  <circle cx="128" cy="146" r="18" fill="#0a1620"/>
+  <ellipse cx="112" cy="128" rx="15" ry="10" fill="#fff" opacity=".5" transform="rotate(-32 112 128)"/>
+  <circle cx="128" cy="146" r="39" fill="none" stroke="#8f9aa5" stroke-width="3" opacity=".55"/>
+
+  <circle cx="196" cy="86" r="11" fill="#d94f3d"/>
+  <circle cx="193" cy="83" r="4" fill="#fff" opacity=".55"/>
+  <rect x="44" y="120" width="26" height="18" rx="4" fill="#20262c"/>
+  <rect x="47" y="123" width="20" height="12" rx="2" fill="#6f7d8a" opacity=".8"/>
+</svg>

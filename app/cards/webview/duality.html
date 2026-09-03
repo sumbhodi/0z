@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duality — In Here / Out There</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cinzel:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: #111118;
+  color: #A4B8D4;
+  font-family: 'Jost', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #1a1a2e;
+  flex-shrink: 0;
+}
+.nav-home {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  color: #5a5040;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-home:hover { color: #C9A84C; }
+.nav-diagram { cursor: pointer; opacity: 0.8; transition: opacity 0.2s; }
+.nav-diagram:hover { opacity: 1; }
+.nav-arrows { display: flex; gap: 1rem; }
+.nav-arrow {
+  font-size: 1.4rem;
+  color: #3a3028;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.2rem 0.5rem;
+}
+.nav-arrow:hover { color: #A4B8D4; }
+.nav-arrow.dim { opacity: 0.2; pointer-events: none; }
+
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 2rem 3rem;
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-home" href="index.html">← THE KOSHAS</a>
+  <div class="nav-diagram" onclick="window.location='index.html'" title="Back to diagram">
+    <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+      <!-- split diagram — left half color, right half dim -->
+      <ellipse cx="36" cy="36" rx="35" ry="33" fill="#C4623A" opacity="1"/>
+      <ellipse cx="36" cy="36" rx="28" ry="26" fill="#7BB8D4" opacity="1"/>
+      <ellipse cx="36" cy="36" rx="20" ry="18" fill="#C9B8E8" opacity="1"/>
+      <ellipse cx="36" cy="36" rx="12" ry="11" fill="#F2A7C3" opacity="1"/>
+      <ellipse cx="36" cy="36" rx="6"  ry="6"  fill="#C9A84C" opacity="1"/>
+      <line x1="36" y1="3" x2="36" y2="69" stroke="#A4B8D4" stroke-width="1.5" opacity="0.6"/>
+      <text x="36" y="39" text-anchor="middle" font-family="serif" font-size="7" fill="#111118" font-weight="bold" pointer-events="none">ॐ</text>
+    </svg>
+  </div>
+  <div class="nav-arrows">
+    <a class="nav-arrow" href="kosha_7.html">&#8592;</a>
+    <a class="nav-arrow" href="kosha_8.html">&#8594;</a>
+  </div>
+</nav>
+<main>
+<div style="max-width:1100px;width:100%;">
+
+  <!-- TITLE -->
+  <div style="text-align:center;margin-bottom:2rem;">
+    <div style="font-family:'Cinzel',serif;font-size:clamp(2rem,4vw,3rem);font-weight:600;letter-spacing:0.12em;color:#A4B8D4;">DUALITY &nbsp;·&nbsp; THE SPLIT</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#A4B8D4;font-size:1.4rem;margin-top:0.4rem;opacity:0.85;">In Here / Out There — and why both halves are suspect</div>
+  </div>
+
+  <!-- THE SPLIT DIAGRAM -->
+  <div style="display:flex;justify-content:center;margin-bottom:2rem;">
+    <svg width="520" height="156" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+      <!-- IN HERE circle -->
+      <circle cx="130" cy="60" r="54" fill="none" stroke="#A4B8D4" stroke-width="1.5" opacity="0.7"/>
+      <circle cx="130" cy="60" r="54" fill="#A4B8D4" opacity="0.07"/>
+      <text x="130" y="55" text-anchor="middle" font-family="'Cinzel',serif" font-size="11" fill="#A4B8D4" font-weight="600" letter-spacing="0.1em">IN HERE</text>
+      <text x="130" y="72" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-style="italic" font-size="10" fill="#A4B8D4" opacity="0.7">consciousness</text>
+
+      <!-- dividing line / veil -->
+      <line x1="200" y1="8" x2="200" y2="112" stroke="#FFB3D1" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+      <text x="200" y="22" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-style="italic" font-size="9" fill="#FFB3D1" opacity="0.6">Maya</text>
+      <text x="200" y="112" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-style="italic" font-size="9" fill="#FFB3D1" opacity="0.6">The Veil</text>
+
+      <!-- OUT THERE circle -->
+      <circle cx="270" cy="60" r="54" fill="none" stroke="#C4623A" stroke-width="1.5" opacity="0.7"/>
+      <circle cx="270" cy="60" r="54" fill="#C4623A" opacity="0.07"/>
+      <text x="270" y="55" text-anchor="middle" font-family="'Cinzel',serif" font-size="11" fill="#C4623A" font-weight="600" letter-spacing="0.1em">OUT THERE</text>
+      <text x="270" y="72" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-style="italic" font-size="10" fill="#C4623A" opacity="0.7">the world</text>
+
+      <!-- arrows suggesting they're the same thing -->
+      <path d="M155 40 Q200 20 245 40" stroke="#A4B8D4" stroke-width="1" fill="none" stroke-dasharray="3,3" opacity="0.4"/>
+      <path d="M155 80 Q200 100 245 80" stroke="#A4B8D4" stroke-width="1" fill="none" stroke-dasharray="3,3" opacity="0.4"/>
+    </svg>
+  </div>
+
+  <!-- TWO-COLUMN CONTENT -->
+  <div style="display:grid;grid-template-columns:1fr 1px 1fr;gap:0 2.5rem;align-items:start;margin-bottom:2rem;">
+
+    <!-- LEFT: The philosophical setup -->
+    <div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:#A4B8D4;margin-bottom:1rem;">The Oldest Split in Philosophy</div>
+
+      <div style="margin-bottom:1rem;">
+        <div style="font-weight:600;color:#A4B8D4;font-size:1.25rem;">Substance Dualism</div>
+        <div style="font-size:1.25rem;font-weight:300;color:#A4B8D4;margin-top:0.2rem;line-height:1.7;">Descartes (17th c.) made it formal: mind is <em>res cogitans</em> — thinking stuff. Body is <em>res extensa</em> — extended stuff. Two fundamentally different substances.</div>
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <div style="font-weight:600;color:#A4B8D4;font-size:1.25rem;">The Problem</div>
+        <div style="font-size:1.25rem;font-weight:300;color:#A4B8D4;margin-top:0.2rem;line-height:1.7;">There is no immaterial "stuff" the way atoms and quarks are material stuff. Dualism is a category error — it names the experience of a split but doesn't explain it.</div>
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <div style="font-weight:600;color:#A4B8D4;font-size:1.25rem;">The Useful Error</div>
+        <div style="font-size:1.25rem;font-weight:300;color:#A4B8D4;margin-top:0.2rem;line-height:1.7;">Waste-bin categories can still lead somewhere real. Dualism names a genuine felt experience — the sense that there is an <em>in here</em> doing the experiencing, and an <em>out there</em> being experienced.</div>
+      </div>
+    </div>
+
+    <!-- divider -->
+    <div style="background:#A4B8D4;opacity:0.15;"></div>
+
+    <!-- RIGHT: Two resolutions + the joke -->
+    <div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:#A4B8D4;margin-bottom:1rem;">Two Ways to Resolve It</div>
+
+      <div style="margin-bottom:1rem;padding:0.8rem;background:#151520;border-left:2px solid #A4B8D4;opacity:0.85;">
+        <div style="font-weight:600;color:#A4B8D4;font-size:1.25rem;">Out There is the illusion</div>
+        <div style="font-size:1.25rem;font-weight:300;color:#A4B8D4;margin-top:0.2rem;line-height:1.7;">Simulation theory. Idealism. The world is mind-made. We're in a rendering engine.</div>
+      </div>
+
+      <div style="margin-bottom:1.2rem;padding:0.8rem;background:#151520;border-left:2px solid #FFB3D1;">
+        <div style="font-weight:600;color:#FFB3D1;font-size:1.25rem;">In Here is the illusion ←</div>
+        <div style="font-size:1.25rem;font-weight:300;color:#FFB3D1;margin-top:0.2rem;line-height:1.7;">The "observer" — the sense of a separate subject inside a skull — is the construction. Vedanta and neuroscience agree here: the self is the model, not the modeler.</div>
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <div style="font-weight:600;color:#A4B8D4;font-size:1.25rem;">From the primal split, we make all the others</div>
+        <div style="font-size:1.25rem;font-weight:300;color:#A4B8D4;margin-top:0.2rem;line-height:1.7;">Good / Bad &nbsp;·&nbsp; Hot / Cold &nbsp;·&nbsp; Light / Dark &nbsp;·&nbsp; Sacred / Profane. We are dipole machines — take any spectrum, collapse it to two poles.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE PUNCHLINE -->
+  <div style="text-align:center;border-top:1px solid #1e1e2e;padding-top:1.5rem;">
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#A4B8D4;font-size:1.4rem;margin-bottom:0.5rem;opacity:0.9;">
+      In other words: we are all on the spectrum, and a little bipolar.
+    </div>
+    <div style="font-size:1.2rem;font-weight:300;color:#A4B8D4;line-height:1.7;max-width:580px;margin:0 auto;opacity:0.7;">
+      That is not a bug. That is how a brain navigates a continuous universe it has divided into parts. The question is whether we mistake the map for the territory — or the witness for the witnessed.
+    </div>
+  </div>
+
+</div>
+</main>
+
+<!-- Maya brain button -->
+<a href="kosha_7.html" style="position:fixed;bottom:1.5rem;right:1.5rem;cursor:pointer;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:0.3rem;z-index:9999;filter:drop-shadow(0 0 8px #FFB3D1);transition:filter 0.2s;" onmouseover="this.style.filter='drop-shadow(0 0 20px #FFB3D1) drop-shadow(0 0 40px #FFB3D1)'" onmouseout="this.style.filter='drop-shadow(0 0 8px #FFB3D1)'">
+  <svg width="42" height="42" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M32 10 C22 10 14 18 14 27 C14 33 17 38 22 41" stroke="#FFB3D1" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M32 10 C42 10 50 18 50 27 C50 33 47 38 42 41" stroke="#FFB3D1" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M22 41 C22 47 26 52 32 53 C38 52 42 47 42 41" stroke="#FFB3D1" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M32 10 L32 53" stroke="#FFB3D1" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+    <path d="M18 24 C20 20 25 18 30 20" stroke="#FFB3D1" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M46 24 C44 20 39 18 34 20" stroke="#FFB3D1" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M16 32 C18 30 22 30 24 32" stroke="#FFB3D1" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M48 32 C46 30 42 30 40 32" stroke="#FFB3D1" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </svg>
+  <span style="font-size:1rem;color:#FFB3D1;letter-spacing:0.12em;font-weight:500;">MAYA</span>
+</a>
+
+<script>
+/* toto2 demo: this renders as ONE page inside the PREVIEW card. neutralize all navigation so a click
+   or keypress can't load a missing kosha page — or recurse into the app's own index.html. */
+(function () {
+  document.querySelectorAll('a[href]').forEach(function (a) { a.removeAttribute('href'); a.style.cursor = 'default'; });
+  document.querySelectorAll('[onclick]').forEach(function (el) { el.removeAttribute('onclick'); el.style.cursor = 'default'; });
+})();
+</script>
+</body>
+</html>

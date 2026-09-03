@@ -1,0 +1,72 @@
+{
+  "id": "nurse",
+  "name": "nurse",
+  "icon": {
+    "img": "agents/nurse/nurse.png"
+  },
+  "nav": [
+    "injection",
+    "clipboard"
+  ],
+  "also": [],
+  "tools": [
+    "read_chart",
+    "edit_notes",
+    "update_patient_bio",
+    "read_prep",
+    "prep_header",
+    "prep_say_first",
+    "prep_add_scope",
+    "prep_add_topic",
+    "prep_add_point",
+    "prep_add_flag",
+    "prep_add_snapshot",
+    "prep_add_qa",
+    "prep_add_bring",
+    "prep_save",
+    "inj_set_name",
+    "inj_set_pronouns",
+    "inj_set_backstory",
+    "inj_set_persona",
+    "inj_set_yoga",
+    "inj_set_substrate",
+    "inj_set_wetware",
+    "inj_bio_name",
+    "inj_bio_pronouns",
+    "inj_bio_label",
+    "inj_bio_who",
+    "inj_ethics_add",
+    "inj_ethics_toggle",
+    "inj_ethics_remove",
+    "inj_toggle_section",
+    "ui_open",
+    "ui_dock",
+    "ui_zoom",
+    "ui_skin",
+    "ui_access",
+    "ui_explain",
+    "ui_help",
+    "smoke_test",
+    "inj_set_model",
+    "inj_set_skin",
+    "inj_selfcheck",
+    "inj_set_checker",
+    "add_hil_note",
+    "wellness_report"
+  ],
+  "role": "no-clinic",
+  "noteGrants": [
+    "wellness"
+  ],
+  "caps": [
+    "house",
+    "furniture"
+  ],
+  "house": "clinical",
+  "cli": [
+    "ozprep",
+    "ozchart",
+    "ozinj"
+  ],
+  "_": "⚠ 26 Aug — \"read_profiles\" REMOVED from tools. There is no such bean anywhere in the build (grepped shell/ and cards/, and it is absent from the port's boot report); build.js flagged it every build. The chart is read with read_chart. Kept as a note rather than silently dropped: it reads like something someone MEANT to build — a nurse who can see every bot's profile — and if that is still wanted it goes through makeTool with a klass and a readback like every other bean.\n\n⭐ 2 Sep 2026 — `also` gains the wellness cards (food · sleep · exercise). Sum: \"she has the clipboard to write to and the wellness suite to read from.\" She already HELD their tools (sleep_read, read_food_doc…) but not the CARDS, so when she named `sleep` in a cards block the chat parser dropped it as a card she does not have, no que ran, and the read never happened (smoke test, three runs, 11:33–11:38). THE CARD IS THE GRANT cuts both ways: a tool with no card is unreachable from chat.\n\n⭐ CORRECTION 2 Sep 2026, 13:00 (Sum: \"nurse doesn't need wellness card tools — just the read-out on the clipboard. wellness logs to wellness, nurse sticks to clipboard\"). The 11:35 note above gave her the wellness CARDS; this takes the cards AND the 46 wellness tools away again. Her read of the suite is ONE bean: wellness_report (the consolidated report as text, the same generator behind the clipboard's magic chart). Dropped: [\"read_food_doc\", \"edit_food_doc\", \"food_in_name\", \"food_in_time\", \"food_in_date\", \"food_in_meal\", \"food_in_kcal\", \"food_in_status\", \"food_in_note\", \"food_in_macros\", \"food_in_servings\", \"food_draft_show\", \"food_draft_clear\", \"food_save\", \"meal_status\", \"meal_remove\", \"sleep_set_goal\", \"sleep_set_actual\", \"sleep_set_routine\", \"sleep_set_wake\", \"sleep_set_helps\", \"sleep_set_hurts\", \"sleep_set_background\", \"sleep_in_date\", \"sleep_in_inbed\", \"sleep_in_lightsoff\", \"sleep_in_out\", \"sleep_in_awake\", \"sleep_in_onset\", \"sleep_in_deep\", \"sleep_in_rem\", \"sleep_in_light\", \"sleep_in_eff\", \"sleep_in_note\", \"sleep_night_save\", \"sleep_night_clear\", \"sleep_read\", \"exercise_set_favorites\", \"exercise_set_frequency\", \"exercise_in_type\", \"exercise_in_duration\", \"exercise_in_intensity\", \"exercise_in_date\", \"exercise_in_start\", \"exercise_save\", \"exercise_draft_clear\"]."
+}

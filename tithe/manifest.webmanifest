@@ -1,0 +1,12 @@
+{
+  "name": "the tithe · 0z",
+  "short_name": "tithe",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "icons": [
+    { "src": "shell/icons/tip-jar.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

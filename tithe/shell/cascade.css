@@ -1,0 +1,23 @@
+/* cascade.css — OZ_CASCADE, the Hawking predictor. hacker-console: terminal green tokens, amber macros. */
+.cs-wrap { position: fixed; inset: 0; z-index: 100002; display: flex; align-items: flex-start; justify-content: center; padding-top: 10vh; background: rgba(0,0,0,.6); }
+.cs-box { width: min(620px, 94vw); background: #060a06; border: 1px solid #1e3a1e; border-radius: 12px; box-shadow: 0 24px 60px rgba(0,0,0,.7), 0 0 40px rgba(46,255,102,.08); overflow: hidden; font-family: 'Courier New', ui-monospace, monospace; }
+.cs-line { padding: 16px 18px 10px; font-size: 17px; color: #8dffb4; display: flex; align-items: baseline; gap: 6px; min-height: 26px; white-space: pre-wrap; word-break: break-word; }
+.cs-ps { color: #4a7d5a; flex-shrink: 0; }
+.cs-built { color: #b6ffcf; text-shadow: 0 0 8px rgba(46,255,102,.3); }
+.cs-cur { color: #2eff66; animation: cs-blink 1s steps(2) infinite; }
+@keyframes cs-blink { 50% { opacity: 0; } }
+.cs-filter { width: 100%; padding: 10px 18px; background: #0a0f0a; border: none; border-top: 1px solid #16281a; border-bottom: 1px solid #16281a; outline: none; color: #7CFC9A; font: var(--fs-ui) 'Courier New', monospace; }
+.cs-filter::placeholder { color: #3a5a45; }
+.cs-toks { display: flex; flex-wrap: wrap; gap: 7px; padding: 12px 14px; }
+.cs-tok { background: rgba(46,93,34,.35); border: 1px solid #2e5d3a; color: #bfe89a; font: 700 15px/1 'Courier New', monospace; padding: 10px 14px; border-radius: 6px; cursor: pointer; white-space: pre; }
+.cs-tok:hover, .cs-tok.on { background: rgba(46,255,102,.18); border-color: #2eff66; color: #d8ffb0; box-shadow: 0 0 14px rgba(46,255,102,.3); }
+.cs-none { color: #4a7d5a; font-size: var(--fs-ui); padding: 8px; }
+.cs-macs-lbl { color: #4a7d5a; font-size: var(--fs-ui); text-transform: uppercase; letter-spacing: 2px; padding: 6px 16px 0; }
+.cs-macs { display: flex; flex-wrap: wrap; gap: 7px; padding: 6px 14px 12px; }
+.cs-mac { background: rgba(255,210,80,.1); border: 1px solid #6a5a2a; color: #ffd06a; font: 700 var(--fs-ui)/1 'Courier New', monospace; padding: 9px 13px; border-radius: 6px; cursor: pointer; }
+.cs-mac:hover { background: rgba(255,210,80,.22); border-color: #ffd06a; box-shadow: 0 0 14px rgba(255,210,80,.25); }
+.cs-bar { display: flex; gap: 8px; justify-content: space-between; padding: 10px 14px 14px; border-top: 1px solid #16281a; }
+.cs-back { background: none; border: 1px solid #2e5d3a; color: #7d8f5a; font: 700 var(--fs-ui) 'Courier New', monospace; padding: 9px 14px; border-radius: 6px; cursor: pointer; }
+.cs-back:hover { border-color: #7d8f5a; color: #bfe89a; }
+.cs-commit { background: #2e5d22; border: 1px solid #2eff66; color: #d8ffb0; font: 800 var(--fs-ui) 'Courier New', monospace; letter-spacing: 2px; padding: 9px 20px; border-radius: 6px; cursor: pointer; text-shadow: 0 0 6px rgba(46,255,102,.5); }
+.cs-commit:hover { background: rgba(46,255,102,.2); box-shadow: 0 0 18px rgba(46,255,102,.4); }

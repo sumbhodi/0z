@@ -1,0 +1,17 @@
+{
+  "name": "toto",
+  "short_name": "toto",
+  "description": "toto — AI chat, lean and fast",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#020c14",
+  "theme_color": "#020c14",
+  "icons": [
+    {
+      "src": "icons/home.png",
+      "sizes": "560x560",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

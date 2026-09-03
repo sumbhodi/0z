@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-label="the safe — diary and key chain">
+  <!-- the safe (2026-08-29, Sum: "a safe — draw an svg safe") — the ⚙ gear section that holds the
+       diary + key chain buttons (save/import ×2). stroke = currentColor so every skin tints it. -->
+  <rect x="3" y="3" width="18" height="17" rx="2"/>
+  <!-- the door seam -->
+  <rect x="5.5" y="5.5" width="13" height="12" rx="1"/>
+  <!-- the dial -->
+  <circle cx="12" cy="11.5" r="3.2"/>
+  <line x1="12" y1="8.3" x2="12" y2="9.9"/>
+  <line x1="14.8" y1="13.1" x2="13.4" y2="12.3"/>
+  <line x1="9.2" y1="13.1" x2="10.6" y2="12.3"/>
+  <!-- the handle -->
+  <line x1="18.5" y1="9.5" x2="18.5" y2="13.5"/>
+  <!-- the feet -->
+  <line x1="6" y1="20" x2="6" y2="22"/>
+  <line x1="18" y1="20" x2="18" y2="22"/>
+</svg>

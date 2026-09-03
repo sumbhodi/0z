@@ -1,0 +1,29 @@
+/* voice.css — the 👂 ear + ➤ send arrow + 🔈 speaker. They live in the tiny bottom strip (.ctx-voice),
+   not the head — a small, unobtrusive control cluster beside the context thermometer. additive. */
+
+.ab-ear, .ab-speak, .ab-send {
+  background: transparent; border: none; color: var(--text-dim); cursor: pointer;
+  padding: 2px 4px; border-radius: 6px; font-size: var(--fs-ui); line-height: 1;
+  display: inline-flex; align-items: center; flex-shrink: 0;
+}
+.ab-ear:hover, .ab-speak:hover { color: var(--text); background: var(--surface-2); }
+
+/* 👂 listening → the ear lights green (its ➤ arrow does the loud blinking). */
+.ab-ear.rec { color: #2fae5a; background: rgba(47,174,90,.14); }
+
+/* ➤ the SEND arrow — hidden at rest; shown only while recording, BRIGHT GREEN and blinking so you can see
+   from across the room that you're on the record. click it to fire the snippet. */
+.ab-send { color: #2fae5a; font-weight: 800; animation: ab-send-blink .8s steps(1, end) infinite; }
+.ab-send:hover { color: #35c766; background: rgba(47,174,90,.16); }
+.ab-send[hidden] { display: none; }
+@keyframes ab-send-blink { 0%, 100% { opacity: 1; } 50% { opacity: .2; } }
+
+/* 🔈 read-aloud ON → lit like the ESP purple; muted glyph (🔇) when off. */
+.ab-speak.on { color: #b388ff; }
+.ab-speak.on:hover { color: #c9a8ff; }
+
+/* the graceful-degrade look: no live API in this webview → faint, but still clickable (ear → prompt,
+   speaker → inert). half-opacity says "reduced" without hiding the affordance. */
+.ab-ear.no-sr { opacity: .55; }
+.ab-speak.no-tts { opacity: .4; cursor: default; }
+.ab-speak.no-tts:hover { background: transparent; color: var(--text-dim); }

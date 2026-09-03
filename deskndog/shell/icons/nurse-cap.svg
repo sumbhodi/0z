@@ -1,0 +1,7 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-label="nurse">
+  <path d="M5 10.5 Q16 6.5 27 10.5 L27 20.5 Q16 18.5 5 20.5 Z" fill="#fff"/>
+  <path d="M4.5 19.5 Q16 17.7 27.5 19.5 L27.5 24 Q16 22.4 4.5 24 Z" fill="#fff"/>
+  <path d="M5 10.5 Q16 6.5 27 10.5" fill="none" stroke="#e0e0e0" stroke-width="0.9"/>
+  <rect x="14.2" y="10" width="3.6" height="10" rx="0.6" fill="#d11a2a"/>
+  <rect x="11" y="13.2" width="10" height="3.6" rx="0.6" fill="#d11a2a"/>
+</svg>

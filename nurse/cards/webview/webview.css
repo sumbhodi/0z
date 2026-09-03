@@ -1,0 +1,112 @@
+/* webview.css — the 👀 PREVIEW card, run through makeCard. the head wears the red CURTAIN; Clappy
+   (the clapperboard) opens the picker; picked files are BLACK TABS over the curtain, closed by the
+   little curtain icon (out of the sandbox cache). dark stage, red border to match the nurse. */
+
+.p-webview { background: var(--wv-bg); border-color: var(--nurse-red); }   /* the nurse-red border */
+
+/* the head — the red curtain (cover-cropped to the head); white title over the red */
+.p-webview .card-head {
+  background: url('assets/curtain-topbar.png') center / cover no-repeat;
+  border-bottom: 1px solid var(--nurse-red);
+  padding: 0 var(--head-pad); gap: var(--head-gap);   /* (Sum 2026-07-11) match the cream bot / CLI (was the generic 14px/10) → the cluster lines up */
+}
+.p-webview .card-head .card-title { color: #ffffff; letter-spacing: 2px; text-shadow: 0 1px 3px rgba(0,0,0,0.85); }
+.p-webview .card-head .card-icon { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.55)); }
+.p-webview .card-head::after { color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.85); }   /* the ▾ chevron */
+
+/* ＋ PLUS — (Sum 2026-07-11) replaced Clappy; the same import picker as Monaco's plus. tap → file · image · screenshot. */
+.p-webview .wv-plus {
+  flex-shrink: 0; width: 40px; height: 40px; padding: 0; cursor: pointer;
+  background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.25); border-radius: 6px;
+  color: #fff; font-size: 22px; line-height: 1; text-shadow: 0 1px 2px rgba(0,0,0,.9);
+}
+.p-webview .wv-plus:hover { border-color: #fff; background: rgba(0,0,0,0.7); }
+
+/* TABS — black, sitting over the curtain. each: name + the curtain close icon. grow to push the
+   printer to the right edge. */
+.p-webview .wv-tabs { flex: 1; display: flex; align-items: center; gap: 6px; overflow-x: auto; scrollbar-width: none; min-width: 0; }
+.p-webview .wv-tabs::-webkit-scrollbar { display: none; }
+.p-webview .wv-tab {
+  display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+  max-width: 190px; height: 30px; padding: 0 4px 0 10px;
+  background: rgba(0,0,0,0.82); border: 1px solid rgba(0,0,0,0.55); border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5); cursor: pointer;
+}
+.p-webview .wv-tab.active { background: #000; border-color: #ffffff; }
+.p-webview .wv-tab-name { color: #ffffff; font-size: var(--fs-ui); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.p-webview .wv-tab-x {
+  width: 22px; height: 22px; flex-shrink: 0; padding: 0; border: none; cursor: pointer; border-radius: 3px;
+  background: url('assets/close-curtain.png') center / cover no-repeat;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.15);
+}
+.p-webview .wv-tab-x:hover { box-shadow: 0 0 0 1px #ffffff; }
+
+/* PRINTER (right) — export the open tab: html · original · print (print covers pdf via the dialog) */
+.p-webview .wv-print-wrap { position: relative; flex-shrink: 0; }
+.p-webview .wv-print {
+  width: 56px; height: 40px; padding: 0; cursor: pointer; font-size: 30px; line-height: 1;
+  background: rgba(0,0,0,0.55); color: #fff; border: 1px solid rgba(0,0,0,0.45); border-radius: 4px;
+}
+.p-webview .wv-print:hover { border-color: #fff; }
+/* ▶ GREEN GO — the glossy dome (Sum 2026-07-11: "the right green button"), the pair to the red STOP.
+   off = dark dome · .on = glowing green (there's something to run/restart). same PNGs as .ab-bless / .card-stop. */
+.p-webview .wv-go {
+  flex-shrink: 0; width: var(--run-btn-w); height: var(--run-btn-h); padding: 0; cursor: pointer; border: none; box-shadow: none;
+  background: transparent url('../../shell/bar/btn-green-off.png') center / contain no-repeat;   /* (Sum 2026-07-11) no margin-right — it was the 4px "extra padding" pushing the card green off the bots' */
+}
+.p-webview .wv-go.on { background-image: url('../../shell/bar/btn-green-on.png'); }
+.p-webview .wv-go:active { transform: translateY(1px); }
+/* (Sum 2026-07-11) on a COLLAPSED bar the green joins the HIL cluster on the far RIGHT (x+), not stranded by
+   the icon: the auto-margin rides the GREEN (cluster's first), and the jewels drop their own auto so they hug it. */
+.p-webview.collapsed .wv-go { margin-left: auto; }
+.p-webview.collapsed .card-jewels { margin-left: 0; }
+.p-webview .wv-print-menu {
+  position: absolute; top: 44px; right: 0; z-index: 40; display: none; flex-direction: column; gap: 2px;
+  padding: 4px; min-width: 132px; background: var(--wv-menu); border: 1px solid var(--wv-menu-line);
+  border-radius: 6px; box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+.p-webview .wv-print-menu.open { display: flex; }
+.p-webview .wv-print-menu button {
+  text-align: left; padding: 7px 12px; min-height: 30px; background: none; border: none;
+  color: var(--wv-menu-text); font: inherit; font-size: var(--fs-ui); cursor: pointer; border-radius: 4px;
+}
+.p-webview .wv-print-menu button:hover { background: var(--cj-off); color: #fff; }
+
+/* the stage — the sandboxed iframe fills the makeCard body (the bottom bar slides its height).
+   --wv-w (set by the gear's device toggle) constrains the width; margin-inline:auto centers it, and the
+   dark body shows as letterbox on the sides when it's narrower than full. */
+.p-webview .wv-frame { position: absolute; top: 0; bottom: 0; left: 0; right: 0; width: var(--wv-w, 100%); height: 100%; margin-inline: auto; border: none; background: var(--surface); }
+.p-webview .card-body { background: #0d0d12; }   /* letterbox behind a constrained device width */
+
+/* the GEAR — device width + the console dot (Sum 2026-07-10). mirrors the printer menu. */
+.p-webview .wv-gear-wrap { position: relative; flex-shrink: 0; }
+.p-webview .wv-gear {
+  width: 44px; height: 40px; padding: 6px; cursor: pointer; line-height: 1;
+  background: rgba(0,0,0,0.55); border: 1px solid rgba(0,0,0,0.45); border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.p-webview .wv-gear:hover { border-color: #fff; }
+.p-webview .wv-gear .oz-gear-ico { width: 22px; height: 22px; }
+.p-webview .wv-gear.has-err { border-color: var(--nurse-red); box-shadow: 0 0 0 1px var(--nurse-red); }
+.p-webview .wv-gear.has-err::after {   /* the red dot — the page threw */
+  content: ''; position: absolute; top: 3px; right: 3px; width: 8px; height: 8px; border-radius: 50%;
+  background: #ff3b30; box-shadow: 0 0 5px #ff3b30;
+}
+.p-webview .wv-gear-menu {
+  /* left:0 CORRECTION (2026-08-28): the gear moved to the head's FAR-RIGHT seat (mountGear) — a 190px menu opening rightward now falls off the card edge, so it hangs from the right instead. */
+  position: absolute; top: 44px; right: 0; z-index: 40; display: none; flex-direction: column; gap: 4px;
+  padding: 8px; min-width: 190px; background: var(--wv-menu); border: 1px solid var(--wv-menu-line);
+  border-radius: 6px; box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+.p-webview .wv-gear-menu.open { display: flex; }
+.p-webview .wv-gear-sec { color: var(--wv-menu-text); opacity: .6; font-size: var(--fs-ui); text-transform: uppercase; letter-spacing: 1px; margin: 2px 2px 0; }
+.p-webview .wv-dev-row { display: flex; gap: 4px; }
+.p-webview .wv-dev-row button {
+  flex: 1; padding: 7px 0; font-size: 17px; line-height: 1; cursor: pointer; border-radius: 5px;
+  background: none; border: 1px solid var(--wv-menu-line); color: var(--wv-menu-text);
+}
+.p-webview .wv-dev-row button:hover { background: var(--cj-off); }
+.p-webview .wv-dev-row button.on { background: var(--cj-off); border-color: #fff; box-shadow: 0 0 0 1px #fff inset; }
+.p-webview .wv-err-list { max-height: 140px; overflow-y: auto; font-size: var(--fs-ui); }
+.p-webview .wv-err-ok { color: #7ac47a; padding: 2px 2px; }
+.p-webview .wv-err-row { color: #ff8a80; padding: 3px 4px; border-radius: 4px; background: rgba(255,59,48,0.08); margin-bottom: 3px; word-break: break-word; font-family: ui-monospace, monospace; }

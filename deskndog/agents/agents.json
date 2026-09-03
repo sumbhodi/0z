@@ -1,0 +1,27 @@
+{
+ "_": "the roster index — ordered ids. each agent's details live in agents/<id>/<id>.json.",
+ "_bench2": "26 Aug, second pass — dnial · hellonurse · ohanai · trawman parked beside sphinx and yanker (Sum). asterix parked too: \"bleep is asterix not two bots, the claude bot we can call claude is one bot one skin\" — bleep keeps the seat (the glyph name, the hands, the GOAT chair); asterix was the chat-only twin. All five were BUNDLED BUT UNREACHABLE: data in every build, no registry line, no bar. Folders in _bench-for-totois/.",
+ "_bench": "BENCHED, not deleted — the folder is the save, this list is the ship list. build.js bundles only what is named here, so removing a line un-ships a bot and touches nothing else. 2026-08-26: jem (🍌 Gemini, the holographic influencer — waits on a suite of her own). bleep was benched the same day and RESTORED an hour later: it is the only Anthropic bot wearing the glyphs, and it holds the GOAT's fourth chair. asterix is the other Anthropic seat but its name is plain — what it wears is the bleep() DISPLAY FILTER, not a glyph name. To un-bench: put the id back in the list below and run node agents/build.js.",
+ "agents": [
+  "toto",
+  "uni",
+  "trawman",
+  "coder",
+  "nurse",
+  "wellness",
+  "tutor",
+  "learner",
+  "bleep",
+  "timetravel",
+  "newsie",
+  "dria",
+  "gamer",
+  "aoladdin",
+  "muskett",
+  "alpha",
+  "vogel"
+ ],
+ "_bench3": "26 Aug, third pass — lumberjack (bub) un-shipped and parked in _bench-for-totois/, beside sphinx and yanker (Sum: \"un ship and park bub next to yanker and shpinx\"). It went the other way earlier the same day: build.js's 5th and 6th organs flagged that it shipped with data, art, an injection, eleven tools, a bar and the live `axe` card but no roster line and no profile seat, and I seated it. That was the wrong direction — registry.js has said \"lumberjack retired → folded into coder\" since 9 July and the woodshop tile already brings the coder. ⚠ ITS BAR WENT WITH IT (lumberjack-AGENT_BARS.js) — a bar left behind is the empty chair jem and asterix each left. ⚠ THE FORGE IS NOW DARK: caps [\"forge\"] belonged only to bub, so the ozforge CLI lane has no owner and read_stack/read_2x4/refine_2x4/refine_clear are granted to nobody. The woodshop CARD still works by hand. Finishing the July fold is one line — add \"axe\" to coder's nav — and that is Sum's call.",
+ "_bench4": "29 Aug, fourth pass — writer + pa parked in _bench-for-totois (Sum: 'scratchpads of ideas, not finished code'); tiptap · email · calendar · woodshop · forge cards went with them",
+ "_uni": "31 Aug 2026 — UNI corn, the unicorn skin's house bot. SEPARATE AND DISTINCT from toto (Sum): not a reskin, not a variant; the theme decides which of the two holds the house chair and nothing else about either changes. Same tools as toto for now. house: \"unicorn\" in its record is the only line that wires it — registry.js houseFor(skin) is the one reader."
+}

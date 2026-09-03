@@ -1,0 +1,186 @@
+/* settings.css — the gear: the key-gate (enter an API key to enter oz) + the ⓘ tip.
+   physical fields, tokens, no opacity on text. build phase: folio at ship. */
+
+/* the overlay — settings floats over the whole app (desktop · cards · bots), not a card in the stack */
+.sg-overlay { position: fixed; inset: 0; z-index: 11000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(5,4,12,.62); backdrop-filter: blur(3px); }
+.sg-modal { width: min(560px, 96vw); max-height: calc(100vh - 40px); display: flex; flex-direction: column; background: var(--surface-1); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 28px 90px rgba(0,0,0,.62); overflow: hidden; }
+.sg-modal-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--line); background: var(--surface-2); flex-shrink: 0; }
+.sg-modal-title { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text); }
+.sg-modal-ic { font-size: 18px; line-height: 1; }
+.sg-modal-head .sg-x { margin-left: auto; background: transparent; border: none; color: var(--text-muted); font-size: 15px; line-height: 1; cursor: pointer; padding: 5px 10px; border-radius: 7px; }
+.sg-modal-head .sg-x:hover { background: rgba(255,90,90,.18); color: #ff7a7a; }
+
+/* cap the BODY height directly (not via flex-shrink) so head + foot stay pinned and the body scrolls —
+   robust against the WKWebView flexbox-min-height quirk that left the modal full-content-height. */
+.sg-overlay .sg-body { flex: 1 1 auto; min-height: 0; max-height: calc(100vh - 184px); overflow-y: auto; display: flex; flex-direction: column; gap: var(--space-lg); padding: var(--space-lg); }
+.sg-overlay .sg-foot { flex-shrink: 0; padding: var(--space-md) var(--space-lg); border-top: 1px solid var(--line); background: var(--surface-2); }
+
+/* the close — a pill at the BOTTOM of the scroll (below the last entry), not a top-corner ✕ (Sum's rule) */
+.sg-close-row { display: flex; justify-content: center; padding: 6px 0 2px; }
+.sg-close-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 30px; border-radius: 999px; background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--line); font: 600 var(--fs-ui) system-ui; cursor: pointer; }
+.sg-close-btn:hover { background: rgba(255,90,90,.15); border-color: rgba(255,90,90,.4); color: #ff7a7a; }
+
+/* the gate banner — 🔑 enter a key to enter oz */
+.sg-gate { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md); background: var(--surface-2); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: var(--r-md); }
+.sg-gate-key { font-size: 34px; line-height: 1; flex-shrink: 0; }
+.sg-gate-copy { font-size: var(--fs-label); color: var(--text); line-height: 1.4; }
+.sg-dim { color: var(--text-dim); font-size: var(--fs-chrome); }
+
+/* provider rows — pick a card, any card */
+.sg-providers { display: flex; flex-direction: column; gap: var(--space-md); }
+.sg-row { display: flex; flex-direction: column; gap: 6px; }
+/* wrap (2026-08-29, the phone pass): on a 375px screen the name + two tags + "get a key" ran the
+   gear body 505px wide — the badges clipped off the glass. The row WRAPS now; desktop unchanged
+   (it never needed to). Same night, same reason: the tab row wraps so 🔒 safe sits clean. */
+.sg-row-top { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
+.sg-name { font-size: var(--fs-label); font-weight: 700; color: var(--text); }
+.sg-tag { font-size: var(--fs-chrome); font-weight: 700; padding: 2px 8px; border-radius: 999px; flex-shrink: 0; }
+.sg-tag-recommended { background: var(--accent); color: var(--bg); }
+.sg-tag-free { background: var(--ok-bg); color: var(--ok-soft); border: 1px solid var(--ok-border); }
+.sg-tag-payg { background: var(--surface-2); color: var(--text-dim); border: 1px solid var(--line); font-weight: 600; }
+
+/* 📊 the receipts — the routed-usage tally (local, no identity) */
+.sg-meter { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 10px; }
+.sg-meter-row { display: flex; justify-content: space-between; align-items: baseline; font-size: var(--fs-chrome); padding: 3px 0; color: var(--text-dim); }
+.sg-meter-num { font-variant-numeric: tabular-nums; }
+.sg-meter-total { font-weight: 700; color: var(--text); border-top: 1px dashed var(--line); margin-top: 4px; padding-top: 6px; }
+.sg-meter-copy { margin-top: 8px; font: inherit; font-size: var(--fs-chrome); color: var(--text-dim); background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+.sg-meter-copy:hover { color: var(--text); }
+.sg-get { margin-left: auto; font-size: var(--fs-chrome); color: var(--accent); text-decoration: none; flex-shrink: 0; }
+.sg-get:hover { text-decoration: underline; }
+.sg-key { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 12px; font: inherit; font-size: var(--fs-label); outline: none; }
+.sg-key:focus { border-color: var(--accent); }
+.sg-key::placeholder { color: var(--text-dim); }
+
+/* the ⓘ + tip — click ⓘ to hide / show (light-bar / clock pattern), remembered */
+.sg-info { align-self: flex-start; width: 32px; height: 32px; border-radius: 50%; background: var(--btn); color: var(--text); border: 1px solid var(--line); font-size: 18px; line-height: 1; cursor: pointer; }
+.sg-info:hover { border-color: var(--accent); color: var(--accent); }
+.sg-tip { display: none; margin-top: -10px; padding: var(--space-md); background: var(--surface-2); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: var(--r-sm); font-size: var(--fs-chrome); line-height: 1.6; color: var(--text); }
+.sg-tip.open { display: block; }
+.sg-tip a { color: var(--accent); text-decoration: none; }
+.sg-tip a:hover { text-decoration: underline; }
+
+/* you + the bot — collapsible sections; each field is one custom-injection box */
+.sg-sec { border-top: 1px solid var(--line); padding-top: var(--space-md); }
+.sg-sec-head { font-size: var(--fs-label); font-weight: 700; color: var(--text); cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; padding: 2px 0; }
+.sg-sec-head::-webkit-details-marker { display: none; }
+.sg-sec-head::after { content: '▸'; margin-left: auto; color: var(--text-dim); transition: transform .15s; }
+.sg-sec[open] .sg-sec-head::after { transform: rotate(90deg); }
+.sg-sec-hint { font-size: var(--fs-chrome); color: var(--text-dim); line-height: 1.5; margin: 6px 0 4px; }
+.sg-field { display: flex; flex-direction: column; gap: 6px; margin-top: var(--space-md); }
+.sg-field label { font-size: var(--fs-chrome); font-weight: 700; color: var(--text-dim); }
+.sg-field input, .sg-field textarea { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 12px; font: inherit; font-size: var(--fs-label); outline: none; resize: vertical; line-height: 1.5; }
+.sg-field input:focus, .sg-field textarea:focus { border-color: var(--accent); }
+.sg-field input::placeholder, .sg-field textarea::placeholder { color: var(--text-dim); }
+
+/* the bot sub-bar — pick which agent you're configuring */
+.sg-subbar { display: flex; flex-wrap: wrap; gap: 6px; margin: var(--space-sm) 0 var(--space-md); }
+.sg-pill { padding: 8px 14px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; color: var(--text-dim); font: inherit; font-size: var(--fs-chrome); font-weight: 700; cursor: pointer; }
+.sg-pill:hover { border-color: var(--accent); }
+.sg-pill.on { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.sg-make { color: var(--accent); }
+
+/* settings leads to → injection config + woodshop */
+.sg-nav { display: flex; gap: var(--space-sm); margin-top: var(--space-md); }
+.sg-go { flex: 1; padding: 10px; background: var(--surface-2); color: var(--text); border: 1px solid var(--line); border-radius: var(--r-sm); font: inherit; font-weight: 700; cursor: pointer; }
+.sg-go:hover { border-color: var(--accent); }
+.sg-select { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 12px; font: inherit; font-size: var(--fs-label); outline: none; cursor: pointer; }
+.sg-select:focus { border-color: var(--accent); }
+
+/* save — pinned footer; commits all keys, flashes, then closes settings */
+.card-settings .sg-foot { flex-shrink: 0; padding: var(--space-md) var(--space-lg); border-top: 1px solid var(--line); background: var(--surface-2); }
+.sg-save { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: var(--r-sm); font: inherit; font-weight: 700; font-size: var(--fs-label); cursor: pointer; box-shadow: 0 3px 0 var(--accent-deep); }
+.sg-save:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--accent-deep); }
+.sg-save.sg-saved { background: var(--save-bg); box-shadow: 0 3px 0 var(--save-deep); }
+
+/* tabs — API · HIL · BOT (replaces the stacked sections) */
+.sg-tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--line); }
+/* nowrap (2026-08-29, the phone pass): flex:1 squeezed "🔒 safe" until the lock sat above the word */
+.sg-tab { flex: 1; padding: 10px 6px; white-space: nowrap; background: transparent; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; font: inherit; font-weight: 700; font-size: var(--fs-label); letter-spacing: 1px; color: var(--text-dim); cursor: pointer; }
+.sg-tab:hover { color: var(--text); }
+.sg-tab.on { color: var(--accent); border-bottom-color: var(--accent); }
+.sg-panel { display: flex; flex-direction: column; gap: var(--space-md); }
+.sg-panel[hidden] { display: none; }
+
+/* HIL location — auto-detect (📍) or city search */
+.sg-loc-row { display: flex; gap: var(--space-sm); }
+.sg-loc-search { flex: 1; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 12px; font: inherit; font-size: var(--fs-label); outline: none; }
+.sg-loc-search:focus { border-color: var(--accent); }
+.sg-loc-search::placeholder { color: var(--text-dim); }
+.sg-loc-here { flex: 0 0 auto; min-width: 44px; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); font-size: 18px; cursor: pointer; }
+.sg-loc-here:hover { border-color: var(--accent); }
+.sg-loc-results { display: flex; flex-direction: column; gap: 4px; }
+.sg-loc-results:empty { display: none; }
+.sg-loc-hit { text-align: left; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 8px 12px; font: inherit; font-size: var(--fs-label); cursor: pointer; }
+.sg-loc-hit:hover { border-color: var(--accent); }
+.sg-loc-current { font-size: var(--fs-chrome); color: var(--text-dim); }
+
+/* yocal / no-key providers — a muted note instead of a key field */
+.sg-nokey { color: #5fe09a; font: 12.5px/1.5 system-ui; padding: 8px 2px 2px; }
+
+/* ✕ close (no-gate) + drag-to-resize handle */
+.card-settings .card-head { display: flex; align-items: center; gap: 8px; }
+.card-settings .sg-x { margin-left: auto; background: transparent; border: none; color: var(--text-muted); font-size: 15px; line-height: 1; cursor: pointer; padding: 4px 9px; border-radius: 6px; }
+.card-settings .sg-x:hover { background: rgba(255,90,90,.18); color: #ff7a7a; }
+.card-settings .sg-resize { height: 14px; flex-shrink: 0; cursor: ns-resize; display: flex; align-items: center; justify-content: center; background: var(--surface-1); border-top: 1px solid var(--line); border-radius: 0 0 12px 12px; }
+.card-settings .sg-resize::before { content: ''; width: 38px; height: 3px; border-radius: 2px; background: var(--text-muted); opacity: .45; }
+.card-settings .sg-resize:hover::before { opacity: .8; }
+
+/* close above save (the slider was pointless — settings is flex:1, fills the desk) */
+.card-settings .sg-foot { display: flex; flex-direction: column; gap: 8px; }
+.card-settings .sg-close-btn { background: transparent; color: var(--text-secondary); border: 1px solid var(--line); border-radius: var(--radius); padding: 9px; font: 500 var(--fs-ui) system-ui; cursor: pointer; }
+.card-settings .sg-close-btn:hover { background: var(--surface-1); color: var(--text-primary); }
+
+
+/* ↺ factory reset — lives at the foot of the API tab, beside the keys it protects (Sum 2026-08-17) */
+.sg-factory { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line); }
+.sg-reset { margin-top: 10px; width: 100%; padding: 10px 14px; background: var(--surface); color: var(--text);
+  border: 1px solid var(--line); border-radius: var(--r-sm); font: inherit; cursor: pointer; }
+.sg-reset:hover { border-color: var(--bad); color: var(--bad); }
+.sg-reset[data-armed="1"] { border-color: var(--bad); color: var(--bad); font-weight: 700; }
+
+/* 🔒 THE SAFE (2026-08-29) — the buttons wear the .sg-reset dress (same panel, same hands),
+   two to a row; the passphrase field wears the sg input look. Body mounts from safe.js. */
+.sg-safe-passrow { display: flex; align-items: center; gap: 10px; margin: 12px 0; font-size: var(--fs-ui); flex-wrap: wrap; }
+/* min-width:0 (the phone pass): a flex input's implicit min-width is its size attribute — on a
+   375px screen it shoved the row to 407px and the field ran off the glass */
+.sg-safe-pass { flex: 1; min-width: 0; padding: 10px 12px; background: var(--surface); color: var(--text);
+  border: 1px solid var(--line); border-radius: var(--r-sm); font: inherit; }
+/* 🟢🔴 the knock on the gate bar (2026-08-29) — the jewels and the red are his own classes from
+   desk.css (.card-jewels/.cj/.card-stop), so only the row's own frame is new here. */
+.sg-knock { margin-top: 10px; padding: 10px; border: 1px solid var(--accent); border-radius: var(--r-sm); background: var(--surface); }
+.sg-knock-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+.sg-knock-yes { flex: 1; padding: 12px 14px; border: 1px solid var(--ok-border, var(--line)); border-radius: var(--r-sm);
+  background: var(--ok-bg, var(--surface-2)); color: var(--ok-soft, var(--text)); font: inherit; font-weight: 700; cursor: pointer; }
+.sg-knock-yes:hover { border-color: var(--accent); }
+.sg-safe-eye { padding: 8px 12px; background: var(--surface); color: var(--text-dim);
+  border: 1px solid var(--line); border-radius: var(--r-sm); font: inherit; font-size: var(--fs-ui); cursor: pointer; }
+.sg-safe-eye:hover { border-color: var(--accent); color: var(--text); }
+.sg-safe-eye.on { border-color: var(--accent); color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
+.sg-safe-btns { display: flex; gap: 10px; }
+.sg-safe-btns button { margin-top: 10px; flex: 1; padding: 10px 14px; background: var(--surface); color: var(--text);
+  border: 1px solid var(--line); border-radius: var(--r-sm); font: inherit; cursor: pointer; }
+.sg-safe-btns button:hover { border-color: var(--accent); }
+.sg-safe-note { min-height: 1.4em; margin: 6px 0; font-size: var(--fs-ui); color: var(--accent); }
+
+/* 🏪 the buy link — the one ad, and only on the web build (safe.js seats it beside the portal).
+   It wears the same dress as the safe's own buttons so it reads as part of the panel, not a banner. */
+.sg-buy { display: block; margin-top: 10px; padding: 12px 14px; text-align: center;
+  background: var(--surface); color: var(--text); text-decoration: none;
+  border: 1px solid var(--accent); border-radius: var(--r-sm); font: inherit; font-weight: 700; }
+.sg-buy:hover { background: var(--surface-2); }
+.sg-buy-note { margin-top: 12px; }
+
+/* ⛴ the ferryman — free builds only (settings.js, the API tab). Dry by design: it sits between
+   the keys note and the providers, says its piece once, and links rather than pleads. */
+.sg-ferryman{display:flex;gap:9px;align-items:flex-start;margin:10px 0 4px;padding:9px 11px;
+  border-left:3px solid var(--sg-dim,#8a8177);background:rgba(140,130,110,.10);border-radius:0 6px 6px 0;
+  font-size:12.5px;line-height:1.5;color:var(--sg-dim,#8a8177)}
+.sg-ferryman-ic{flex:0 0 auto;font-size:15px;line-height:1.2;opacity:.85}
+.sg-ferryman-link{color:inherit;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+.sg-ferryman-link:hover{color:var(--sg-ink,#e9e7e0)}
+
+/* 📄 the raw button — deliberately quieter than 🔒 save. The sealed road is the default and should
+   look like it; raw is the door out, not the front door. Same size target for a11y, less weight. */
+.sg-safe-raw{background:none;border:1px solid var(--sg-line,#3a3a42);color:var(--sg-dim,#8a8177)}
+.sg-safe-raw:hover{color:var(--sg-ink,#e9e7e0);border-color:var(--sg-dim,#8a8177)}

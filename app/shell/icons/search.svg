@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="a magnifying glass">
+<defs><linearGradient id="s-r" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#eef3f8"/><stop offset=".45" stop-color="#a8b4c1"/><stop offset="1" stop-color="#5c6874"/></linearGradient>
+<radialGradient id="s-g" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#eafaff" stop-opacity=".95"/><stop offset="1" stop-color="#9fd0e4" stop-opacity=".8"/></radialGradient>
+<linearGradient id="s-h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8d5f34"/><stop offset="1" stop-color="#4c3115"/></linearGradient></defs>
+<ellipse cx="150" cy="238" rx="60" ry="8" fill="#000" opacity=".15"/>
+<path d="M150 156 L216 222" stroke="url(#s-h)" stroke-width="30" stroke-linecap="round" fill="none"/>
+<circle cx="110" cy="112" r="82" fill="url(#s-g)"/>
+<circle cx="110" cy="112" r="82" fill="none" stroke="url(#s-r)" stroke-width="20"/>
+<path d="M58 62 A72 72 0 0 1 128 42" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" opacity=".55"/>
+</svg>

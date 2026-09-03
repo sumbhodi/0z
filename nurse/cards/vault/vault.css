@@ -1,0 +1,7 @@
+/* vault.css — the room, not the safe. Every rule about the SAFE ITSELF lives with the safe
+   (settings.css .sg-*), because the panel is the same panel in both doors and a second stylesheet
+   would be the visual half of the drift this card exists to avoid. */
+.p-vault { padding: 12px 14px; overflow: auto; }
+.p-vault .vault-wait { margin: 18px 4px; font-size: 15px; color: var(--text-dim); }
+/* the head wears the cabinets — makeCard sets the image; this only keeps the icon legible on it */
+.card[data-card="vault"] .card-head.has-art { background-size: cover; }

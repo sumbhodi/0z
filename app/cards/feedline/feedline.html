@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Feedline</title>
+<!-- THE FEEDLINE — the newsie's own paper, cut FROM SCRATCH (Sum 2026-08-22: "newsie just gets to choose which
+     wires to pull, reads the wire, chooses decent chunk from a few sources, and just writes honest headlines,
+     keep pics and summary unless asked to summarize"). It named the paper itself (the Feedline interview,
+     2026-08-20); the four lines, the hold drawer and "The Breakdown" are its own answers of 2026-08-22.
+     THE CUT, three moves, two consults:
+       1 PICK  · the newsie sees the desks (wires.js GROUP/NAME) and names 3–6 wires from a few desks
+       2 PULL  · this sheet pulls them through the same ladder FILL uses (wires.js grab + parse), pics and summaries kept
+       3 CUT   · numbered items go back; it keeps a decent chunk, gives each a line, a score, and an HONEST headline.
+                 Floor 7 runs · 5–7 to its drawer (port/hold-<date>.json, readers never see it) · under 5 drops.
+     Each line is balanced by the SAME sorter FILL uses (../myview/fill-sort.js); the story markup is My View's
+     (artHTML, copied). Headlines run as the wires wrote them (the rewrite was dropped 2026-08-22: too little delta for the tokens).
+     The order goes in AS THE READER (parent.conduct, src 'human'): a customer at the counter, not a colleague
+     consulting (Sum: "thinks its claude? a customer is asking for a paper"). A docked newsie bar is the glass box.
+     THE BIBLE (feedline/bible.json): what it picked, what earned its keep, the themes and rules it declares at the
+     end of every cut; the next order slip carries it, so each cut is better than the last. This frame is KEPT by the card when you switch papers (app-card.js papers), so a cut
+     keeps running; the sheet tells the bar it is busy (postMessage) and the roll turns until it is ready.
+     No My View dependency: if the reader never touched My View, the newsie still has every wire. -->
+<style>
+  :root { --paper:#f4efe1; --ink:#14140f; --dim:#6b6558; --red:#8e1f12; --rule:#14140f; }
+  * { box-sizing:border-box; margin:0 }
+  body { background:var(--paper); color:var(--ink); font-family:Georgia,'Times New Roman',serif; display:flex; justify-content:center; min-height:100vh }
+  .sheet { width:min(1100px,100%); min-height:100vh; padding:22px 30px 60px; display:flex; flex-direction:column }
+  header { text-align:center; border-bottom:3px double var(--rule); padding-bottom:12px }
+  h1 { font:700 clamp(26px,5vw,40px)/1 'Courier New',Courier,monospace; letter-spacing:.14em }
+  .sub { font-size:13px; letter-spacing:.22em; color:var(--dim); text-transform:uppercase; margin-top:4px; font-family:'Courier New',Courier,monospace }
+  .deck { display:flex; gap:14px; align-items:center; justify-content:center; padding:14px 0; border-bottom:1px solid var(--rule) }
+  .cut { font:inherit; font-size:17px; letter-spacing:.18em; padding:10px 28px; cursor:pointer; background:var(--red); color:var(--paper); border:2px solid var(--ink); text-transform:uppercase }
+  .count { font-size:15px; color:var(--dim) }
+  .book { font-size:13px; color:var(--dim) } .book input { font:inherit; width:5.5em; padding:2px 4px; border:1px solid var(--dim); background:#fff; color:var(--ink) }
+  button:focus-visible, a:focus-visible { outline:3px solid var(--red); outline-offset:2px }
+  .ask { max-width:52ch; margin:60px auto; text-align:center; font-size:19px; line-height:1.55 }
+  .ask p { margin-bottom:18px } .ask small { display:block; color:var(--dim); font-size:15px; margin-top:-8px; margin-bottom:18px }
+  .ask .row { display:flex; gap:14px; justify-content:center }
+  .consent { display:flex; gap:10px; align-items:flex-start; text-align:left; font-size:15px; line-height:1.45; color:#3a3833; margin:0 0 18px } .consent input { width:22px; height:22px; flex:none; margin-top:2px; accent-color:var(--red) }
+  .no { font:inherit; font-size:15px; padding:10px 22px; background:transparent; color:var(--ink); border:1.5px solid var(--ink); cursor:pointer }
+  /* the cut in progress: a sheet folding in thirds, over and over, and the stage it is at */
+  .cutting { display:flex; flex-direction:column; align-items:center; gap:18px; padding:50px 0; color:var(--dim); font-style:italic; font-size:17px; text-align:center; line-height:1.6 }
+  .fold { width:110px; height:150px; perspective:500px; display:grid; grid-template-rows:1fr 1fr 1fr }
+  .fold i { display:block; background:#fff; border:1.5px solid var(--ink); border-top-width:0; transform-origin:top; animation:fold 2.6s ease-in-out infinite }
+  .fold i:first-child { border-top-width:1.5px } .fold i:nth-child(2) { animation-delay:.35s } .fold i:nth-child(3) { animation-delay:.7s }
+  @keyframes fold { 0%,100% { transform:rotateX(0) } 50% { transform:rotateX(-75deg) } }
+  @media (prefers-reduced-motion:reduce) { .fold i { animation:none } }
+  .note { font-style:italic; font-size:16px; line-height:1.5; text-align:center; padding:14px 40px; border-bottom:1px solid var(--rule); color:#3a3833 }
+  .note b { font-style:normal; letter-spacing:.1em; text-transform:uppercase; font-size:12px; color:var(--dim); margin-right:8px }
+  .line { padding-top:18px } .line > h2 { font:700 13px/1 'Courier New',Courier,monospace; letter-spacing:.3em; text-transform:uppercase; border-bottom:2px solid var(--rule); padding-bottom:8px; margin-bottom:6px }
+  .line > h2 small { font-weight:400; letter-spacing:.1em; color:var(--dim); margin-left:10px }
+  .page { display:grid; grid-template-columns:1fr 1.5fr 1fr; gap:0 22px }
+  .col { min-width:0 } .rail { border-top:1px solid var(--rule); padding-top:10px }
+  .colhead { font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--dim); margin-bottom:10px; font-weight:400 }
+  article { padding:10px 0; border-bottom:1px solid #d9d2c2 }
+  article h3 { font-size:17px; line-height:1.25; font-weight:700 }
+  .center article h3 { font-size:22px }
+  article a { color:inherit; text-decoration:none } article a:hover { text-decoration:underline }
+  .meta { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); margin:4px 0 2px }
+  .score { color:var(--red); margin-left:6px }
+  .lead { font:700 10px/1 'Courier New',Courier,monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--paper); background:var(--red); padding:3px 6px; vertical-align:middle; margin-right:4px }
+  .wire { font-size:12px; color:var(--dim); font-style:italic; margin:0 0 6px; line-height:1.35 }
+  .sum { font-size:14px; line-height:1.45; color:#3a3833 } .rail .sum { font-size:13px }
+  .pic { width:100%; height:auto; display:block; margin:0 0 8px; border:1px solid #d9d2c2; background:#e9e3d6 }
+  .pic-rail { aspect-ratio:16/9; object-fit:cover; max-height:150px }
+  .foot { font-size:12px; color:var(--dim); text-align:center; padding:18px 0 0; line-height:1.6 }
+  .drawer { margin:14px auto 0; max-width:60ch; font-size:14px } .drawer summary { cursor:pointer; font:700 12px/1.6 'Courier New',Courier,monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--dim); text-align:center }
+  .drawer ul { list-style:none; padding:10px 0 0 } .drawer li { padding:6px 0; border-top:1px solid #d9d2c2; line-height:1.4 } .drawer .meta { font-size:12px; color:var(--dim) }
+  .drawer .run { font:inherit; font-size:12px; letter-spacing:.12em; text-transform:uppercase; padding:4px 10px; margin-left:8px; border:1.5px solid var(--ink); background:var(--ink); color:var(--paper); cursor:pointer }
+  .empty { max-width:60ch; margin:60px auto; text-align:center; color:var(--dim); font-size:17px; line-height:1.6 }
+  @media (max-width:760px) { .page { grid-template-columns:1fr } }
+  /* THE HULLS (hulls.js, copied from the live paper): .sf-onecol = the monohull. scroll.css L688-690, re-said for this sheet. */
+  .page.sf-onecol { grid-template-columns:minmax(0,1fr); max-width:900px; margin-left:auto; margin-right:auto }
+  .page.sf-onecol .rail { display:none }
+  .page.sf-onecol .center .pic { max-height:460px; object-fit:cover }
+  .page.sf-onecol .center .pic-rail { max-height:150px }
+</style></head>
+<body data-paper="feedline"><div class="sheet">
+  <header><h1>THE FEEDLINE</h1><p class="sub">Veni. Vidi. Vi[filtered].</p></header>
+  <div class="deck" id="deck" hidden><button class="cut" id="cut" type="button">fresh scroll</button><span class="count" id="count"></span><span class="book" id="book"></span></div>
+  <div id="body"></div>
+</div>
+<script src="../myview/fill-sort.js?v=20260903093030"></script>
+<script src="../myview/wires.js?v=20260903093030"></script>
+<script src="../myview/wire-db.js?v=20260903093030"></script>
+<script src="../myview/hulls.js?v=20260903093030"></script>
+<script src="bible.js?v=20260903093030"></script>   <!-- the bible as one text, shared with the gear (shell/settings.js) -->
+<script>
+'use strict'
+const $ = id => document.getElementById(id)
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]))   // myview.html
+function when(ts) { if (!ts) return ''; const d = new Date(ts); return isNaN(d) ? '' : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) }   // myview.html
+const LINES = ['The Meal', 'The Build', 'The Herd', 'The Noise']   // the newsie's own order: payouts · what shipped and broke · migration and hiring · what looked true and wasn't
+const FLOOR = 7, HOLD = 5, ARCH_PER_WIRE = 12                        // its floor; the link book adds 12 older options per wire
+// THE KNOBS live in the gear (cards/feedline/settings.html, plain localStorage): how long a paper, wires per cut, candidates per wire
+const knob = (k, d) => { try { const v = localStorage.getItem(k); return v == null || v === '' ? d : v } catch (_) { return d } }
+const PER_WIRE = Math.max(10, parseInt(knob('feedline-per-wire', '40'), 10) || 40)
+const TARGET = parseInt(knob('feedline-target', '70'), 10)           // 0 = everything that earns a 7
+const WIRES_RANGE = /^\d+-\d+$/.test(knob('feedline-wires', '4-8')) ? knob('feedline-wires', '4-8') : '4-8'
+const P = window.parent
+const PICKABLE = () => WIRES.filter(([id]) => !MUSEUM[id])            // RSS wires only; the museums are APIs and fire on a FILL, not here
+
+// ── the sandbox, read and written THROUGH THE PARENT (myview.html archive/latest; never a local SANDBOX — the two-maps trap)
+const SB = () => { try { return P && P.SANDBOX } catch (_) { return null } }
+function latest(prefix) { try { const sb = SB(); if (!sb) return null; const keys = Object.keys(sb).filter(k => k.startsWith(prefix)).sort(); if (!keys.length) return null; const f = sb[keys[keys.length - 1]]; return JSON.parse(f && f.data || 'null') } catch (_) { return null } }
+function get(name) { try { const sb = SB(); const f = sb && sb[name]; return f ? JSON.parse(f.data || 'null') : null } catch (_) { return null } }
+function put(name, obj) { try { const sb = SB(); if (sb) sb[name] = { kind: 'code', ext: 'json', mime: '', data: JSON.stringify(obj) } } catch (_) {} }
+const busy = on => { try { P.postMessage({ paper: 'feedline', state: on ? 'busy' : 'ready' }, '*') } catch (_) {} }
+
+// ── THE BIBLE (Sum 2026-08-22: "let it start its own feedline bible, gets better on each pull, learns the themes and
+//    sources and starts sorting and finding its own rhythm like my 8 acts and 10 beats"). feedline/bible.json in the
+//    sandbox: what it picked, what earned its keep, and the themes and rules IT declares at the end of each cut.
+const BIBLE = 'feedline/bible.json'
+// THE DEFAULT BIBLE (Sum 2026-08-22, twice: first "from these probes", then "minimal, just a few words about each option"):
+// no learned stats, only the desks in a few words each. A fresh sandbox starts here; the newsie's own cuts grow the rest.
+const DEFAULT_BIBLE = { editions: 0, lastAt: 0, seeded: '2026-08-22', wires: {}, sources: {}, themes: [], rules: [], asks: [], notes: [],
+  // THE DESKS, a few words each (Sum 2026-08-22: "a default for the bible, minimal, just a few words about each option, the art,
+  // the local, etc"). What a fresh newsie knows about its own shop before it has cut anything. Its cuts grow the rest.
+  desks: {
+    news: 'the big wires: BBC, Al Jazeera, Sky, FOX, NPR, CNN, Guardian, NYT; the Wire is Google News. Wide, fast, often the same story four ways.',
+    rag: 'tabloids, gossip and satire: TMZ, the Post, The Onion, the Bee, Reductress. Loud; good for the noise line, rarely the meal.',
+    entertainment: "what's on: Variety, Collider, Decider, Screen Rant, Deadline, Rolling Stone, Pitchfork, the Reporter. Releases, tours, deals.",
+    science: 'Ars, Hacker News, Quanta, Phys.org, Nature, NASA, ScienceDaily. What shipped and what broke, and the long patterns.',
+    design: 'ArchDaily, Dezeen, Inhabitat. Buildings, objects, the built world.',
+    weird: 'Oddity Central, Weird Universe, Boing Boing. A little strange, on purpose.',
+    funnies: 'xkcd, SMBC, Poorly Drawn Lines, The Oatmeal, Dinosaur Comics, Questionable Content. Pictures, not stories; they ride the rails.',
+    video: 'the video desks: Al Jazeera, BBC, CNN, DW, France 24 on YouTube. Thumbnails ride with them.',
+    towns: 'the local desks: Utah first (ABC4, Deseret, KSL), then Nevada, Colorado, California, Seattle, New York, Boston, Chicago. Fires, water, the meeting, the rent.',
+    museums: 'the art: Cleveland, the Met, the V&A, keyless and open; pictures for the centre, tuned by the more/less keyword boxes. Not on The Feedline, FILL only.',
+  } }
+const bible = () => { const mine = get(BIBLE); return Object.assign({ editions: 0, lastAt: 0, wires: {}, sources: {}, themes: [], rules: [], asks: [], notes: [], desks: DEFAULT_BIBLE.desks }, mine && mine.editions ? mine : JSON.parse(JSON.stringify(DEFAULT_BIBLE))) }
+function learn(b, ed, rows, items, cut) {
+  b.editions += 1; b.lastAt = ed.at
+  ed.wires.forEach(id => { b.wires[id] = (b.wires[id] || 0) + 1 })
+  items.forEach((it, i) => { const s = b.sources[it.source] || (b.sources[it.source] = { offered: 0, kept: 0 }); s.offered++; if (rows.has(i + 1)) s.kept++ })
+  const merge = (old, add, cap) => { const seen = new Set(old.map(x => x.toLowerCase())); add.forEach(x => { if (x && !seen.has(x.toLowerCase())) { seen.add(x.toLowerCase()); old.push(x) } }); return old.slice(-cap) }
+  b.themes = merge(b.themes, cut.themes, 24); b.rules = merge(b.rules, cut.rule ? [cut.rule] : [], 8)
+  if (ed.ask) b.asks = merge(b.asks, [ed.ask], 5); if (ed.note) b.notes = merge(b.notes, [ed.note], 5)
+  if (window.BIBLE) window.BIBLE.append(b, cut.themes, cut.rule)   // the day's line on the one text the reader sees and edits
+  put(BIBLE, b); return b
+}
+function bibleLines(b) {
+  const B = window.BIBLE; if (!B) return ''
+  const led = B.ledger(b, NAME)
+  return `YOUR BIBLE${b.editions ? '' : ', the short one you start with (nothing cut yet, so you are guessing)'}:\n${B.text(b)}${led ? '\n' + led : ''}${b.editions ? '' : '\nKeep the rules; try one new wire.'}`
+}
+
+// ── THE COOKIES (shell/milk.js writes reads/log.json; the newsie reads it only with the reader's consent, the box on the
+//    ask screen → localStorage milk-consent). What rides the slip: counts by source and category per rating, recent keywords.
+//    Never the headline, never the link. The server never sees the log unless this line is in the slip, and this line is
+//    only in the slip when the reader said so.
+const cookies = () => { const v = get('reads/log.json'); return Array.isArray(v) ? v : [] }
+const consent = () => { try { return localStorage.getItem('milk-consent') === '1' } catch (_) { return false } }
+function cookieLines() {
+  const log = cookies().slice(-80); if (!consent() || !log.length) return ''
+  const by = r => { const m = {}; log.filter(x => x.rating === r).forEach(x => { [x.source, x.category].filter(Boolean).forEach(k => { m[k] = (m[k] || 0) + 1 }) }); return Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([k, n]) => `${k} ×${n}`).join(', ') || 'nothing yet' }
+  const kw = [...new Set(log.slice(-20).flatMap(x => (x.keywords || []).slice(0, 3)))].slice(0, 12).join(', ')
+  return ` THE READER'S COOKIES (${log.length} rated reads; source · category · keywords · rating, never the headline): liked: ${by(1)}. meh: ${by(0)}. did not like: ${by(-1)}. recent keywords: ${kw || 'none'}. Cut toward what they liked; leave out what they did not; say in your note what you leaned on.`
+}
+
+// ── THE MORNING READ (Sum 2026-08-22, "go"): the newsie's own rule had a second half — a held story runs only if the
+//    overnight pull confirms it or a human says go. So: the last three days' drawers ride the next cut as options, marked
+//    "held <day>, you scored it 6", re-scored beside the day's news; and the foot unfolds today's drawer with a RUN IT on
+//    each line, which is the human saying go. A story that ran is not offered again; one still held moves to today's
+//    drawer; one scored under 5 ages out. Drawer files: port/hold-<date>.json (one per day, never rewritten but today's).
+const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') }   // LOCAL date: toISOString is UTC and after 6pm in Utah the drawer got tomorrow's name
+const HOLD_FILE = () => 'port/hold-' + today() + '.json'
+function holdFiles(days) { try { const sb = SB(); if (!sb) return []; const cut = Date.now() - days * 864e5; return Object.keys(sb).filter(k => /^port\/hold-\d{4}-\d{2}-\d{2}\.json$/.test(k)).filter(k => new Date(k.slice(10, 20) + 'T12:00:00').getTime() >= cut).sort().reverse() } catch (_) { return [] } }
+function ranLately(days) { try { const sb = SB(); const cut = Date.now() - days * 864e5, out = new Set(); Object.keys(sb || {}).filter(k => k.startsWith('editions/feedline-') && +k.slice(18, 31) >= cut).forEach(k => { const ed = JSON.parse((sb[k] || {}).data || 'null'); (ed && ed.lines || []).forEach(L => L.ed && ['center', 'left', 'right'].forEach(c => (L.ed[c] || []).forEach(x => out.add(x.link)))) }); return out } catch (_) { return new Set() } }
+// THE THREAD (Sum 2026-08-22: "a thread line on a story that ran before"). ranLately's walk (above), keeping WHEN a story
+// ran, on WHICH line, and its score: the most recent earlier run of every link in the last `days` of editions, the one
+// being drawn excepted. artHTML prints it as one grey line under the story.
+function ranBefore(days, notAt) { const out = new Map(); try { const sb = SB(); const cut = Date.now() - days * 864e5; Object.keys(sb || {}).filter(k => k.startsWith('editions/feedline-') && +k.slice(18, 31) >= cut && +k.slice(18, 31) !== +notAt).sort().reverse().forEach(k => { const ed = JSON.parse((sb[k] || {}).data || 'null'); (ed && ed.lines || []).forEach(L => L.ed && ['center', 'left', 'right'].forEach(c => (L.ed[c] || []).forEach(x => { if (x.link && !out.has(x.link)) out.set(x.link, { at: ed.at, line: L.name, score: x.score }) }))) }) } catch (_) {} return out }
+let THREAD = new Map()
+function heldRecent(days) {
+  const ran = ranLately(days), seen = new Set(), out = []
+  holdFiles(days).forEach(k => { const f = get(k); ((f && f.hold) || []).forEach(h => { if (!h.link || seen.has(h.link) || ran.has(h.link)) return; seen.add(h.link); out.push(Object.assign({}, h, { at: f.at || 0 })) }) })
+  return out
+}
+function todaysDrawer() { const f = get(HOLD_FILE()); return (f && f.hold) || [] }
+const dayOf = t => new Date(t || 0).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+
+// ── the two order slips. The reader is the customer at the counter; the block at the end is the part the press reads.
+function slipPick(b) {
+  const desks = Object.keys(GROUP).filter(g => g !== 'museums').map(g => `${g}: ` + GROUP[g].filter(id => NAME[id]).map(id => `${id} (${NAME[id]})`).join(' · '))
+  return `Order at the counter: one fresh FEEDLINE, please. Step one of two: PICK THE WIRES. Your bible and the desks are in the block below (id in brackets, name after). Choose ${WIRES_RANGE.replace('-', ' to ')} wires from at least 3 different desks; lean on your bible where it has earned it, try one new wire when it hasn't. One line of patter at most, then exactly one fenced block in this shape and nothing after it:\n\`\`\`\nnote: <one sentence on what this cut leans toward>\nask: <one question that would make the next cut better>\nwires: id, id, id\n\`\`\`\n\n\`\`\`slip\n${bibleLines(b)}${cookieLines()}\n\nDESKS\n${desks.join('\n')}\n\`\`\``
+}
+function slipCut(items) {
+  const rows = items.map((it, i) => `${i + 1}. [${it.sourceName}${it.arch ? ' · from the book, first seen ' + dayOf(it.arch) : ''}${it.held ? ' · held ' + dayOf(it.held.at) + ', you scored it ' + it.held.score : ''}] ${it.title}${it.summary ? ' — ' + it.summary.slice(0, 90) : ''}`)
+  return `Step two of two: CUT THE FEEDLINE from the ${items.length} items in the block below, pulled from the wires you picked (plus the link book's older options for those wires). Keep everything that earns its place: ${TARGET ? 'a full paper is about ' + TARGET + ' stories, the Port Side View\'s front page runs about seventy; aim there and do not stop at a round number' : 'keep every story that earns a 7 or better, however many that is'}. Leave the rest out. Lines by number: 1 The Meal (payouts, who got fed today) · 2 The Build (what shipped, what broke) · 3 The Herd (migration, hiring, the pattern) · 4 The Noise (debunked, rage cycle, what looked true and wasn't). For each kept item: its line and a score 0 to 10. Seven to ten means it belongs on the page today, and most of what you keep should land there; five or six is a genuine maybe only, held till morning, and hold at most five of them; under five is out. Do not hold half the paper. The headlines run as the wires wrote them; do not rewrite them. Rows marked 'from the book' are older links the fresh pull did not bring today; keep one only if it still matters. Rows marked 'held' are ones you held till morning: this is the morning; run it if today's news confirms it, hold it again if it is still a maybe, score it under 5 to let it go. Then add to your bible: the themes you saw today (three to six, short) and one rule you want to remember next cut. One line of patter at most, then exactly one fenced block, nothing after it. One row per kept item: the item's NUMBER from the list, the line number, the score, separated by colons, like these two rows:\n\`\`\`\n12:1:8\n57:4:6\nthemes: a, b, c\nrule: <one sentence>\n\`\`\`\n\n\`\`\`items\n${rows.join('\n')}\n\`\`\``
+}
+// PASS TWO (Sum 2026-08-22: "let newsie fire, see and edit, so a two pass"): the paper as it stands, as a numbered
+// list, goes back once; the newsie returns move / drop / hold / lead rows, or the single word keep. Applied before
+// the draw. One consult, a few seconds on Haiku.
+function slipLook(ran) {
+  const byLine = LINES.map((name, k) => `[${k + 1} ${name}]\n` + ran.filter(x => x.line === k + 1).map(x => `${x.n} · ${x.score}/10 · ${x.title} (${x.sourceName})`).join('\n'))
+  return `Step three, the last: your Feedline as it stands is in the block below, ${ran.length} stories in four lines, each with its item number. Move, drop, hold or lead anything that sits wrong; leave the rest alone. "lead" puts a story at the top of the paper. One line of patter at most, then exactly one fenced block with rows like these, or the single word keep if nothing changes:\n\`\`\`\nmove 12 to 3\ndrop 7\nhold 9\nlead 4\n\`\`\`\n\n\`\`\`paper\n${byLine.join('\n\n')}\n\`\`\``
+}
+function parseLook(text) {
+  const ops = { move: [], drop: [], hold: [], lead: [], keep: false }
+  fence(text).forEach(l => {
+    const t = l.replace(/^[-*•#]+\s*/, '').toLowerCase()
+    if (/^keep\b/.test(t)) { ops.keep = true; return }
+    let m = t.match(/^move\s+(\d{1,3})\s+(?:to|→|->)\s+(?:line\s*)?(\d)\b/); if (m) { ops.move.push([+m[1], +m[2]]); return }
+    m = t.match(/^(drop|hold|lead)\s+(\d{1,3})\b/); if (m) ops[m[1]].push(+m[2])
+  })
+  return ops
+}
+const fence = t => { const m = String(t || '').match(/```[a-z]*\n([\s\S]*?)```/i); return (m ? m[1] : String(t || '')).split(/\r?\n/).map(l => l.trim()).filter(Boolean) }
+function parsePick(text) {
+  const out = { note: '', ask: '', wires: [] }, known = new Set(PICKABLE().map(([id]) => id))
+  fence(text).forEach(l => {
+    let k = l.match(/^note\s*:\s*(.+)$/i); if (k) { out.note = k[1].trim(); return }
+    k = l.match(/^ask\s*:\s*(.+)$/i); if (k) { out.ask = k[1].trim(); return }
+    k = l.match(/^wires?\s*:\s*(.+)$/i); if (k) k[1].split(/[,\s·]+/).map(w => w.trim().toLowerCase()).forEach(w => { if (known.has(w) && !out.wires.includes(w)) out.wires.push(w) })
+  })
+  return out
+}
+// THE LINE LEXICON: when a row comes back without its line (Haiku wrote n:<item>:<score>:<headline> on the first cut,
+// copying the placeholder "n" and dropping the line), the headline is bucketed here. The newsie's own four lines,
+// said as words; pass two will let it move what this gets wrong.
+const LINE_WORDS = [
+  /\b(pay|paid|pays|payout|wage|salary|\$|million|billion|price|cost|rent|tariff|refund|fee|fine|tax|fund|budget|revenue|profit|bonus|union|lawsuit)/i,
+  /\b(ship|shipped|launch|release|patch|update|vaccine|trial|fix|fixes|recall|build|built|platform|app|tool|model|chip|rocket|satellite|outage|broke|broken|bug|audit|safety|database|exposed|leak)/i,
+  /\b(hiring|hires|layoff|laid off|jobs|migrat|moves?\b|moving|exodus|arrive|settlers?|settlement|families|refugee|deport|border|lobbying|merger|acqui|pattern|trend|wave|herd|war|attack|strike|missile|troops|kills?|killed|ceasefire|invasion)/i,
+  /\b(fake|false|hoax|debunk|fact-check|viral|rumou?r|claim|misleading|conspiracy|outrage|rage|hype|scam|manipulat)/i,
+]
+const bucket = hed => { const i = LINE_WORDS.findIndex(re => re.test(hed)); return i < 0 ? 2 : i + 1 }   // nothing matched → The Build, the widest line
+function parseCut(text, n) {
+  const out = { rows: new Map(), themes: [], rule: '', raw: String(text || '').slice(0, 3000) }
+  fence(text).forEach(l => {
+    let k = l.match(/^themes?\s*:\s*(.+)$/i); if (k) { out.themes = k[1].split(/[,·;]+/).map(x => x.trim()).filter(x => x && x.length < 40).slice(0, 8); return }
+    k = l.match(/^rule\s*:\s*(.+)$/i); if (k) { out.rule = k[1].trim().slice(0, 200); return }
+    const m = l.replace(/^[-*•#]+\s*/, '').replace(/^n\s*[:|,]\s*/i, '').match(/^(\d{1,3})\s*[:|,]\s*(\d{1,2})(?:\s*[:|,]\s*(\d{1,2}))?(?:\s*[:|,]\s*(.*))?$/)
+    if (!m) return
+    const i = +m[1]; if (i < 1 || i > n) return
+    let line, score
+    if (m[3] != null) { line = +m[2]; score = +m[3] } else { line = 0; score = +m[2] }   // two numbers only: the line is missing
+    const rest = (m[4] || '').trim()   // a headline Haiku writes anyway is read for the bucket, never printed (Sum 2026-08-22: "drop that feature")
+    if (line < 1 || line > 4) line = bucket(rest || '')
+    out.rows.set(i, { line, score: Math.max(0, Math.min(10, score)) })
+  })
+  return out
+}
+
+// ── the order goes in AS THE READER (conduct, src 'human'): a customer at the counter, not a colleague consulting
+//    (Sum 2026-08-22: "thinks its claude? a customer is asking for a paper"). The docked newsie bar is the glass box;
+//    the order and the answer both show in its stream, like anything the reader types there.
+// THE COUNTER ROAD lives in breakdown.js (loaded after this script, used only on a press): the fenced order, the folding
+// ui, the one line to the reader. One factory for every sheet.
+const order = text => window.COUNTER.order(text)
+const sayToReader = lines => window.COUNTER.say(lines)
+
+// ── the pull: the same ladder FILL uses (wires.js grab + parse), a few wires at once
+async function pull(ids) {
+  const got = await Promise.allSettled(ids.map(async id => { const w = PICKABLE().find(([x]) => x === id); const items = parse(await grab(w[2])); return { id, total: items.length, items: items.slice(0, PER_WIRE), all: items } }))
+  const items = [], perWire = [], failed = [], all = []
+  got.forEach((r, i) => {
+    if (r.status !== 'fulfilled') { failed.push(NAME[ids[i]]); return }
+    perWire.push(NAME[r.value.id] + ' ' + r.value.items.length + (r.value.total > PER_WIRE ? ' of ' + r.value.total : ''))
+    r.value.items.forEach((x, k) => items.push({ id: r.value.id + ':' + k + ':' + x.link, title: x.title, link: x.link, source: r.value.id, sourceName: NAME[r.value.id], ts: x.ts || 0, summary: x.desc || '', image: x.img ? { url: x.img, w: x.imgW, h: null } : null }))
+    r.value.all.forEach(x => all.push({ link: x.link, title: x.title, source: r.value.id, ts: x.ts || 0 }))   // the WHOLE wire goes in the book, not only the 25 on the slip
+  })
+  // THE LINK BOOK (wire-db.js): every link seen today goes in; what the book still holds for these wires and today's
+  // pull did not bring comes back as archive options — a line each, no picture, no summary, until the newsie keeps one.
+  let book = null
+  try { if (window.WIRE_DB) { book = window.WIRE_DB.upsert(all); const seen = items.map(x => x.link)
+    window.WIRE_DB.archive(ids, seen, ARCH_PER_WIRE).forEach((r, k) => items.push({ id: 'book:' + k + ':' + r.l, title: r.t, link: r.l, source: r.s, sourceName: NAME[r.s] || r.s, ts: r.ts || 0, summary: '', image: null, arch: r.f })) } } catch (_) {}
+  return { items, perWire, failed, book }
+}
+
+// ── the cut, start to finish. Stage text lands on the sheet; the bar's roll turns meanwhile.
+let running = null
+async function cut() {
+  if (running) return running
+  running = (async () => {
+    busy(true); $('deck').hidden = true
+    try {
+      const b = bible()
+      stage('the newsie is picking wires…')
+      const pick = parsePick(await order(slipPick(b)))
+      if (!pick.wires.length) throw new Error('the newsie named no wires I know')
+      stage('pulling ' + pick.wires.map(id => NAME[id]).join(' · ') + '…')
+      const pulled = await pull(pick.wires)
+      if (!pulled.items.length) throw new Error('nothing came down the wires' + (pulled.failed.length ? ' (could not reach ' + pulled.failed.join(', ') + ')' : ''))
+      // the morning read: the last three days' held stories ride along, re-scored beside today's news
+      const carried = heldRecent(3).filter(h => !pulled.items.some(x => x.link === h.link)).slice(0, 20)
+      carried.forEach((h, k) => pulled.items.push({ id: 'held:' + k + ':' + h.link, title: h.title, link: h.link, source: '', sourceName: h.source || '', ts: 0, summary: '', image: null, held: { score: h.score, at: h.at, line: h.line } }))
+      stage('the newsie is cutting ' + pulled.items.length + ' headlines' + (carried.length ? ' (' + carried.length + ' held till morning)' : '') + '… read another paper, this keeps going.')
+      const c = parseCut(await order(slipCut(pulled.items)), pulled.items.length)
+      let ran = [], hold = [], dropped = []
+      pulled.items.forEach((it, i) => { const row = c.rows.get(i + 1); if (!row) { dropped.push(it); return } const x = Object.assign({}, it, row, { n: i + 1 }); (row.score >= FLOOR ? ran : row.score >= HOLD ? hold : dropped).push(x) })
+      // pass two: the newsie sees the paper and moves what sits wrong
+      let look = { move: [], drop: [], hold: [], lead: [], keep: true }, pass2 = { moved: 0, dropped: 0, held: 0, led: 0 }
+      if (ran.length) {
+        stage('the newsie is looking the paper over…')
+        try { look = parseLook(await order(slipLook(ran))) } catch (e) { look.error = String(e && e.message || e) }
+        look.move.forEach(([n, L]) => { const x = ran.find(y => y.n === n); if (x && L >= 1 && L <= 4 && x.line !== L) { x.line = L; pass2.moved++ } })
+        look.drop.forEach(n => { const i = ran.findIndex(y => y.n === n); if (i >= 0) { dropped.push(ran.splice(i, 1)[0]); pass2.dropped++ } })
+        look.hold.forEach(n => { const i = ran.findIndex(y => y.n === n); if (i >= 0) { hold.push(ran.splice(i, 1)[0]); pass2.held++ } })
+        look.lead.forEach(n => { const x = ran.find(y => y.n === n); if (x) { x.lead = true; pass2.led++ } })
+      }
+      // PULL DETAILS for what the newsie kept from the book (Sum: "then pull to get pics and summaries"): one page fetch each,
+      // og:image + description; a link that will not answer is marked dead in the book and points at the wayback machine.
+      const fromBook = ran.concat(hold).filter(x => x.arch)
+      if (fromBook.length) { stage('pulling pictures and summaries for ' + fromBook.length + ' from the link book…'); await Promise.allSettled(fromBook.map(enrich)) }
+      const leads = ran.filter(x => x.lead).map(x => String(x.title).toLowerCase())   // the sorter's megaphone: a lead rides to the front of its line's center
+      const lines = LINES.map((name, k) => { const mine = ran.filter(x => x.line === k + 1).sort((a, b) => (b.lead ? 1 : 0) - (a.lead ? 1 : 0) || b.score - a.score); return { name, n: mine.length, ed: mine.length ? window.FILL_SORT.sortEdition(mine, { centerMax: 1e9, railMax: 1e9, centerShare: 0.42, boost: leads }) : null } })
+      const ed = { at: Date.now(), note: pick.note, ask: pick.ask, wires: pick.wires, perWire: pulled.perWire, failed: pulled.failed, book: pulled.book, lines, themes: c.themes, rule: c.rule, raw: c.raw, pass2, look, counts: { pulled: pulled.items.length, kept: c.rows.size, ran: ran.length, hold: hold.length, dropped: dropped.length } }
+      ed.bible = learn(b, ed, c.rows, pulled.items, c)
+      put('editions/feedline-' + ed.at + '.json', ed)
+      put(HOLD_FILE(), { at: ed.at, hold: hold.map(x => ({ id: x.id, title: x.title, source: x.sourceName, link: x.link, line: LINES[x.line - 1], score: x.score })) })   // its drawer, not the page; today's is rewritten on every cut
+      draw(ed)
+      sayToReader([`📰 The Feedline is cut: ${ran.length} stories on the floor in four lines, ${hold.length} held till morning, from ${pick.wires.map(id => NAME[id]).join(', ')}.`, pick.note, pick.ask])   // the paper and the newsie's own line to the reader, in the clear
+    } catch (e) { $('body').innerHTML = `<p class="empty">the cut failed: ${esc(e && e.message || e)}</p>`; $('deck').hidden = false }
+    finally { busy(false); running = null }
+  })()
+  return running
+}
+async function enrich(it) {
+  try {
+    const html = String(await grab(it.link) || '')
+    const meta = n => { const m = html.match(new RegExp('<meta[^>]+(?:property|name)=["\']' + n + '["\'][^>]*content=["\']([^"\']+)', 'i')) || html.match(new RegExp('<meta[^>]+content=["\']([^"\']+)["\'][^>]*(?:property|name)=["\']' + n + '["\']', 'i')); return m ? m[1].replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'") : '' }
+    if (html.length < 500 || /<title>[^<]*(404|not found|page not found)/i.test(html)) throw new Error('gone')
+    const img = meta('og:image') || meta('twitter:image'), desc = meta('og:description') || meta('description') || meta('twitter:description')
+    if (img) it.image = { url: img, w: null, h: null }
+    if (desc) it.summary = desc.slice(0, 360)
+  } catch (_) { try { window.WIRE_DB && window.WIRE_DB.markDead(it.link) } catch (__) {} it.dead = true; it.link = window.WIRE_DB ? window.WIRE_DB.wayback(it.link) : it.link }
+}
+function stage(t) { $('body').innerHTML = `<div class="cutting" aria-live="polite"><div class="fold" aria-hidden="true"><i></i><i></i><i></i></div><div>${esc(t)}</div></div>` }
+
+// ── drawing: My View's story markup (myview.html artHTML) under the newsie's honest headline; the wire's own headline stays as provenance
+function artHTML(it, center) {
+  const pic = it.image && it.image.url ? `<img class="pic${center ? '' : ' pic-rail'}" src="${esc(it.image.url)}" alt="${esc(it.title)}" loading="lazy" onerror="this.remove()">` : ''
+  return `<article data-t="${esc((it.title + ' ' + it.summary).toLowerCase())}">${pic}<h3>${it.lead ? '<span class="lead" aria-label="the newsie leads with this">lead</span> ' : ''}<a href="${esc(it.link)}" target="_blank" rel="noopener">${esc(it.title)}</a></h3>` +
+    `<div class="meta">${esc(it.sourceName || it.source)}${when(it.ts) ? ' · ' + esc(when(it.ts)) : ''}<span class="score" aria-label="the newsie scored it ${it.score} of 10">${it.score}/10</span></div>` +
+    ((it.dead || it.arch) ? `<p class="wire">${it.dead ? 'the link died; this goes to the wayback machine' : 'from the link book'}</p>` : '') +
+    (it.held ? `<p class="wire thread">held ${esc(dayOf(it.held.at))}, ${it.held.score}/10; running today</p>` : it.human ? `<p class="wire thread">from the drawer; you ran it</p>` : THREAD.has(it.link) ? (t => `<p class="wire thread">ran ${esc(dayOf(t.at))} on ${esc(t.line)}, ${t.score}/10; back today</p>`)(THREAD.get(it.link)) : '') +
+    (it.summary ? `<p class="sum">${esc(String(it.summary).slice(0, center ? 220 : 140))}</p>` : '') + `</article>`
+}
+function draw(ed) {
+  THREAD = ranBefore(14, ed.at)   // the thread: earlier runs of today's stories (two weeks back)
+  const note = (ed.note || ed.ask) ? `<div class="note"><b>the newsie</b>${esc(ed.note)}${ed.ask ? ' <em>' + esc(ed.ask) + '</em>' : ''}</div>` : ''
+  const lines = ed.lines.map(L => !L.ed ? `<section class="line"><h2>${esc(L.name)}<small>nothing made the floor</small></h2></section>` :
+    `<section class="line"><h2>${esc(L.name)}<small>${L.n}</small></h2><div class="page">` +
+    `<div class="col rail"><h3 class="colhead">left rail</h3>${L.ed.left.map(it => artHTML(it, false)).join('')}</div>` +
+    `<div class="col center"><h3 class="colhead">the pictures</h3>${L.ed.center.map(it => artHTML(it, true)).join('')}</div>` +
+    `<div class="col rail"><h3 class="colhead">right rail</h3>${L.ed.right.map(it => artHTML(it, false)).join('')}</div></div></section>`).join('')
+  const c = ed.counts || {}, b = ed.bible || bible()
+  // THE FOOT — My View's bar (cards/myview/myview.html L344-346), the four lines' sortEdition stats (fill-sort.js L177-188) summed.
+  // Sum 2026-08-22: "no need to say the quit part out loud, the bottom bar on my view, add that to feedline and that is enough".
+  const st = ed.lines.reduce((a, L) => { const s = (L.ed && L.ed.stats) || {}; ['centerCount', 'leftCount', 'rightCount', 'centerHeight', 'leftHeight', 'rightHeight', 'dedupedCount', 'boostedCount'].forEach(k => { a[k] = (a[k] || 0) + (s[k] || 0) }); return a }, {})
+  $('body').innerHTML = note + lines + `<div class="foot">cut ${esc(new Date(ed.at).toLocaleString())} · pulled ${c.pulled || 0} items: ${(ed.perWire || []).map(esc).join(' · ')}${ed.book ? ' · ' + ed.book.fresh + ' new to the link book' : ''}` +
+    `<br>${c.ran || 0} ran: ${st.centerCount || 0} in the center · ${st.leftCount || 0} / ${st.rightCount || 0} on the rails (heights ${st.centerHeight || 0} · ${st.leftHeight || 0} / ${st.rightHeight || 0}) · ${st.dedupedCount || 0} duplicates folded · ${st.boostedCount || 0} led · ${c.hold || 0} held till morning · ${c.dropped || 0} left out` +
+    (ed.pass2 && (ed.pass2.moved + ed.pass2.dropped + ed.pass2.held + ed.pass2.led) ? ` · second look: ${ed.pass2.moved} moved · ${ed.pass2.dropped} dropped · ${ed.pass2.held} held · ${ed.pass2.led} led` : '') +
+    (ed.failed && ed.failed.length ? `<br>could not reach: ${ed.failed.map(esc).join(' · ')}` : '') +
+    (b.editions ? `<br>the bible, ${b.editions} cut${b.editions > 1 ? 's' : ''} in: themes ${esc(b.themes.join(', ') || 'none yet')}${b.rules.length ? ' · rule: ' + esc(b.rules[b.rules.length - 1]) : ''}` : '') + `</div>`
+  $('deck').hidden = false; $('count').textContent = c.ran + ' stories on the floor'; bookLine(); drawerLine(ed)
+  if (window.BREAKDOWN) window.BREAKDOWN.dress($('body'))   // the newsie's cap on every headline (breakdown.js)
+  if (window.HULLS) { document.querySelectorAll('.page').forEach(window.HULLS.forget); window.HULLS.apply() }   // fold each line to the reader's hull (hulls.js)
+}
+function showAsk() {
+  const b = bible()
+  const n = cookies().length
+  $('body').innerHTML = `<div class="ask"><p>Ask the newsie to cut you a fresh scroll?</p><small>It picks a few wires, pulls them, and cuts the paper itself; the headlines run as the wires wrote them. It spends tokens doing it.${b.editions ? ' Its bible has ' + b.editions + ' cut' + (b.editions > 1 ? 's' : '') + ' in it.' : ' First cut: it will be guessing.'}</small>` +
+    (n ? `<label class="consent"><input type="checkbox" id="consent"${consent() ? ' checked' : ''}> let the newsie read my cookies: ${n} rated read${n > 1 ? 's' : ''} (source, category, keywords, rating; never the headline or the link). They ride the order to the model with it.</label>` : '') +
+    `<div class="row"><button class="cut" id="go" type="button">cut it</button><button class="no" id="no" type="button">not now</button></div></div>`
+  const cb = $('consent'); if (cb) cb.addEventListener('change', () => { try { localStorage.setItem('milk-consent', cb.checked ? '1' : '0') } catch (_) {} })
+  $('go').addEventListener('click', cut)
+  $('no').addEventListener('click', () => { const mine = latest('editions/feedline-'); if (mine && mine.lines) { draw(mine); return } $('body').innerHTML = `<p class="empty">No edition cut. The fresh scroll button is up top when you want one.</p>`; $('deck').hidden = false })   // "not now" returns to the paper that was there, never a blank sheet
+}
+// THE DRAWER under the foot: today's held stories, each with RUN IT (the human saying go)
+let CURRENT = null
+function drawerLine(ed) {
+  CURRENT = ed
+  const held = todaysDrawer(); const old = document.getElementById('drawer'); if (old) old.remove()
+  if (!held.length) return
+  const d = document.createElement('details'); d.id = 'drawer'; d.className = 'drawer'
+  d.innerHTML = `<summary>the drawer: ${held.length} held till morning</summary><ul>` + held.map((h, i) => `<li><b>${esc(h.title)}</b> <span class="meta">${esc(h.source || '')} · ${esc(h.line || '')} · ${h.score}/10</span> <button type="button" class="run" data-i="${i}">run it</button></li>`).join('') + `</ul>`
+  d.addEventListener('click', e => { const b = e.target.closest('.run'); if (!b) return; e.preventDefault(); runHeld(held[+b.dataset.i]) })
+  $('body').appendChild(d)
+}
+function runHeld(h) {
+  const ed = CURRENT; if (!ed || !h) return
+  const k = Math.max(0, LINES.indexOf(h.line)); const L = ed.lines[k]
+  const mine = L.ed ? [].concat(L.ed.center, L.ed.left, L.ed.right) : []
+  mine.push({ id: h.id, title: h.title, link: h.link, sourceName: h.source, source: '', ts: 0, summary: '', image: null, line: k + 1, score: FLOOR, human: true })
+  L.ed = window.FILL_SORT.sortEdition(mine, { centerMax: 1e9, railMax: 1e9, centerShare: 0.42 }); L.n = mine.length
+  ed.counts.ran = (ed.counts.ran || 0) + 1; ed.counts.hold = Math.max(0, (ed.counts.hold || 1) - 1)
+  put('editions/feedline-' + ed.at + '.json', ed)
+  const f = get(HOLD_FILE()) || { at: ed.at, hold: [] }; f.hold = (f.hold || []).filter(x => x.link !== h.link); put(HOLD_FILE(), f)
+  draw(ed)
+}
+// THE BOOK LINE on the deck: how big the link book is (the cap is in the gear)
+function bookLine() {
+  const el = $('book'); if (!el || !window.WIRE_DB) return
+  const st = window.WIRE_DB.stats()
+  el.textContent = `· link book ${st.total}${st.dead ? ' (' + st.dead + ' dead)' : ''}`   // the cap and the other knobs live in the gear (settings.html), not on the paper
+}
+$('cut').addEventListener('click', showAsk)
+;(function landing() { const mine = latest('editions/feedline-'); if (mine && mine.lines) draw(mine); else showAsk() })()
+</script>
+<script src="../myview/breakdown.js?v=20260903093030"></script>
+</body></html>

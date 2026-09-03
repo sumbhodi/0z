@@ -1,0 +1,226 @@
+/* lb-wx-overlay.css — the BIG easy-read overlay
+ * ─────────────────────────────────────────────────────────────
+ * Used by: clock.html (lb-wx-overlay.js builds the DOM)
+ * Vars expected: --card-bg, --card, --card-dim, --text, --muted
+ * click a widget tile → pairs + tip, big type. outside/Esc/✕ closes.
+ * ─────────────────────────────────────────────────────────────
+ */
+
+.wx-ov {
+  position: fixed;
+  inset: 0;
+  z-index: 400;                       /* above .detail-overlay (100) */
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 8, 20, 0.6);
+}
+.wx-ov.open { display: flex; }
+
+.wx-ov-card {
+  position: relative;
+  background: var(--card-bg, var(--card));
+  color: var(--text);
+  border-radius: 16px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+  padding: 26px 30px;
+  width: min(540px, 92vw);
+  max-height: 84vh;
+  overflow-y: auto;
+  outline: none;
+}
+
+.wx-ov-x {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;                        /* palsy rule — 30px+ target */
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: var(--card-bg-dim, var(--card-dim));
+  color: var(--text-muted, var(--muted));
+  font-size: 17px;
+  cursor: pointer;
+}
+.wx-ov-x:hover { color: var(--text); }
+
+.wx-ov-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 6px;
+}
+
+.wx-ov-img   { height: 68px; width: auto; flex-shrink: 0; }
+.wx-ov-emoji { font-size: 58px; line-height: 1; flex-shrink: 0; }
+
+.wx-ov-value {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.wx-ov-label {
+  font-size: 16px;
+  color: var(--text-muted, var(--muted));
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-top: 4px;
+}
+
+.wx-ov-jewel {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-left: 12px;
+}
+
+/* THE CONTRAST LAW (Sum 2026-07-20): tan-on-tan is for name tags — a word or two.
+   anything you actually READ (sentences, synopses, explainers) wears the ink. */
+.wx-ov-prose {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 8px 0 2px;
+}
+
+.wx-ov-pairs { margin-top: 12px; }
+
+.wx-ov-pair {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--card-bg-dim, var(--card-dim));
+}
+.wx-ov-pair:last-child { border-bottom: none; }
+
+.wx-ov-key {
+  font-size: 15px;
+  color: var(--text-muted, var(--muted));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.wx-ov-val {
+  font-size: 21px;
+  font-weight: 700;
+  text-align: right;
+  line-height: 1.35;
+}
+
+.wx-ov-tip {
+  border-top: 1px solid var(--card-bg-dim, var(--card-dim));
+  margin-top: 14px;
+  padding-top: 12px;
+}
+
+.wx-ov-tip-head {
+  font-size: 14px;
+  color: var(--text-muted, var(--muted));
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+/* the click-hint on headline cards — a whole sentence, so it wears the ink
+   (contrast law); same whisper geometry as the tip head. */
+.wx-ov-hint {
+  font-size: 14px;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.wx-ov-tip-row {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* tile icon pngs on the clock face (swapped in for the emoji) */
+.aq-img { height: 24px; width: auto; display: block; margin: 0 auto; }
+.rs-img { height: 38px; width: auto; display: block; }
+
+/* face arrange — drag ghosts + the G-latch (clock-arrange.js) */
+.cw-dragging { opacity: 0.35; }
+.cw-latched  { outline: 3px solid #e05555; outline-offset: 2px; border-radius: 8px; }
+
+/* headlines overlay wings — ‹ › ride the CARD's edges (Sum: "on edge of card") */
+.hl-nav {
+  position: fixed;
+  top: 50%;
+  width: 52px;                        /* palsy rule — big target */
+  height: 88px;
+  border: none;
+  border-radius: 14px;
+  background: var(--card-bg, var(--card));
+  color: var(--text);
+  font-size: 40px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  z-index: 2;                         /* above the card it straddles */
+}
+/* card is width min(540px, 92vw), centered — the wing centers ON its edge */
+.hl-prev { left:  calc(50% - min(270px, 46vw)); transform: translate(-50%, -50%); }
+.hl-next { right: calc(50% - min(270px, 46vw)); transform: translate(50%, -50%); }
+.hl-nav:hover { filter: brightness(1.08); }
+
+/* kōan art — a picture with each one (Sum: "just an image, if you click it") */
+.wx-ov-art {
+  display: block;
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 14px;
+}
+
+/* the SPLASH read (Sum 2026-07-18: "full page splash scroll with pics") — a wider
+   page, the art full-bleed at the top, the writing scrolling beneath it. */
+.wx-ov-card.wx-ov-splash {
+  width: min(720px, 94vw);
+  padding-top: 0;
+}
+
+.wx-ov-splash .wx-ov-hero {
+  width: calc(100% + 60px);
+  margin: 0 -30px 18px;
+  border-radius: 16px 16px 0 0;
+  max-height: 44vh;
+  object-fit: cover;
+}
+
+.wx-ov-splash .wx-ov-x { z-index: 2; }
+
+/* the full-page read — long hand-rolled pieces (sittings, kōan pages).
+   pre-wrap is LAW here: blank lines are silence, stanzas are the writing. */
+.wx-ov-read {
+  white-space: pre-wrap;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text);
+  margin-top: 14px;
+}
+
+/* 👍👎 — taste, remembered for the generators */
+.wx-ov-fb { display: flex; gap: 10px; margin-top: 14px; }
+
+.wx-ov-fb-btn {
+  min-width: 52px;
+  min-height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: var(--card-bg-dim, var(--card-dim));
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+}
+
+.wx-ov-fb-btn.on { background: var(--btn, #2a3140); box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4); }
+
+.wx-ov-fb-img { height: 26px; width: auto; display: block; margin: 0 auto; }

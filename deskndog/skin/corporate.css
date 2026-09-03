@@ -1,0 +1,43 @@
+/* corporate.css — CORPORATE skin = DARK default (Sum 2026-07-10). the NAKED look, dark twin of clinical:
+   "peak SaaS" == a generic dark scaffold nobody styled. no glass, no ghost-font, no violet void — that was
+   too much personality. flat charcoal, one boring SaaS-blue accent, solid readable text. the shared strip
+   (no top bars / bevels / textures) lives in clinical.css under [data-tier="clean"] and dresses this too.
+   room for gags: the joke is now that it's soullessly DEFAULT, not that it's spooky. */
+
+[data-skin="corporate"] {
+  --bg:          #17181c;   /* flat charcoal — no gradient, no glow */
+  --surface:     #202227;   /* a card */
+  --surface-1: #202227;   /* = --surface — settings sheets sit FULLY OPAQUE (the token was undefined and the sheet went glass, Sum 2026-07-23) */
+  --surface-2:   #282b31;   /* raised inside a card */
+  --line:        #34373e;   /* the plain hairline seam */
+
+  --text:        #e6e7ea;   /* solid, readable — NOT ghost anymore */
+  --text-dim:    #9aa0a8;
+
+  --accent:      #7d9cff;   /* one boring SaaS blue */
+  --accent-deep: #5c7fe6;
+
+  --topbar-bg:   #1b1c20;
+  --btn:         #262930;
+  --btn-sh:      #14151a;
+
+  --bevel-light: transparent;   /* NO bevel */
+  --bevel-dark:  transparent;
+
+  --head-toto:   #282b31; --head-toto-ink:   #e6e7ea;
+  --head-coder:  #282b31; --head-coder-ink:  #e6e7ea;
+  --head-writer: #282b31; --head-writer-ink: #e6e7ea;
+  --head-tutor:  #282b31; --head-tutor-ink:  #e6e7ea;
+  --nurse-paper: #202227;
+  --cj-off:      #3a3e46;
+}
+
+/* relight the cards that run dark by default → flat charcoal (matches the skin, not glass) */
+/* the nurse's ＋ (Sum 2026-08-29: "quick contrast fix, nurse plus button on corporate — make
+   background white and cross red or black, copy from clinical for just that skin; all other bots
+   and skins good contrast on plus"). The nurse bar paints itself white on every theme; corporate's
+   dark --btn made the ＋ a black box on white. Values copied from clinical.css: --accent #ab1420
+   (the nurse's cross, L76) on #ffffff (--nurse-paper, L91). */
+[data-skin="corporate"] .agent-bar[data-agent="nurse"] .ab-add { background: #ffffff; color: #ab1420; border-color: #ab1420; }
+[data-skin="corporate"] .p-monaco { --mc-bg: #1c1e23; --mc-border: #34373e; --mc-amber: #9fb2d6; --mc-screen: #16181c; --mc-green-lit: #7d9cff; }
+[data-skin="corporate"] .p-webview { --wv-bg: #202227; }

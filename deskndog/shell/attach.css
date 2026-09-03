@@ -1,0 +1,37 @@
+/* attach.css — the + on an agent bar (attach a file or shoot a photo) + the
+   attachment card it drops into the convo. routing + sandbox live in attach.js. */
+
+/* the + button, pushed to the right of the agent-bar header */
+.ab-add {
+  margin-left: auto; flex-shrink: 0;
+  width: 30px; height: 30px; border-radius: var(--r-sm);
+  background: var(--btn); color: var(--text); border: 1px solid var(--line);
+  font-size: 20px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.ab-add:hover { border-color: var(--accent); color: var(--accent); }
+.agent-bar.collapsed .ab-add { display: none; }   /* a rail has no room for it */
+
+/* the attach menu — drops below the + (photo · screenshot · file). (Sum 2026-08-17) LABELLED now,
+   matching OZ_SNAP_ROW on the wellness cards: icon + word, so it survives the clean tier even where
+   the icon has no art yet. link/teleport removed. */
+.ab-menu { position: absolute; top: 50px; right: 8px; z-index: 35; display: none; flex-direction: column; gap: 4px; padding: 6px; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
+.ab-menu.open { display: flex; }
+.agent-bar.collapsed .ab-menu { display: none; }
+.ab-mi { min-width: 40px; height: 40px; padding: 0 12px; border-radius: var(--r-sm); background: var(--btn); border: 1px solid var(--line); color: var(--text); font: inherit; font-size: var(--fs-chrome); line-height: 1; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+.ab-mi:hover { border-color: var(--accent); }
+
+/* 📖 the "read it" button on a pasted link (opens OZ_READER) */
+.att-read { margin-top: 8px; background: var(--btn); color: var(--text); border: 1px solid var(--line);
+  border-radius: var(--r-sm); padding: 6px 12px; font-size: var(--fs-chrome); font-weight: 700; cursor: pointer; }
+.att-read:hover { border-color: var(--accent); color: var(--accent); }
+
+/* the attachment card dropped into the convo */
+.att-card { display: flex; gap: var(--space-sm); align-items: flex-start; padding: var(--space-sm); background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); margin: 4px 0; }
+.att-img { width: 72px; height: 72px; object-fit: cover; border-radius: var(--r-sm); flex-shrink: 0; cursor: zoom-in; }   /* every thumb expands — the delegated lightbox (attach.js) */
+/* the FILE LINK — a filename as hypertext, opens its app (attach.js delegation). 90s blue on
+   the room's white page; lighter on the convo's dark glass. */
+.att-file { background: none; border: none; padding: 0; font: inherit; font-size: inherit; color: #7ab8ff; text-decoration: underline; cursor: pointer; }
+.aiol .att-file { color: #0000ee; font-family: inherit; }
+.att-meta { font-size: var(--fs-chrome); line-height: 1.4; color: var(--text); }
+.att-dim { color: var(--text-dim); }

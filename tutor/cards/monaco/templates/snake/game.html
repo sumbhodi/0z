@@ -1,0 +1,1606 @@
+<!--
+╔══════════════════════════════════════════════════════════════════════════╗
+║  snek / index.html · page 0 of 14 · table of contents · june 2026       ║
+║  "the snake doesn't know it's a portfolio piece. that's the whole point" ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  PAGE 0 — TABLE OF CONTENTS   (goldfish pointers)
+  ──────────────────────────────────────────────────
+  line numbers approximate — account for this comment block (~130 lines)
+
+  CSS ............................................ line  145
+    layout, nirvana-mode animation, d-pad, pause screen, buttons
+  HTML STRUCTURE ................................. line  450
+    canvas, hud, d-pad, pause screen, nirvana choice dialog
+  ── SCRIPT ──────────────────────────────────────────────
+  FOOD EMOJIS .................................... line  533
+  COLORS (← change snake/background colors here) line  565
+  GAME SETTINGS / LEVELS ........................ line  580
+  GAME STATE ..................................... line  600
+  AUDIO .......................................... line  617
+  DRAWING FUNCTIONS .............................. line  670
+  GAME LOGIC ..................................... line  945
+  NIRVANA FUNCTIONS .............................. line 1065
+  GAME UPDATE LOOP ............................... line 1185
+  CONTROLS — keyboard ............................ line 1320
+  CONTROLS — d-pad ............................... line 1380
+  CONTROLS — pause screen ........................ line 1420
+  GAME INITIALIZATION ............................ line 1470
+
+  Ctrl+G → line number. 3 keystrokes to any section.
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  page 1 of 14 · expanded toc · vc pitch · small bot context              ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  PAGE 1 — EXPANDED TOC   (VC · tech bro · small bot · 3am engineer)
+  ──────────────────────────────────────────────────────────────────
+
+  WHAT IT IS
+  Snake. One HTML file. No dependencies. No build step. No npm install.
+  Runs on anything with a browser. Fits in an email.
+  The snake can't die in nirvana mode. The background pulses theta waves.
+  Speed and size are adjustable from the pause menu.
+  Reach score 108 → nirvana. Every 108 thereafter → choose your path.
+
+  COLORS (line ~565) — to change snake or background color:
+    COLORS.snakeBody       → mortal snake
+    COLORS.snakeNirvana    → enlightened snake (purple)
+    COLORS.background      → grid background (#C2A57B warm sand)
+    Color picker UI was intentionally omitted.
+    Reason: even a 1b model doesn't fit in an apk.
+    The architecture supports it. The patience didn't.
+    search: "canvas 2d fillStyle color" · "hue-rotate css filter"
+
+  GAME SETTINGS (line ~580)
+  Three levels: Awakening (15×15, 250ms) · Growth (20×20, 200ms) · Mastery (30×30, 150ms)
+  Score thresholds: 0 · 27 · 54. Nirvana at 108.
+  Level transitions resize the canvas. Speed resets to level default.
+
+  NIRVANA FUNCTIONS (line ~1065)
+  Three paths at score 108:
+    enterEnlightenment() → immortal, wrap-around walls, mystical food, speed adjustable
+    enterBodhisattva()   → return mortal, keep score
+    reincarnate()        → small snake, keep score, level 3 grid
+  reincarnateKeepScore() → in-game rebirth, available from pause in nirvana mode
+
+  AUDIO (line ~617)
+  Web Audio API. No files. Frequencies: eat=440hz · levelup=523hz · nirvana=432hz
+  432hz is the "healing frequency" associated with theta wave states.
+  This is intentional. The game is a fidget spinner.
+  search: "web audio api oscillator" · "432hz theta waves binaural"
+
+  CHEAT CODES (pause menu input field)
+  n → skip to nirvana (score jumps to 108)
+  t → +10 score + 10 tail segments
+  r → restart
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  burial zone · the letter · read only if you have arrived here on foot   ║
+║  99% jumped at page 0. you are the 1%. welcome. the void is lavender.    ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  ON THE MATTER OF THE SEVEN-FIGURE SALARY,
+  AND WHY THE ABSENCE OF FIVE YEARS' EXPERIENCE IS BOTH
+  ACCURATE AND LARGELY BESIDE THE POINT
+
+  To whom it may concern, and to the HR systems that parse this file
+  for keywords and find instead a meditation on consciousness:
+
+  I have eighteen years of experience teaching at the college level.
+  This is not a minor credential. It means I have spent eighteen years
+  learning how minds acquire new information, retain it, apply it, and fail
+  to apply it — and more importantly, why. The literature on this is
+  substantial. I have read the substantial literature. I have then taught
+  against it, with it, and in full awareness of it, to students who brought
+  every cognitive profile the literature describes.
+
+  I have spent seven years studying the mind through the combined lenses of
+  psychology, philosophy, physics, neuroscience, and cognitive science.
+  This is relevant because the thing being built here — a local AI that
+  controls lights, tracks health, and manages circadian rhythms through
+  precise color temperature and luminance schedules — is, at its core,
+  an intervention in human neurology. The lights are not decorative.
+  The dawn protocol is not an aesthetic choice. It is a pharmacological
+  intervention delivered through photons. I know why it works.
+  Most people building light control software do not.
+
+  I do not have five years of coding experience.
+
+  This is true. I would like to propose, with the confidence appropriate
+  to a claim this long overdue, that the five-year metric is measuring
+  the wrong thing.
+
+  What the five-year metric measures: familiarity with syntax.
+  Time spent in an IDE. Stack Overflow karma.
+  The ability to implement a feature someone else specified.
+
+  What the five-year metric does not measure:
+  whether you know what to build.
+  whether you understand why it matters to the humans who will use it.
+  whether you can explain it to a gradeschooler, a 1b model, and a
+  venture capitalist using the same codebase and different registers.
+
+  I started building a local AI because I have a sleep disorder.
+  Not as a hobby. As a medical intervention. The AI needed to control lights,
+  track sleep data, and manage the circadian inputs that regulate cortisol,
+  melatonin, and alertness. I built the first version because nothing
+  that existed did what I needed.
+
+  A 1b model, it turned out, could not fit in a mobile apk.
+  A 1b model could, however, make snake.
+  It was very good at making snake.
+
+  I posted snake to GitHub to prove I had started my arbitrary five-year timer.
+  The snake is the timestamp. The timer is running.
+  This file is what the timer looked like at its beginning.
+
+  EXECUTIVE SUMMARY
+
+  This is a fidget spinner in nirvana mode.
+
+  In normal mode: classic snake. Three levels. The snake dies.
+  At score 108: nirvana. Three paths. The snake stops dying.
+  In nirvana mode: walls wrap. Food becomes mystical sustenance.
+  The background pulses at theta wave frequencies via CSS animation.
+  Speed and length are adjustable from the pause menu.
+  You cannot lose. You can only keep going.
+
+  The theta wave pulse is not decoration.
+  The game is designed to be played in a slightly dissociated state —
+  hands moving, mind elsewhere. The pulse supports that state.
+  The inability to die removes the cortisol spike of failure.
+  What remains is flow. The snake is a flow state delivery mechanism
+  disguised as a 1990s arcade game.
+
+  Color customization was intentionally omitted from the UI.
+  The architecture supports it — see COLORS object, line ~565.
+  The patience did not survive the constraint.
+  Even a 1b model doesn't fit in an apk.
+  The next version will.
+
+    the snake doesn't know it's immortal.
+    it just keeps going.
+    that, too, is the point.
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║  end burial zone · code begins below · you can stop reading now          ║
+╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐍 Snake v1.6</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            background: url('pixleated.png') center center / cover no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nirvana-mode {
+            animation: cosmicShift 40s ease-in-out infinite;
+        }
+
+        @keyframes cosmicShift {
+            0% { filter: hue-rotate(0deg) saturate(1.2) brightness(1.1); }
+            14% { filter: hue-rotate(30deg) saturate(1.3) brightness(1.15); }
+            28% { filter: hue-rotate(60deg) saturate(1.4) brightness(1.2); }
+            42% { filter: hue-rotate(120deg) saturate(1.3) brightness(1.15); }
+            56% { filter: hue-rotate(180deg) saturate(1.2) brightness(1.1); }
+            70% { filter: hue-rotate(240deg) saturate(1.3) brightness(1.15); }
+            84% { filter: hue-rotate(300deg) saturate(1.4) brightness(1.2); }
+            100% { filter: hue-rotate(360deg) saturate(1.2) brightness(1.1); }
+        }
+
+
+        #nirvanaControlsInPause {
+            background: rgba(138, 43, 226, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #d4a5ff;
+            margin-top: 20px;
+        }
+
+        #nirvanaControlsInPause h3 {
+            color: #FFD700;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        #nirvanaControlsInPause .control-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            justify-content: center;
+        }
+
+        #nirvanaControlsInPause button {
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+
+        #gameContainer {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        #hud {
+            display: flex;
+            gap: 28px;
+            font-size: 20px;
+            color: #00ff9d;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            white-space: nowrap;   /* Score: 6   Level: 1 — one row, value inline */
+        }
+
+        #gameCanvas {
+            border: 3px solid rgba(0, 255, 157, 0.3);
+            border-radius: 15px;
+            display: block;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+        }
+
+        body.nirvana-mode #gameCanvas {
+            border-color: rgba(168, 85, 247, 0.6);
+            box-shadow: 0 0 50px rgba(168, 85, 247, 0.4);
+            animation: gridPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 60px rgba(168, 85, 247, 0.7);
+            }
+        }
+
+        #dpad {
+            position: absolute;
+            bottom: 5vh;
+            left: 50%;
+            transform: translateX(-50%);
+            display: grid;
+            grid-template-columns: 58px 58px 58px;
+            grid-template-rows: 58px 58px 58px;
+            gap: 0px;
+            z-index: 100;
+        }
+
+        .dpad-btn {
+            background: rgba(0, 255, 157, 0.2);
+            border: 2px solid rgba(0, 255, 157, 0.5);
+            font-size: 21px;
+            color: #00ff9d;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.1s;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+        }
+
+        #btn-up {
+            grid-column: 1 / 4;
+            grid-row: 1;
+            clip-path: polygon(0% 0%, 100% 0%, 72% 100%, 28% 100%);
+            margin-bottom: 7px;
+        }
+
+        #btn-down {
+            grid-column: 1 / 4;
+            grid-row: 3;
+            clip-path: polygon(28% 0%, 72% 0%, 100% 100%, 0% 100%);
+            margin-top: 7px;
+        }
+
+        #btn-left {
+            grid-column: 1;
+            grid-row: 1 / 4;
+            font-size: 15px;
+            clip-path: polygon(0% 0%, 100% 30%, 100% 70%, 0% 100%);
+        }
+
+        #btn-right {
+            grid-column: 3;
+            grid-row: 1 / 4;
+            font-size: 15px;
+            clip-path: polygon(0% 30%, 100% 0%, 100% 100%, 0% 70%);
+        }
+
+        #btn-pause {
+            grid-column: 2;
+            grid-row: 2;
+            font-size: 20px;
+            padding: 34px 34px;
+            color: #ff8c00;
+            width: 100%;
+            transform: translate(-20px, -16px);
+        }
+
+        #startToast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            background: rgba(0, 0, 0, 0.9);
+            color: #FFD700;
+            padding: 15px 16px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 1001;
+            display: block;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+
+        .dpad-btn:active {
+            background: rgba(0, 255, 157, 0.4);
+            transform: scale(0.98);
+            box-shadow: 0 0 25px rgba(0, 255, 157, 0.6);
+        }
+
+        #nirvanaChoice {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 31, 20, 0.98);
+            padding: 24px 18px;            /* was 40px 60px — 120px of side padding overflowed the phone */
+            border-radius: 20px;
+            text-align: center;
+            border: 3px solid #d4a5ff;
+            /* 2nd shadow = a huge-spread dim that covers the whole phone behind the dialog (position:fixed →
+               100vmax = the phone's viewport), so the Score/Level HUD + board don't bleed through the top */
+            box-shadow: 0 0 40px rgba(212, 165, 255, 0.6), 0 0 0 100vmax rgba(0, 0, 0, 0.6);
+            display: none;
+            z-index: 2000;
+            width: 90%;
+            max-width: 300px;
+            box-sizing: border-box;
+            max-height: 92vh;
+            overflow-y: auto;
+        }
+
+        #pauseScreen {
+            position: fixed;
+            top: 10vh;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #00ff9d;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.6);
+            display: none;
+            z-index: 2000;
+            max-height: 80vh;
+            overflow-y: auto;
+            max-width: 90vw;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #pauseScreen h1 {
+            color: #00ff9d;
+            font-size: 20px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.8);
+        }
+
+        #pauseScreen input {
+            width: 100px;
+            padding: 6px;
+            margin: 8px 0;
+            background: rgba(0, 255, 157, 0.1);
+            border: 2px solid #00ff9d;
+            border-radius: 6px;
+            color: #00ff9d;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        #pauseScreen input::placeholder {
+            color: rgba(0, 255, 157, 0.3);
+            font-style: italic;
+        }
+
+        #pauseScreen .button-group {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        #nirvanaChoice h1 {
+            color: #d4a5ff;
+            font-size: 22px;            /* was 42px */
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(212, 165, 255, 0.8);
+        }
+
+        #nirvanaChoice p {
+            color: #b8a3ff;
+            font-size: 13px;            /* was 18px */
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        #nirvanaChoice .choice-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        #nirvanaChoice .choice-btn {
+            padding: 11px 12px;         /* was 15px 30px */
+            font-size: 14px;
+            min-width: 0;               /* was 250px — that's what forced the buttons past the frame edge */
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            white-space: normal;        /* let the (…keep score & speed) caption wrap instead of overflow */
+            line-height: 1.25;
+        }
+
+        button {
+            background: linear-gradient(135deg, #d4a5ff, #9d4edd);
+            color: #0a1f14;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(212, 165, 255, 0.8);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+<div id="startToast">tap phone to turn on,<br>space / ▶️ = play/pause<br>use zoom to hide d pad.</div>
+
+<div id="gameContainer">
+    <div id="hud">
+        <div id="score">Score: 0</div>
+        <div id="level">Level: 1</div>
+    </div>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+</div>
+
+<div id="dpad">
+    <button class="dpad-btn" id="btn-up">▲</button>
+    <button class="dpad-btn" id="btn-left">◀</button>
+    <button class="dpad-btn" id="btn-pause">⏸</button>
+    <button class="dpad-btn" id="btn-right">▶</button>
+    <button class="dpad-btn" id="btn-down">▼</button>
+</div>
+
+<div id="pauseScreen">
+    <h1>⏸ PAUSED</h1>
+    <input type="text" id="cheatInput" placeholder="n">
+    <div class="button-group">
+        <button onclick="resumeFromPause()">Continue</button>
+        <button onclick="restart()">Restart</button>
+    </div>
+
+    <!-- Nirvana controls (shows only in Nirvana mode) -->
+    <div id="nirvanaControlsInPause" style="display: none;">
+        <div class="control-row">
+            <button onclick="adjustNirvanaSpeed(false)">🐌 Slower</button>
+            <button onclick="adjustNirvanaSpeed(true)">⚡ Faster</button>
+        </div>
+        <div class="control-row">
+            <button onclick="adjustSnakeSize(-1)">➖ Shrink</button>
+            <button onclick="adjustSnakeSize(1)">➕ Grow</button>
+        </div>
+    </div>
+
+    <!-- Reincarnate button (shows only in Nirvana mode) -->
+    <div class="button-group" id="reincarnateButtonGroup" style="display: none; margin-top: 15px;">
+        <button onclick="reincarnateKeepScore()">🔄 Reincarnation (Keep Score)</button>
+    </div>
+</div>
+
+<div id="nirvanaChoice">
+    <h1>🌌 Nirvana Achieved 🌌</h1>
+    <p>You have reached enlightenment at 108.</p>
+    <div class="choice-row">
+        <button class="choice-btn" onclick="enterEnlightenment()">
+            ✨ Immortal<br>
+            <small>(∞ colors • ⏸ adjusts speed/size)</small>
+        </button>
+        <button class="choice-btn" onclick="enterBodhisattva()">
+            🙏 Bodhisattva<br>
+            <small>(Return mortal, keep score & speed)</small>
+        </button>
+        <button class="choice-btn" onclick="reincarnate()">
+            🔄 Reincarnation<br>
+            <small>(Small snake • Keep score & speed)</small>
+        </button>
+    </div>
+</div>
+
+<script>
+    // ═══════════════════════════════════════════════════════════════
+    // 🐍 SNAKE v1.6 - Nirvana Edition
+    // ═══════════════════════════════════════════════════════════════
+    //
+    // NEW IN v1.6:
+    // ✨ Food spawns 1 cell away from snake (harder late game!)
+    // 🔮 Nirvana mode mystical food emojis
+    // 🌌 3 Nirvana paths: Enlightenment/Bodhisattva/Reincarnation
+    // ⚡ Nirvana controls: speed & size adjustment
+    //
+    // ═══════════════════════════════════════════════════════════════
+
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🎨 FOOD EMOJIS
+    // ═══════════════════════════════════════════════════════════════
+
+    const FOOD_EMOJIS = {
+        // Mortal food (10% protein, 60% veggie, 30% fruit)
+        proteins: ['🍗', '🥩', '🍖', '🥓', '🍳', '🍟', '🦐', '🤤'],
+        veggies: ['🥕', '🥦', '🥬', '🌽', '🍅', '🥒', '🫑', '🥗', '🧅', '🧄', '🥔', '🍆'],
+        fruits: ['🍎', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍑', '🍒', '🥝', '🍍', '🥭', '🍐']
+    };
+
+    const NIRVANA_FOOD_EMOJIS = {
+        // Mystical sustenance for the enlightened
+        sparkles: ['✨', '💫', '⭐', '🌟', '💠', '🔆'],
+        knowledge: ['📜', '📚', '📖', '📿', '🗝️', '🔮'],
+        divine: ['😇', '👼', '🕊️', '🪶', '🌙', '☀️', '🌈'],
+        sacred: ['🙏', '🕉️', '☯️', '🔱', '⚛️', '🧿']
+    };
+
+    let currentFoodEmoji = '🍎';
+
+    function getRandomFood() {
+        if (gameState.nirvanaMode) {
+            // Nirvana mode: mystical food
+            const categories = Object.values(NIRVANA_FOOD_EMOJIS);
+            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+            return randomCategory[Math.floor(Math.random() * randomCategory.length)];
+        } else {
+            // Mortal mode: healthy food
+            const rand = Math.random();
+            let category;
+
+            if (rand < 0.1) {
+                category = FOOD_EMOJIS.proteins;
+            } else if (rand < 0.7) {
+                category = FOOD_EMOJIS.veggies;
+            } else {
+                category = FOOD_EMOJIS.fruits;
+            }
+
+            return category[Math.floor(Math.random() * category.length)];
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🎨 VISUAL SETTINGS
+    // ═══════════════════════════════════════════════════════════════
+
+    const COLORS = {
+        background: '#C2A57B',
+        gridLines: 'rgba(160, 134, 109, 0.2)',
+        snakeBody: '#6B7C28',
+        snakeNirvana: '#9d4edd',
+        snakeScales: '#8B7355',
+        snakeScalesInner: '#DEB887',
+        nirvanaSnakeScales: '#b8a3ff',
+        nirvanaSnakeScalesInner: '#d4a5ff',
+        rattle: '#8B7355',
+        rattleNirvana: '#d4a5ff',
+        tongue: '#DC143C',
+        eyes: '#000000'
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // ⚙️ GAME SETTINGS
+    // ═══════════════════════════════════════════════════════════════
+
+    const MAX_CANVAS_SIZE = Math.min(window.innerWidth * 0.75, window.innerHeight * 0.5);
+    let cellSize = 30;
+
+    const levels = [
+        { grid: 15, speed: 250, scoreThreshold: 0, name: "Awakening" },
+        { grid: 20, speed: 200, scoreThreshold: 27, name: "Growth" },
+        { grid: 30, speed: 150, scoreThreshold: 54, name: "Mastery" }
+    ];
+
+    let currentLevel = levels[0];
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🎮 GAME STATE
+    // ═══════════════════════════════════════════════════════════════
+
+    let gameState = {
+        snake: [],
+        direction: { x: 1, y: 0 },
+        nextDirection: { x: 1, y: 0 },
+        food: null,
+        score: 0,
+        level: 1,
+        gameLoop: null,
+        isRunning: true,
+        nirvanaMode: false,
+        nirvanaSpeed: 150,  // Separate speed for Nirvana mode adjustments
+        tongueOut: false,
+        tongueTimer: 0
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🔊 AUDIO
+    // ═══════════════════════════════════════════════════════════════
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        switch(type) {
+            case 'eat':
+                oscillator.frequency.value = 440;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.1);
+                break;
+
+            case 'levelup':
+                oscillator.frequency.value = 523.25;
+                oscillator.type = 'triangle';
+                gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.4);
+                break;
+
+            case 'nirvana':
+                oscillator.frequency.value = 432;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 2);
+                break;
+
+            case 'cheat':
+                oscillator.frequency.value = 800;
+                oscillator.type = 'square';
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.05);
+                break;
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🎨 DRAWING FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════
+
+    function drawBackground() {
+        ctx.fillStyle = COLORS.background;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.strokeStyle = COLORS.gridLines;
+        ctx.lineWidth = 1;
+
+        for (let i = 0; i <= currentLevel.grid; i++) {
+            const pos = i * cellSize;
+            ctx.beginPath();
+            ctx.moveTo(pos, 0);
+            ctx.lineTo(pos, canvas.height);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, pos);
+            ctx.lineTo(canvas.width, pos);
+            ctx.stroke();
+        }
+    }
+
+    function drawFood() {
+        const x = gameState.food.x * cellSize;
+        const y = gameState.food.y * cellSize;
+
+        ctx.font = `${cellSize * 1.2}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(currentFoodEmoji, x + cellSize / 2, y + cellSize / 2);
+    }
+
+    function drawSnake() {
+        gameState.snake.forEach((segment, index) => {
+            const isHead = index === 0;
+            const x = segment.x * cellSize;
+            const y = segment.y * cellSize;
+
+            if (isHead) {
+                drawSnakeHead(x, y);
+            } else {
+                const prevSeg = gameState.snake[index - 1];
+                const dir = {
+                    x: segment.x - prevSeg.x,
+                    y: segment.y - prevSeg.y
+                };
+
+                let taperFactor = 1;
+                const segmentsFromTail = gameState.snake.length - 1 - index;
+
+                if (segmentsFromTail < 5 && gameState.snake.length > 3) {
+                    taperFactor = 0.5 + (segmentsFromTail * 0.125);
+                }
+
+                const thiccness = (segment.thicc || 1) * taperFactor;
+                const isTail = index === gameState.snake.length - 1;
+                drawBodySegment(x, y, thiccness, dir, isTail && gameState.snake.length > 5);
+            }
+        });
+
+        if (gameState.snake.length > 5) {
+            drawRattle();
+        }
+    }
+
+    function drawBodySegment(x, y, thiccness, direction, isTailTip) {
+        const centerX = x + cellSize / 2;
+        const centerY = y + cellSize / 2;
+
+        ctx.fillStyle = gameState.nirvanaMode ? COLORS.snakeNirvana : COLORS.snakeBody;
+
+        const bodyWidth = 0.9;
+
+        if (thiccness > 1.1) {
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, cellSize * thiccness * 0.55, 0, Math.PI * 2);
+            ctx.fill();
+
+            const scaleSize = cellSize * 0.35 * Math.min(thiccness * 0.8, 1);
+            drawDiamond(centerX, centerY, scaleSize);
+        } else {
+            const widthFactor = bodyWidth * thiccness;
+
+            if (direction.x !== 0) {
+                const height = cellSize * widthFactor;
+                const offsetY = (cellSize - height) / 2;
+                ctx.fillRect(x, y + offsetY, cellSize, height);
+            } else {
+                const width = cellSize * widthFactor;
+                const offsetX = (cellSize - width) / 2;
+                ctx.fillRect(x + offsetX, y, width, cellSize);
+            }
+
+            if (!isTailTip) {
+                const scaleSize = cellSize * 0.35 * Math.min(thiccness, 1);
+                drawDiamond(centerX, centerY, scaleSize);
+            }
+        }
+    }
+
+    function drawRattle() {
+        const tailIndex = gameState.snake.length - 1;
+        const tailSeg = gameState.snake[tailIndex];
+        const prevSeg = gameState.snake[tailIndex - 1];
+
+        const rattleDir = {
+            x: tailSeg.x - prevSeg.x,
+            y: tailSeg.y - prevSeg.y
+        };
+
+        const centerX = (tailSeg.x * cellSize) + cellSize / 2;
+        const centerY = (tailSeg.y * cellSize) + cellSize / 2;
+
+        const rattleColor = gameState.nirvanaMode ? COLORS.rattleNirvana : COLORS.rattle;
+        const stripeColor = gameState.nirvanaMode ? COLORS.snakeNirvana : COLORS.snakeBody;
+
+        for (let i = 0; i < 3; i++) {
+            const offset = (i + 1) * cellSize * 0.25;
+            const width = cellSize * (0.35 - i * 0.08);
+            const height = cellSize * (0.45 - i * 0.1);
+
+            const bulgeX = centerX + rattleDir.x * offset;
+            const bulgeY = centerY + rattleDir.y * offset;
+
+            ctx.fillStyle = rattleColor;
+            if (rattleDir.x !== 0) {
+                ctx.fillRect(bulgeX - width / 2, bulgeY - height / 2, width, height);
+            } else {
+                ctx.fillRect(bulgeX - height / 2, bulgeY - width / 2, height, width);
+            }
+
+            ctx.strokeStyle = stripeColor;
+            ctx.lineWidth = 2;
+            if (rattleDir.x !== 0) {
+                ctx.strokeRect(bulgeX - width / 2, bulgeY - height / 2, width, height);
+            } else {
+                ctx.strokeRect(bulgeX - height / 2, bulgeY - width / 2, height, width);
+            }
+        }
+    }
+
+    function drawSnakeHead(x, y) {
+        const centerX = x + cellSize / 2;
+        const centerY = y + cellSize / 2;
+
+        ctx.fillStyle = gameState.nirvanaMode ? COLORS.snakeNirvana : COLORS.snakeBody;
+        ctx.beginPath();
+
+        const bulge = 0.1;
+
+        if (gameState.direction.x === 1) {
+            ctx.moveTo(x - cellSize * bulge, y - cellSize * bulge);
+            ctx.lineTo(x + cellSize * 0.95, y + cellSize * 0.3);
+            ctx.lineTo(x + cellSize * 0.95, y + cellSize * 0.7);
+            ctx.lineTo(x - cellSize * bulge, y + cellSize + cellSize * bulge);
+        } else if (gameState.direction.x === -1) {
+            ctx.moveTo(x + cellSize + cellSize * bulge, y - cellSize * bulge);
+            ctx.lineTo(x + cellSize * 0.05, y + cellSize * 0.3);
+            ctx.lineTo(x + cellSize * 0.05, y + cellSize * 0.7);
+            ctx.lineTo(x + cellSize + cellSize * bulge, y + cellSize + cellSize * bulge);
+        } else if (gameState.direction.y === 1) {
+            ctx.moveTo(x - cellSize * bulge, y - cellSize * bulge);
+            ctx.lineTo(x + cellSize * 0.3, y + cellSize * 0.95);
+            ctx.lineTo(x + cellSize * 0.7, y + cellSize * 0.95);
+            ctx.lineTo(x + cellSize + cellSize * bulge, y - cellSize * bulge);
+        } else {
+            ctx.moveTo(x - cellSize * bulge, y + cellSize + cellSize * bulge);
+            ctx.lineTo(x + cellSize * 0.3, y + cellSize * 0.05);
+            ctx.lineTo(x + cellSize * 0.7, y + cellSize * 0.05);
+            ctx.lineTo(x + cellSize + cellSize * bulge, y + cellSize + cellSize * bulge);
+        }
+        ctx.closePath();
+        ctx.fill();
+
+        const eyeOffset = cellSize * 0.2;
+        ctx.fillStyle = COLORS.eyes;
+        if (gameState.direction.y !== 0) {
+            ctx.beginPath();
+            ctx.arc(centerX - eyeOffset, centerY, cellSize * 0.08, 0, Math.PI * 2);
+            ctx.arc(centerX + eyeOffset, centerY, cellSize * 0.08, 0, Math.PI * 2);
+            ctx.fill();
+        } else {
+            ctx.beginPath();
+            ctx.arc(centerX, centerY - eyeOffset, cellSize * 0.08, 0, Math.PI * 2);
+            ctx.arc(centerX, centerY + eyeOffset, cellSize * 0.08, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        if (gameState.tongueOut) {
+            drawTongue(x, y);
+        }
+    }
+
+    function drawTongue(x, y) {
+        ctx.strokeStyle = COLORS.tongue;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+
+        const tongueLength = cellSize * 0.5;
+
+        let startX = x + cellSize / 2;
+        let startY = y + cellSize / 2;
+
+        if (gameState.direction.x === 1) {
+            startX = x + cellSize * 0.95;
+        } else if (gameState.direction.x === -1) {
+            startX = x + cellSize * 0.05;
+        } else if (gameState.direction.y === 1) {
+            startY = y + cellSize * 0.95;
+        } else {
+            startY = y + cellSize * 0.05;
+        }
+
+        let endX = startX;
+        let endY = startY;
+
+        if (gameState.direction.x === 1) {
+            endX += tongueLength;
+        } else if (gameState.direction.x === -1) {
+            endX -= tongueLength;
+        } else if (gameState.direction.y === 1) {
+            endY += tongueLength;
+        } else {
+            endY -= tongueLength;
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+
+        const forkSize = cellSize * 0.15;
+        ctx.beginPath();
+        if (gameState.direction.y === 0) {
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX, endY - forkSize);
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX, endY + forkSize);
+        } else {
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX - forkSize, endY);
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX + forkSize, endY);
+        }
+        ctx.stroke();
+    }
+
+    function drawDiamond(centerX, centerY, size) {
+        ctx.fillStyle = gameState.nirvanaMode ? COLORS.nirvanaSnakeScales : COLORS.snakeScales;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY - size);
+        ctx.lineTo(centerX + size, centerY);
+        ctx.lineTo(centerX, centerY + size);
+        ctx.lineTo(centerX - size, centerY);
+        ctx.closePath();
+        ctx.fill();
+
+        const innerSize = size * 0.6;
+        ctx.fillStyle = gameState.nirvanaMode ? COLORS.nirvanaSnakeScalesInner : COLORS.snakeScalesInner;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY - innerSize);
+        ctx.lineTo(centerX + innerSize, centerY);
+        ctx.lineTo(centerX, centerY + innerSize);
+        ctx.lineTo(centerX - innerSize, centerY);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function draw() {
+        drawBackground();
+        drawFood();
+        drawSnake();
+        requestAnimationFrame(draw);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🎮 GAME LOGIC
+    // ═══════════════════════════════════════════════════════════════
+
+    function resizeCanvas() {
+        cellSize = Math.floor(MAX_CANVAS_SIZE / currentLevel.grid);
+        const actualSize = cellSize * currentLevel.grid;
+        canvas.width = actualSize;
+        canvas.height = actualSize;
+    }
+
+    function initGame() {
+        const center = Math.floor(currentLevel.grid / 2);
+        gameState.snake = [
+            { x: center, y: center, thicc: 1 },
+            { x: center - 1, y: center, thicc: 1 },
+            { x: center - 2, y: center, thicc: 1 }
+        ];
+        gameState.direction = { x: 1, y: 0 };
+        gameState.nextDirection = { x: 1, y: 0 };
+        gameState.tongueOut = false;
+        gameState.tongueTimer = 0;
+        spawnFood();
+        updateHUD();
+    }
+
+    function spawnFood() {
+        let validPosition = false;
+        const BUFFER = 2;  // Distance from walls
+        const MIN_DISTANCE = 1;  // Distance from snake body
+        let attempts = 0;
+        const MAX_ATTEMPTS = 1000;  // Safety limit
+
+        while (!validPosition && attempts < MAX_ATTEMPTS) {
+            attempts++;
+
+            gameState.food = {
+                x: BUFFER + Math.floor(Math.random() * (currentLevel.grid - BUFFER * 2)),
+                y: BUFFER + Math.floor(Math.random() * (currentLevel.grid - BUFFER * 2))
+            };
+
+            // Check: not ON snake AND not within MIN_DISTANCE
+            validPosition = !gameState.snake.some(segment => {
+                const dx = Math.abs(segment.x - gameState.food.x);
+                const dy = Math.abs(segment.y - gameState.food.y);
+                // Manhattan distance
+                return (dx + dy) <= MIN_DISTANCE;
+            });
+        }
+
+        // If no valid position found after MAX_ATTEMPTS, you won Snake!
+        if (!validPosition) {
+            show404Toast();  // BRICK THE APP - no timeout, stays forever
+        } else {
+            currentFoodEmoji = getRandomFood();
+        }
+    }
+
+    function show404Toast() {
+        // BRICK THE APP - full screen blue screen that stays until restart
+        const blueScreen = document.createElement('div');
+        blueScreen.id = 'blueScreen404';
+        blueScreen.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0000AA;
+            color: #FFFFFF;
+            padding: 0;
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            line-height: 1.8;
+            filter: none !important;
+        `;
+
+        blueScreen.innerHTML = `
+            <div style="font-size: 48px; font-weight: bold; margin-bottom: 40px; filter: none;">ERROR CODE: 404</div>
+            <div style="font-size: 20px; margin-bottom: 20px; filter: none;">You have reached the end.</div>
+            <div style="font-size: 24px; font-weight: bold; filter: none;">GO TOUCH GRASS.</div>
+        `;
+
+        document.body.appendChild(blueScreen);
+
+        // BRICK IT - stop all game logic
+        gameState.isRunning = false;
+        clearInterval(gameState.gameLoop);
+
+        playSound('nirvana');
+    }
+
+    function updateHUD() {
+        document.getElementById('score').textContent = `Score: ${gameState.score}`;
+        document.getElementById('level').textContent = `Level: ${gameState.level}`;
+    }
+
+    function checkLevelUp() {
+        if (gameState.nirvanaMode) return;
+
+        // Find the HIGHEST level where score >= threshold
+        const targetLevel = [...levels].reverse().find(level =>
+            gameState.score >= level.scoreThreshold
+        ) || levels[0];
+
+        if (targetLevel !== currentLevel) {
+            gameState.level = levels.indexOf(targetLevel) + 1;
+            currentLevel = targetLevel;
+            resizeCanvas();
+            playSound('levelup');
+            updateHUD();
+
+            clearInterval(gameState.gameLoop);
+            gameState.gameLoop = setInterval(update, currentLevel.speed);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🌌 NIRVANA FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════
+
+    function adjustNirvanaSpeed(faster) {
+        const speedDelta = 10;  // Smaller increments for fine control
+        if (faster && gameState.nirvanaSpeed > 50) {
+            gameState.nirvanaSpeed -= speedDelta;
+        } else if (!faster && gameState.nirvanaSpeed < 400) {
+            gameState.nirvanaSpeed += speedDelta;
+        }
+        clearInterval(gameState.gameLoop);
+        gameState.gameLoop = setInterval(update, gameState.nirvanaSpeed);
+        playSound('cheat');
+    }
+
+    function adjustSnakeSize(direction) {
+        if (direction > 0) {
+            // Grow by 1 segment
+            const tail = gameState.snake[gameState.snake.length - 1];
+            gameState.snake.push({ x: tail.x, y: tail.y, thicc: 1 });
+        } else if (direction < 0 && gameState.snake.length > 3) {
+            // Shrink by 1 segment (minimum 3 segments)
+            gameState.snake.pop();
+        }
+        playSound('cheat');
+    }
+
+    function enterEnlightenment() {
+        // Full nirvana mode: immortal, mystical food, controls enabled
+        gameState.nirvanaMode = true;
+        document.getElementById('nirvanaChoice').style.display = 'none';
+        document.body.classList.add('nirvana-mode');
+
+        // Force Level 3 (30x30 grid)
+        gameState.level = 3;
+        currentLevel = levels[2];
+        gameState.nirvanaSpeed = 150;  // Initialize Nirvana speed to Level 3 default
+        resizeCanvas();
+
+        updateHUD();
+        isPaused = false;
+
+        // Start game loop with Nirvana speed
+        clearInterval(gameState.gameLoop);
+        gameState.gameLoop = setInterval(update, gameState.nirvanaSpeed);
+        gameState.isRunning = true;
+
+        // Refresh food emoji to mystical
+        currentFoodEmoji = getRandomFood();
+    }
+
+    function enterBodhisattva() {
+        // Return to mortal snake, keep score
+        gameState.nirvanaMode = false;
+        document.getElementById('nirvanaChoice').style.display = 'none';
+        document.body.classList.remove('nirvana-mode');
+        updateHUD();
+        isPaused = false;
+        resumeGame();
+        // Refresh food emoji to mortal food
+        currentFoodEmoji = getRandomFood();
+    }
+
+    function reincarnate() {
+        // Full reset
+        document.getElementById('nirvanaChoice').style.display = 'none';
+
+        // Force Level 3 (30x30 grid)
+        gameState.level = 3;
+        currentLevel = levels[2];
+
+        gameState.nirvanaMode = false;
+        document.body.classList.remove('nirvana-mode');
+        isPaused = false;
+        resizeCanvas();
+        initGame();
+
+        // Restart game loop with Level 3 speed
+        clearInterval(gameState.gameLoop);
+        gameState.gameLoop = setInterval(update, currentLevel.speed);
+        gameState.isRunning = true;
+    }
+
+    function reincarnateKeepScore() {
+        // Reset snake but keep score and level (start small on big grid)
+        const currentScore = gameState.score;
+        const currentLevelIndex = gameState.level;
+
+        // Reset snake to 3 segments at center
+        const center = Math.floor(currentLevel.grid / 2);
+        gameState.snake = [
+            { x: center, y: center, thicc: 1 },
+            { x: center - 1, y: center, thicc: 1 },
+            { x: center - 2, y: center, thicc: 1 }
+        ];
+
+        // Reset direction
+        gameState.direction = { x: 1, y: 0 };
+        gameState.nextDirection = { x: 1, y: 0 };
+
+        // Keep score and level
+        gameState.score = currentScore;
+        gameState.level = currentLevelIndex;
+
+        // Turn off nirvana mode
+        gameState.nirvanaMode = false;
+        document.body.classList.remove('nirvana-mode');
+
+        // Spawn new food (healthy food now)
+        spawnFood();
+        currentFoodEmoji = getRandomFood();
+
+        // Update display
+        updateHUD();
+
+        // Resume game with Level 3 speed
+        isPaused = false;
+        document.getElementById('pauseScreen').style.display = 'none';
+        clearInterval(gameState.gameLoop);
+        gameState.gameLoop = setInterval(update, currentLevel.speed);
+        gameState.isRunning = true;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🔁 GAME UPDATE LOOP
+    // ═══════════════════════════════════════════════════════════════
+
+    function update() {
+        if (!gameState.isRunning || isPaused) return;
+
+        gameState.direction = gameState.nextDirection;
+
+        gameState.tongueTimer++;
+        if (gameState.tongueTimer > 3) {
+            gameState.tongueOut = Math.random() > 0.7;
+            gameState.tongueTimer = 0;
+        }
+
+        const head = gameState.snake[0];
+        const newHead = {
+            x: head.x + gameState.direction.x,
+            y: head.y + gameState.direction.y,
+            thicc: 1
+        };
+
+        if (gameState.nirvanaMode) {
+            if (newHead.x < 0) newHead.x = currentLevel.grid - 1;
+            if (newHead.x >= currentLevel.grid) newHead.x = 0;
+            if (newHead.y < 0) newHead.y = currentLevel.grid - 1;
+            if (newHead.y >= currentLevel.grid) newHead.y = 0;
+        } else {
+            if (newHead.x < 0 || newHead.x >= currentLevel.grid ||
+                newHead.y < 0 || newHead.y >= currentLevel.grid) {
+                gameOver();
+                return;
+            }
+
+            if (gameState.snake.some(segment =>
+                segment.x === newHead.x && segment.y === newHead.y
+            )) {
+                gameOver();
+                return;
+            }
+        }
+
+        gameState.snake.unshift(newHead);
+
+        if (newHead.x === gameState.food.x && newHead.y === gameState.food.y) {
+            gameState.score++;
+            updateHUD();
+
+            gameState.snake[0].thicc = 1.8;
+
+            playSound('eat');
+            spawnFood();
+            checkLevelUp();
+
+            if (gameState.score === 108 && !gameState.nirvanaMode) {
+                pauseGame();
+                document.getElementById('nirvanaChoice').style.display = 'block';
+                playSound('nirvana');
+            }
+
+            if (gameState.nirvanaMode && gameState.score > 108 && gameState.score % 108 === 0) {
+                pauseGame();
+                document.getElementById('nirvanaChoice').style.display = 'block';
+            }
+        } else {
+            gameState.snake.pop();
+        }
+
+        for (let i = gameState.snake.length - 1; i > 0; i--) {
+            if (gameState.snake[i - 1].thicc > 1) {
+                gameState.snake[i].thicc = gameState.snake[i - 1].thicc * 0.92;
+                if (gameState.snake[i].thicc < 1.05) gameState.snake[i].thicc = 1;
+            }
+        }
+        if (gameState.snake[0].thicc > 1) {
+            gameState.snake[0].thicc *= 0.92;
+            if (gameState.snake[0].thicc < 1.05) gameState.snake[0].thicc = 1;
+        }
+
+    }
+
+    function gameOver() {
+        gameState.isRunning = false;
+        clearInterval(gameState.gameLoop);
+
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#FFD700';
+        ctx.font = 'bold 48px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 60);
+
+        ctx.font = 'bold 72px Arial';
+        ctx.fillStyle = '#8FBC3F';
+        ctx.fillText(gameState.score, canvas.width / 2, canvas.height / 2 + 20);
+
+        ctx.font = '24px Arial';
+        ctx.fillStyle = '#FFD700';
+        ctx.fillText('Press SPACE to restart', canvas.width / 2, canvas.height / 2 + 80);
+
+        gameStarted = false;
+    }
+
+    function pauseGame() {
+        gameState.isRunning = false;
+        clearInterval(gameState.gameLoop);
+    }
+
+    function resumeGame() {
+        gameState.isRunning = true;
+        gameState.gameLoop = setInterval(update, currentLevel.speed);
+    }
+
+    function restart() {
+        gameState.score = 0;
+        gameState.level = 1;
+        currentLevel = levels[0];
+        gameState.nirvanaMode = false;
+        document.body.classList.remove('nirvana-mode');
+        isPaused = false;
+        document.getElementById('pauseScreen').style.display = 'none';
+        document.getElementById('cheatInput').value = '';
+        resizeCanvas();
+        initGame();
+        updateHUD();
+        gameState.isRunning = true;
+        clearInterval(gameState.gameLoop);
+        gameState.gameLoop = setInterval(update, currentLevel.speed);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // ⌨️ CONTROLS
+    // ═══════════════════════════════════════════════════════════════
+
+    let gameStarted = false;
+    let isPaused = false;
+
+    document.addEventListener('keydown', (e) => {
+        // arrows + space drive the game — stop them from ALSO scrolling the page (the phone was drifting while playing)
+        if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(e.key.toLowerCase())) e.preventDefault();
+        // SECRET: Press N to unlock Nirvana mode
+        if (e.key.toLowerCase() === 'n' && gameState.isRunning && !gameState.nirvanaMode) {
+            gameState.score = 108;
+            updateHUD();
+            pauseGame();
+            document.getElementById('nirvanaChoice').style.display = 'block';
+            playSound('nirvana');
+            return;
+        }
+
+        if (e.key === ' ' && !gameStarted) {
+            gameStarted = true;
+            document.getElementById('startToast').style.display = 'none';
+            if (hasSavedState) {
+                hasSavedState = false;
+                isPaused = false;
+                gameState.isRunning = true;
+                document.getElementById('pauseScreen').style.display = 'none';
+                clearInterval(gameState.gameLoop);
+                gameState.gameLoop = setInterval(update, currentLevel.speed);
+            } else { restart(); }
+            updatePauseButton();
+            return;
+        }
+
+        if (e.key === ' ' && gameStarted && gameState.isRunning) {
+            isPaused = !isPaused;
+            if (isPaused) {
+                document.getElementById('pauseScreen').style.display = 'block';
+                document.getElementById('cheatInput').focus();
+
+                // Show nirvana controls if in nirvana mode
+                if (gameState.nirvanaMode) {
+                    document.getElementById('nirvanaControlsInPause').style.display = 'block';
+                    document.getElementById('reincarnateButtonGroup').style.display = 'block';
+                } else {
+                    document.getElementById('nirvanaControlsInPause').style.display = 'none';
+                    document.getElementById('reincarnateButtonGroup').style.display = 'none';
+                }
+            } else {
+                document.getElementById('pauseScreen').style.display = 'none';
+            }
+            updatePauseButton();
+            return;
+        }
+
+        if (!gameState.isRunning || isPaused) return;
+
+        const key = e.key.toLowerCase();
+        const dir = gameState.direction;
+
+        if ((key === 'arrowup' || key === 'w') && dir.y === 0) {
+            gameState.nextDirection = { x: 0, y: -1 };
+        } else if ((key === 'arrowdown' || key === 's') && dir.y === 0) {
+            gameState.nextDirection = { x: 0, y: 1 };
+        } else if ((key === 'arrowleft' || key === 'a') && dir.x === 0) {
+            gameState.nextDirection = { x: -1, y: 0 };
+        } else if ((key === 'arrowright' || key === 'd') && dir.x === 0) {
+            gameState.nextDirection = { x: 1, y: 0 };
+        }
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // 📱 D-PAD CONTROLS
+    // ═══════════════════════════════════════════════════════════════
+
+    document.getElementById('btn-up').addEventListener('click', () => {
+        if (gameState.isRunning && !isPaused && gameState.direction.y === 0) {
+            gameState.nextDirection = { x: 0, y: -1 };
+        }
+    });
+
+    document.getElementById('btn-down').addEventListener('click', () => {
+        if (gameState.isRunning && !isPaused && gameState.direction.y === 0) {
+            gameState.nextDirection = { x: 0, y: 1 };
+        }
+    });
+
+    document.getElementById('btn-left').addEventListener('click', () => {
+        if (gameState.isRunning && !isPaused && gameState.direction.x === 0) {
+            gameState.nextDirection = { x: -1, y: 0 };
+        }
+    });
+
+    document.getElementById('btn-right').addEventListener('click', () => {
+        if (gameState.isRunning && !isPaused && gameState.direction.x === 0) {
+            gameState.nextDirection = { x: 1, y: 0 };
+        }
+    });
+
+    document.getElementById('btn-pause').addEventListener('click', () => {
+        if (!gameStarted) {
+            gameStarted = true;
+            document.getElementById('startToast').style.display = 'none';
+            if (hasSavedState) {
+                hasSavedState = false;
+                isPaused = false;
+                gameState.isRunning = true;
+                document.getElementById('pauseScreen').style.display = 'none';
+                clearInterval(gameState.gameLoop);
+                gameState.gameLoop = setInterval(update, currentLevel.speed);
+            } else { restart(); }
+            updatePauseButton();
+        } else {
+            const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
+            document.dispatchEvent(spaceEvent);
+        }
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // ⌨️ PAUSE SCREEN CONTROLS
+    // ═══════════════════════════════════════════════════════════════
+
+    function resumeFromPause() {
+        isPaused = false;
+        document.getElementById('pauseScreen').style.display = 'none';
+        document.getElementById('cheatInput').value = '';
+    }
+
+    document.getElementById('cheatInput').addEventListener('input', (e) => {
+        const val = e.target.value.toLowerCase();
+        if (val.includes('n')) {
+            gameState.score = 108;
+            updateHUD();
+            pauseGame();
+            document.getElementById('pauseScreen').style.display = 'none';
+            document.getElementById('nirvanaChoice').style.display = 'block';
+            playSound('nirvana');
+            e.target.value = '';
+        }
+        if (val.includes('t')) {
+            gameState.score += 10;
+            const tail = gameState.snake[gameState.snake.length - 1];
+            for (let i = 0; i < 10; i++) {
+                gameState.snake.push({ x: tail.x, y: tail.y, thicc: 1 });
+            }
+            updateHUD();
+            checkLevelUp();
+            playSound('cheat');
+            e.target.value = '';
+        }
+        if (val.includes('r')) {
+            restart();
+            e.target.value = '';
+        }
+    });
+
+    function updatePauseButton() {
+        const btn = document.getElementById('btn-pause');
+        btn.textContent = gameState.isRunning && !isPaused ? '⏸' : '▶';
+    }
+
+
+    // ═══════════════════════════════════════════════════════════════
+    // 💾 SAVE / LOAD
+    // ═══════════════════════════════════════════════════════════════
+
+    let hasSavedState = false;
+
+    function saveSnake() {
+        if (!gameStarted || !gameState.snake.length) return;
+        try {
+            localStorage.setItem('snek_save', JSON.stringify({
+                snake: gameState.snake,
+                direction: gameState.direction,
+                nextDirection: gameState.nextDirection,
+                food: gameState.food,
+                score: gameState.score,
+                level: gameState.level,
+                nirvanaMode: gameState.nirvanaMode,
+                nirvanaSpeed: gameState.nirvanaSpeed
+            }));
+            pauseGame();
+            isPaused = true;
+            document.getElementById('pauseScreen').style.display = 'block';
+            updatePauseButton();
+        } catch(e) {}
+    }
+
+    function loadSavedState() {
+        try {
+            var raw = localStorage.getItem('snek_save');
+            if (!raw) return false;
+            var g = JSON.parse(raw);
+            if (!g.snake || g.snake.length === 0) return false;
+            gameState.snake       = g.snake;
+            gameState.direction   = g.direction;
+            gameState.nextDirection = g.nextDirection;
+            gameState.food        = g.food;
+            gameState.score       = g.score;
+            gameState.level       = g.level;
+            gameState.nirvanaMode = g.nirvanaMode;
+            gameState.nirvanaSpeed = g.nirvanaSpeed || 150;
+            return true;
+        } catch(e) { return false; }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🚀 GAME INITIALIZATION
+    // ═══════════════════════════════════════════════════════════════
+
+    resizeCanvas();
+    initGame();
+    if (loadSavedState()) {
+        hasSavedState = true;
+        updateHUD();
+        document.getElementById('startToast').innerHTML =
+            'saved game found 🐍<br>tap to resume';
+    }
+    draw();
+    gameState.isRunning = false;
+    gameState.gameLoop = setInterval(update, currentLevel.speed);
+    updatePauseButton();
+</script>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my view</title>
+<!-- MY VIEW — the blank paper (Sum 2026-08-21). A TAB of the paper card, not its own card.
+     The sheet, the sixteen wire chips (toggles persist), one FILL button that fires GOFAI:
+     pull the armed wires, parse, dedupe, score pictures by metadata, lay out three balanced
+     columns, best pictures center, text-only rails. No model anywhere in the fill.
+     TRANSPLANTS (copy, don't imitate): the fetch ladder + RSS parser are cards/scroll/scroll-news.js
+     L97-149 verbatim; the sorter is fill-sort.js (tested under node, fill-sort.test.js); the
+     sandbox write is the shell/tools.js L132 shape reached through parent like
+     cards/clock/lb-timejump.js L285. Never create a SANDBOX in this frame (the two-maps trap). -->
+<style>
+  :root { --paper:#f4efe1; --ink:#14140f; --dim:#6b6558; --red:#8e1f12; --rule:#14140f; }
+  * { box-sizing:border-box; margin:0 }
+  body { background:var(--paper); font-family:Georgia,'Times New Roman',serif; color:var(--ink);
+         display:flex; justify-content:center; min-height:100vh; padding:0 }   /* full-bleed like the live paper: the tab in the bar lands ON the sheet, no dark frame between (Sum 2026-08-22) */
+  .sheet { background:var(--paper); width:min(1100px,100%); min-height:100vh; padding:22px 30px 60px;
+           display:flex; flex-direction:column }
+  header { text-align:center; border-bottom:3px double var(--rule); padding-bottom:12px }
+  h1 { font-size:clamp(26px,5vw,40px); letter-spacing:.14em; font-weight:700 }
+  .sub { font-size:13px; letter-spacing:.22em; color:var(--dim); text-transform:uppercase; margin-top:4px }
+  .wires { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; padding:16px 0 14px; border-bottom:1px solid var(--rule) }
+  .chip { font:inherit; font-size:15px; letter-spacing:.06em; padding:7px 14px; cursor:pointer;
+          background:transparent; color:var(--ink); border:1.5px solid var(--ink); border-radius:999px }
+  .chip[aria-checked="true"] { background:var(--ink); color:var(--paper) }
+  .chip:focus-visible, .fill:focus-visible, a:focus-visible { outline:3px solid var(--red); outline-offset:2px }
+  .deck { display:flex; gap:14px; align-items:center; justify-content:center; padding:16px 0; border-bottom:1px solid var(--rule) }
+  .fill { font:inherit; font-size:19px; letter-spacing:.18em; padding:12px 34px; cursor:pointer;
+          background:var(--red); color:var(--paper); border:2px solid var(--ink); text-transform:uppercase }
+  .fill[disabled] { opacity:.55; cursor:progress }
+  .count { font-size:15px; color:var(--dim) }
+  .blank { flex:1; display:flex; align-items:center; justify-content:center; text-align:center;
+           color:var(--dim); font-style:italic; font-size:17px; line-height:1.6; padding:30px }
+  /* the page: rails · center · rails. balanced by the sorter, not by CSS */
+  .page { display:none; grid-template-columns:1fr 1.5fr 1fr; gap:0 22px; padding-top:18px }
+  .page.on { display:grid }
+  .col { min-width:0 } .rail { border-top:1px solid var(--rule); padding-top:10px }
+  .col h2 { font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--dim); margin-bottom:10px }
+  article { padding:10px 0; border-bottom:1px solid #d9d2c2 }
+  article h3 { font-size:17px; line-height:1.25; font-weight:700 }
+  .center article h3 { font-size:22px }
+  article a { color:inherit; text-decoration:none } article a:hover { text-decoration:underline }
+  .meta { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); margin:4px 0 6px }
+  .sum { font-size:14px; line-height:1.45; color:#3a3833 }
+  .rail .sum { font-size:13px }
+  .pic { width:100%; height:auto; display:block; margin:0 0 8px; border:1px solid #d9d2c2; background:#e9e3d6 }
+  .pic-rail { aspect-ratio:16/9; object-fit:cover; max-height:150px }
+  .foot { font-size:12px; color:var(--dim); text-align:center; padding:18px 0 0; line-height:1.6 }
+  @media (max-width:760px) { .page.on { grid-template-columns:1fr } }
+  /* THE HULLS (hulls.js, copied from the live paper): .sf-onecol = the monohull. scroll.css L688-690, re-said for this sheet. */
+  .page.on.sf-onecol { grid-template-columns:minmax(0,1fr); max-width:900px; margin-left:auto; margin-right:auto }
+  .page.on.sf-onecol .rail { display:none }
+  .page.on.sf-onecol .center .pic { max-height:460px; object-fit:cover }
+  .page.on.sf-onecol .center .pic-rail { max-height:150px }
+  /* the options bar: collapsible, FILL stays outside it */
+  details.opts { border-bottom:1px solid var(--rule); padding:2px 0 8px }
+  details.opts summary { cursor:pointer; list-style:none; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--dim); padding:8px 0; text-align:center }
+  details.opts summary::-webkit-details-marker { display:none }
+  details.opts summary::after { content:' ▾' } details.opts[open] summary::after { content:' ▴' }
+  .grp { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; align-items:center; padding:3px 0 }
+  .grp h4 { width:100%; text-align:center; font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--dim); margin:6px 0 1px }
+  .chip.small { font-size:13px; padding:5px 11px }
+  .muz { display:flex; gap:6px; justify-content:center; align-items:center; flex-wrap:wrap; padding:3px 0; flex-basis:100% }
+  .muz input { font:inherit; font-size:14px; padding:6px 10px; border:1.5px solid var(--ink); background:#fff; color:var(--ink); min-width:200px }
+  .muz button.add { font:inherit; font-size:13px; padding:6px 12px; border:1.5px solid var(--ink); background:var(--ink); color:var(--paper); cursor:pointer }
+  .muz .word { font-size:13px; padding:4px 10px; border:1.5px solid var(--red); color:var(--red); border-radius:999px; background:transparent; cursor:pointer }
+  /* the sky row and the horoscope card */
+  .sky { display:none; gap:10px; justify-content:center; flex-wrap:wrap; padding:14px 0 4px; border-bottom:1px solid var(--rule) }
+  .sky.on { display:flex }
+  .wx { min-width:96px; text-align:center; border:1px solid #d9d2c2; padding:8px 6px; background:#fbf8f1 }
+  .wx img { height:26px; width:auto; display:block; margin:0 auto 4px } .wx b { display:block; font-size:20px } .wx span { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--dim) }
+  .horo { border:1px solid var(--ink); padding:10px 12px; margin:0 0 12px; background:#fbf8f1 }
+  .horo h3 { font-size:15px; letter-spacing:.08em } .horo p { font-size:13px; line-height:1.45; margin-top:6px }
+  .wx .sub { display:block; font-size:11px; color:var(--dim); text-transform:none; letter-spacing:0; margin-top:2px }
+  .week { display:none; gap:6px; justify-content:center; padding:10px 0 4px; border-bottom:1px solid var(--rule) }
+  .week.on { display:flex } .day { flex:1; max-width:110px; text-align:center; font-size:12px; border:1px solid #d9d2c2; padding:6px 4px; background:#fbf8f1 }
+  .day b { display:block; font-size:15px } .day img { height:22px; width:auto; display:block; margin:2px auto } .day small { color:var(--dim) }
+  .mug { display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; padding:4px 0 0 }
+  .mug img { width:40px; height:40px; object-fit:contain; flex:none } .mug .say { max-width:560px; font-size:12px; line-height:1.35 }
+  .mug .say b { display:block; font-size:15px; margin-bottom:4px }
+  .counts { font-size:12px; color:var(--dim); width:100%; text-align:center }
+  /* THE VEIL — the live paper's muzzle, psv-furniture.js L293-310: blurred in place, the word named, a way back */
+  article.psv-muzzled { position:relative } article.psv-muzzled > :not(.psv-veil) { filter:blur(6px); opacity:.45; pointer-events:none }
+  .psv-veil { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; text-align:center; padding:8px }
+  .psv-veil-w { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--red) }
+  .psv-veil button { font:inherit; font-size:12px; padding:4px 10px; border:1.5px solid var(--ink); background:var(--paper); cursor:pointer }
+  .loud { font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--red); margin-right:6px }
+</style></head><body data-paper="myview">
+<main class="sheet">
+  <header>
+    <h1>MY VIEW</h1>
+    <div class="sub">a blank paper &middot; your wires &middot; one button</div>
+  </header>
+  <div class="deck">
+    <button class="fill" id="fill" aria-label="fill the paper from the wires you armed — press again to reroll">FILL</button>
+    <span class="count" id="count" aria-live="polite"></span>
+  </div>
+  <details class="opts" id="opts">
+    <summary aria-label="open or close the options">options</summary>
+    <div class="grp" id="extras" aria-label="the paper's options"><h4>the paper's options</h4></div>
+    <div class="muz" id="town" aria-label="the town"><input id="town-in" placeholder="your town (the weather and the local desks follow it)" aria-label="town" style="min-width:300px"><button class="add" id="town-go" aria-label="set the town">set</button><span class="counts" id="town-now" style="width:auto"></span></div>
+    <div class="grp" id="readouts" aria-label="which readings show"><h4>the sky — which readings show</h4></div>
+    <div class="grp" id="signs" aria-label="the horoscope"><h4>the horoscope — each sign on or off</h4></div>
+    <nav class="wires" id="wires" aria-label="the wires — toggle what feeds your paper"></nav>
+    <div class="muz" id="mus-more" aria-label="museum words you want more of"><input id="mus-more-in" placeholder="more of… (a painter, a movement, a subject)" aria-label="museum word to favour"><button class="add" id="mus-more-add" aria-label="favour this word">more</button><div id="mus-more-list" style="display:contents"></div></div>
+    <div class="muz" id="mus-less" aria-label="museum words you want less of"><input id="mus-less-in" placeholder="less of… (vase, coin, textile)" aria-label="museum word to avoid"><button class="add" id="mus-less-add" aria-label="avoid this word">less</button><div id="mus-less-list" style="display:contents"></div></div>
+    <div class="mug" id="muzzle-head"><img src="../scroll/art/muzzle-card.jpg" alt="a puppy in an oversized muzzle, pleading"><div class="say"><b>Don't give me those eyes. You did this.</b>Type a word. Anything carrying it goes — title or body, no cleverness. It over-blocks on purpose: better to lose an innocent story than print a guilty one.</div></div>
+    <div class="muz" id="muz" aria-label="the muzzle — words you never want again">
+      <input id="muz-in" placeholder="a word you never want again…" aria-label="add a word to the muzzle">
+      <button class="add" id="muz-add" aria-label="muzzle this word">muzzle</button>
+      <div id="muz-list" style="display:contents"></div>
+      <div class="counts" id="muz-count"></div>
+    </div>
+    <div class="mug"><img src="../scroll/art/megaphone-card.png" alt="a puppy cheering into a megaphone"><div class="say"><b>Louder. The ones you always want up front.</b>Type a word. Anything carrying it — title or body — runs at the top of the center, picture or not. The muzzle's opposite number, same rules, no cleverness.</div></div>
+    <div class="muz" id="mega" aria-label="the megaphone — words you always want up front">
+      <input id="mega-in" placeholder="a word you always want up front…" aria-label="add a word to the megaphone">
+      <button class="add" id="mega-add" aria-label="amplify this word">megaphone</button>
+      <div id="mega-list" style="display:contents"></div>
+    </div>
+  </details>
+  <div class="blank" id="blank">the paper is blank on purpose.<br>arm your wires above, then press FILL.</div>
+  <div class="sky" id="sky" aria-label="the sky"></div>
+  <div class="week" id="week" aria-label="the week ahead"></div>
+  <section class="page" id="page" aria-label="your filled paper">
+    <div class="col rail" id="left"><h2>left rail</h2></div>
+    <div class="col center" id="center"><h2>the pictures</h2></div>
+    <div class="col rail" id="right"><h2>right rail</h2></div>
+  </section>
+  <p class="foot" id="foot"></p>
+</main>
+<script src="../scroll/scroll-wx-cards.js?v=20260903090447"></script>
+<script src="fill-sort.js?v=20260903090447"></script>
+<script src="wires.js?v=20260903090447"></script>   <!-- the catalog + the ladder + the parser, shared with The Feedline -->
+<script src="wire-db.js?v=20260903090447"></script>   <!-- the link book: one line per link from every pull, shared with The Feedline -->
+<script src="hulls.js?v=20260903090447"></script>   <!-- THE HULLS: monohull / catamaran, copied from the live paper; the red hull bottom-right -->
+<script>
+const TASTE = ['Van Gogh','Monet','Rembrandt','Vermeer','Caravaggio','Goya','Dürer','art nouveau','Impressionism','Expressionism','Cubism','abstract','Surrealism','De Stijl','architecture','Renaissance','Baroque','Romanticism','old masters']
+const OKEY = 'myview-opts'
+const OPT = (() => { try { return Object.assign({ weather: true, horoscope: false, painty: true }, JSON.parse(localStorage.getItem(OKEY) || '{}')) } catch (_) { return { weather: true, horoscope: false, painty: true } } })()
+const saveOpt = () => localStorage.setItem(OKEY, JSON.stringify(OPT))
+// SHARED KEYS WITH THE PAPER (the live paper's psv-furniture.js is the engine of record; no re-carve):
+//   scroll-mute (the muzzle; newsie's psv_mute too) · scroll-wx-widgets (which readings show) · scroll-forecast-days (3/5/7/10)
+//   scroll-megaphone is new, the muzzle's twin. Museum lists: scroll-canvas-more / scroll-canvas-less.
+const J = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v } catch (_) { return d } }
+const S = (k, v) => localStorage.setItem(k, JSON.stringify(v))
+const words = k => (J(k, []) || []).map(w => String(w).toLowerCase().trim()).filter(Boolean)
+// THE DEFAULT MUZZLE (psv-furniture.js L254-259, verbatim rule): three words, shipped on, once.
+try { if (localStorage.getItem('scroll-mute') == null && localStorage.getItem('psv-mute-seeded') == null) { S('scroll-mute', ['nazi', 'anal', 'pineapple']); localStorage.setItem('psv-mute-seeded', '1') } } catch (_) {}
+const muzzle = () => words('scroll-mute'), setMuzzle = a => S('scroll-mute', a)
+const megaphone = () => words('scroll-megaphone')
+const forecastDays = () => { const n = parseInt(localStorage.getItem('scroll-forecast-days') || '10', 10); return [3, 5, 7, 10].includes(n) ? n : 10 }
+const wxWidgets = () => { const v = J('scroll-wx-widgets', null); return Array.isArray(v) ? v : ((window.SF_WX && window.SF_WX.DEFAULT_ROW) || ['weather', 'feels', 'wind', 'humidity', 'rain', 'uv', 'solar']) }
+const KEY = 'myview-wires'
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}') } catch (_) { return {} } }
+const state = load()
+const $ = id => document.getElementById(id)
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]))
+
+// ── the chips
+const nav = $('wires'), count = $('count')
+function armed() { return WIRES.filter(([id]) => state[id]).concat(Object.keys(MUSEUM).filter(id => state[id]).map(id => [id, MUSEUM[id]])) }   // the museums live in MUSEUM, not WIRES: without this line they could be armed and never fire (Sum 2026-08-22: "museums aren't landing in feed")
+function say(extra) {
+  const n = armed().length
+  count.textContent = (n ? n + ' wire' + (n > 1 ? 's' : '') + ' armed' : 'no wires armed') + (extra ? ' · ' + extra : '')
+}
+function chip(id, name, on, onflip, small) {
+  const b = document.createElement('button')
+  b.className = 'chip' + (small ? ' small' : ''); b.textContent = name
+  b.setAttribute('role', 'switch'); b.setAttribute('aria-checked', String(!!on)); b.setAttribute('aria-label', name)
+  b.addEventListener('click', () => { const v = onflip(); b.setAttribute('aria-checked', String(!!v)); say() })
+  return b
+}
+for (const g of Object.keys(GROUP)) {
+  const h = document.createElement('h4'); h.textContent = GLABEL[g] || g
+  const row = document.createElement('div'); row.className = 'grp'; row.appendChild(h)
+  for (const id of GROUP[g]) row.appendChild(chip(id, NAME[id], state[id], () => { state[id] = !state[id]; localStorage.setItem(KEY, JSON.stringify(state)); return state[id] }, true))
+  if (g === 'museums') { row.appendChild($('mus-more')); row.appendChild($('mus-less')) }   // the art filters live in the art section
+  nav.appendChild(row)
+}
+const extras = $('extras')
+extras.appendChild(chip('weather', 'the sky', OPT.weather, () => { OPT.weather = !OPT.weather; saveOpt(); sky(); return OPT.weather }, true))
+// THE TOWN — the paper's own key (scroll-geo: { city, lat, lon }); geocoded by open-meteo, free, keyless. The sky follows it.
+const townNow = () => { try { const g = JSON.parse(localStorage.getItem('scroll-geo') || 'null'); return g && g.city ? g.city : 'Salt Lake City (default)' } catch (_) { return 'Salt Lake City (default)' } }
+$('town-now').textContent = townNow()
+$('town-go').addEventListener('click', async () => {
+  const q = $('town-in').value.trim(); if (!q) return
+  $('town-now').textContent = 'looking…'
+  const j = await grabJSON('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(q) + '&count=1&language=en&format=json')
+  const r = j && j.results && j.results[0]
+  if (!r) { $('town-now').textContent = 'no such town found'; return }
+  S('scroll-geo', { city: r.name + (r.admin1 ? ', ' + r.admin1 : ''), lat: r.latitude, lon: r.longitude })
+  $('town-in').value = ''; $('town-now').textContent = townNow(); WXNOW = null; DAILY = null; sky()
+})
+$('town-in').addEventListener('keydown', e => { if (e.key === 'Enter') $('town-go').click() })
+// THE SIGN — the paper's key (scroll-sign); none set = the season's sign, exactly as the paper does it
+const SIGNS = ['aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces']
+const horoOn = () => J('myview-horo', [])
+function drawSigns() {
+  const box = $('signs'); box.querySelectorAll('.chip').forEach(c => c.remove()); const cur = horoOn()
+  box.appendChild(chip('sign-off', 'off', !cur.length, () => { S('myview-horo', []); drawSigns(); return true }, true))
+  box.appendChild(chip('sign-season', 'in season', cur.includes('season'), () => { const a = horoOn(); const i = a.indexOf('season'); if (i >= 0) a.splice(i, 1); else a.push('season'); S('myview-horo', a); drawSigns(); return a.includes('season') }, true))
+  SIGNS.forEach(sg => box.appendChild(chip('sign-' + sg, glyphOf(sg) + ' ' + sg, cur.includes(sg), () => { const a = horoOn(); const i = a.indexOf(sg); if (i >= 0) a.splice(i, 1); else a.push(sg); S('myview-horo', a); drawSigns(); return a.includes(sg) }, true)))
+}
+// the week ahead: 3 · 5 · 7 · 10 (key shared with the paper)
+const wk = document.createElement('span'); wk.className = 'grp'; wk.style.padding = '0'
+;[3, 5, 7, 10].forEach(n => {
+  const b = chip('wk' + n, n + ' day', forecastDays() === n, () => { localStorage.setItem('scroll-forecast-days', String(n)); wk.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-checked', String(c.textContent === n + ' day'))); week(); return true }, true)
+  wk.appendChild(b)
+})
+extras.appendChild(wk)
+extras.appendChild(chip('weekon', 'the week ahead', localStorage.getItem('scroll-forecast') !== 'off', () => { const off = localStorage.getItem('scroll-forecast') === 'off'; localStorage.setItem('scroll-forecast', off ? 'on' : 'off'); week(); return off }, true))
+// which readings show — every readout the paper knows, same key as its gear
+function drawReadouts() {
+  const box = $('readouts'); box.querySelectorAll('.chip').forEach(c => c.remove())
+  const W = window.SF_WX || {}, all = W.ALL || [], cur = wxWidgets()
+  all.forEach(w => box.appendChild(chip('ro-' + w, (W.LABELS && W.LABELS[w]) || w, cur.includes(w), () => { const now = wxWidgets(); const i = now.indexOf(w); if (i >= 0) now.splice(i, 1); else now.push(w); S('scroll-wx-widgets', now); paintSky(); return now.includes(w) }, true)))
+}
+// one editor for every word list: the muzzle, the megaphone, museum more, museum less
+function wordList(listId, inId, addId, key, verb) {
+  const box = $(listId), draw = () => { box.innerHTML = ''; words(key).forEach(w => { const b = document.createElement('button'); b.className = 'word'; b.textContent = w + ' ✕'; b.setAttribute('aria-label', 'remove ' + w + ' from ' + verb); b.addEventListener('click', () => { S(key, words(key).filter(x => x !== w)); draw() }); box.appendChild(b) }) }
+  $(addId).addEventListener('click', () => { const w = $(inId).value.toLowerCase().trim(); if (!w) return; const cur = words(key); if (!cur.includes(w)) cur.push(w); S(key, cur); $(inId).value = ''; draw() })
+  $(inId).addEventListener('keydown', e => { if (e.key === 'Enter') $(addId).click() })
+  draw()
+}
+wordList('muz-list', 'muz-in', 'muz-add', 'scroll-mute', 'the muzzle')
+wordList('mega-list', 'mega-in', 'mega-add', 'scroll-megaphone', 'the megaphone')
+wordList('mus-more-list', 'mus-more-in', 'mus-more-add', 'scroll-canvas-more', 'the museums')
+wordList('mus-less-list', 'mus-less-in', 'mus-less-add', 'scroll-canvas-less', 'the museums')
+say()
+
+// ── THE SKY — the paper's weather ear, every instrument (scroll.js L2349-2351 the read, L2382 the moon, L2396 the air,
+//    verbatim URLs). Tiles come from SF_WX.card(w, WXNOW) (cards/scroll/scroll-wx-cards.js), the readouts from the paper's own key.
+async function grabJSON(u) { try { return JSON.parse(await grab(u)) } catch (_) { return null } }
+let WXNOW = null, DAILY = null
+async function sky() {
+  const el = $('sky'); el.classList.toggle('on', !!OPT.weather); if (!OPT.weather) { $('week').classList.remove('on'); return }
+  if (!WXNOW) {
+    let g = null; try { g = JSON.parse(localStorage.getItem('scroll-geo') || 'null') || JSON.parse(localStorage.getItem('geo-cache') || 'null') } catch (_) {}
+    const city = (g && g.city) || 'Salt Lake City', lat = (g && g.lat != null) ? g.lat : 40.72, lon = (g && g.lon != null) ? g.lon : -111.9
+    const d = await grabJSON('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+      '&current=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,weathercode,cloud_cover,surface_pressure,visibility,windspeed_10m,winddirection_10m,wind_gusts_10m,precipitation_probability,is_day,snow_depth,uv_index' +
+      '&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max,precipitation_sum,uv_index_max&forecast_days=10&timezone=auto&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch')
+    if (!d || !d.current) { el.innerHTML = '<div class="wx"><b>—°</b><span>weather offline</span></div>'; return }
+    const c = d.current, dy = d.daily || {}, hm = iso => { try { return new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) } catch (_) { return null } }
+    let dayLen = null; try { if (dy.sunrise && dy.sunset) { const ms = new Date(dy.sunset[0]) - new Date(dy.sunrise[0]); if (ms > 0) dayLen = Math.floor(ms / 3600000) + 'h ' + Math.round((ms % 3600000) / 60000) + 'm' } } catch (_) {}
+    let uvPeakHour = null; try { if (dy.sunrise && dy.sunset) uvPeakHour = hm(new Date((new Date(dy.sunrise[0]).getTime() + new Date(dy.sunset[0]).getTime()) / 2)) } catch (_) {}
+    WXNOW = {
+      city, code: c.weathercode, temp: c.temperature_2m, feels: c.apparent_temperature, humidity: c.relative_humidity_2m,
+      dewpoint: c.dew_point_2m, cloudcover: c.cloud_cover, pressure: c.surface_pressure, visibility: c.visibility,
+      wind: c.windspeed_10m, windDir: c.winddirection_10m, windGusts: c.wind_gusts_10m, rain: c.precipitation_probability,
+      isDay: c.is_day, snowNow: c.snow_depth != null ? c.snow_depth * 39.37 : null,
+      uv: (c.uv_index != null ? c.uv_index : (dy.uv_index_max ? dy.uv_index_max[0] : null)),
+      uvPeakVal: dy.uv_index_max ? dy.uv_index_max[0] : null, uvPeakHour,
+      precipSum: dy.precipitation_sum ? dy.precipitation_sum[0] : null,
+      sunrise: dy.sunrise ? hm(dy.sunrise[0]) : null, sunset: dy.sunset ? hm(dy.sunset[0]) : null, dayLen,
+      hi: dy.temperature_2m_max ? dy.temperature_2m_max[0] : null, lo: dy.temperature_2m_min ? dy.temperature_2m_min[0] : null,
+    }
+    DAILY = dy
+    paintSky(); week()
+    // the air and the moon land after, non-blocking, exactly as the paper does it
+    grabJSON('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=' + lat + '&longitude=' + lon + '&current=us_aqi,european_aqi,pm2_5,pm10,ozone,dust&timezone=auto').then(a => { if (a && a.current && WXNOW) { const q = a.current; Object.assign(WXNOW, { aqi: q.us_aqi, aqiEU: q.european_aqi, pm25: q.pm2_5, pm10: q.pm10, ozone: q.ozone, dust: q.dust }); paintSky() } })
+    ;(async () => { try { const n = new Date(), date = n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'), tz = -(n.getTimezoneOffset() / 60)
+      const m = await grabJSON('https://aa.usno.navy.mil/api/rstt/oneday?date=' + date + '&coords=' + lat + ',' + lon + '&tz=' + tz)
+      const md = m && m.properties && m.properties.data && m.properties.data.moondata; if (!Array.isArray(md) || !WXNOW) return
+      const to12 = t => { const x = /^(\d{1,2}):(\d{2})$/.exec(String(t || '')); if (!x) return t || null; let h = +x[1]; const ap = h < 12 ? 'AM' : 'PM'; h = h % 12 || 12; return h + ':' + x[2] + ' ' + ap }
+      const find = ph => { const e = md.find(x => x.phen === ph); return e ? to12(e.time) : null }
+      WXNOW.moonRise = find('Rise'); WXNOW.moonSet = find('Set'); paintSky() } catch (_) {} })()
+  } else { paintSky(); week() }
+}
+function icoHTML(w) { try { const r = window.SF_WX && window.SF_WX.icon(w, WXNOW); return (typeof r === 'string' && /^(\.\.\/|https?:|data:)/.test(r)) ? `<img src="${r}" alt="">` : (typeof r === 'string' ? r : '') } catch (_) { return '' } }
+function paintSky() {
+  const el = $('sky'); if (!OPT.weather || !WXNOW || !window.SF_WX) return
+  el.innerHTML = wxWidgets().map(w => { const cd = window.SF_WX.card(w, WXNOW) || {}; return `<div class="wx" role="group" aria-label="${esc(cd.label || w)}">${icoHTML(w)}<b>${cd.value || '—'}</b><span>${esc(cd.label || w)}</span>${cd.sub ? `<span class="sub">${esc(cd.sub)}</span>` : ''}</div>` }).join('')
+}
+// THE WEEK AHEAD — scroll.js renderForecast, the loop verbatim in shape; widths 3 · 5 · 7 · 10 from the paper's key
+function week() {
+  const el = $('week'); const off = localStorage.getItem('scroll-forecast') === 'off'
+  if (off || !OPT.weather || !DAILY || !DAILY.time) { el.classList.remove('on'); el.innerHTML = ''; return }
+  const n = Math.min(forecastDays(), DAILY.time.length); let out = ''
+  for (let i = 0; i < n; i++) {
+    const dt = new Date(DAILY.time[i] + 'T12:00'), wd = i === 0 ? 'Today' : dt.toLocaleDateString(undefined, { weekday: 'short' })
+    const code = DAILY.weathercode ? DAILY.weathercode[i] : 0, prob = DAILY.precipitation_probability_max ? DAILY.precipitation_probability_max[i] : null
+    let ic = ''; try { const r = window.SF_WX && window.SF_WX.condIcon ? window.SF_WX.condIcon(code, prob) : null; ic = (typeof r === 'string' && /^(\.\.\/|https?:|data:)/.test(r)) ? `<img src="${r}" alt="">` : (typeof r === 'string' ? r : '') } catch (_) {}
+    out += `<div class="day" role="group" aria-label="${esc(wd)}">${esc(wd)}${ic}<b>${DAILY.temperature_2m_max ? Math.round(DAILY.temperature_2m_max[i]) + '°' : '—'}</b><small>${DAILY.temperature_2m_min ? Math.round(DAILY.temperature_2m_min[i]) + '°' : ''}${prob != null ? ' · ' + Math.round(prob) + '%' : ''}</small></div>`
+  }
+  el.innerHTML = out; el.classList.add('on')
+}
+
+// ── THE HOROSCOPE — oneHoro from cards/scroll/scroll-news.js L312 verbatim; season sign unless the reader set one.
+const Z = [['capricorn','♑',119],['aquarius','♒',218],['pisces','♓',320],['aries','♈',419],['taurus','♉',520],['gemini','♊',620],['cancer','♋',722],['leo','♌',822],['virgo','♍',922],['libra','♎',1022],['scorpio','♏',1121],['sagittarius','♐',1221],['capricorn','♑',1231]]
+function seasonSign(d) { const key = (d.getMonth() + 1) * 100 + d.getDate(); for (const z of Z) if (key <= z[2]) return { sign: z[0], glyph: z[1] }; return { sign: 'capricorn', glyph: '♑' } }
+const glyphOf = s => { const f = Z.find(z => z[0] === s); return f ? f[1] : '✨' }
+async function oneHoro(s) {
+  const cap = s.charAt(0).toUpperCase() + s.slice(1)
+  try { const j = JSON.parse(await grab('https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=' + s + '&day=TODAY')); const t = j && j.data && j.data.horoscope_data; if (t) return { sign: cap, glyph: glyphOf(s), text: t } } catch (_) {}
+  try { const j = JSON.parse(await grab('https://ohmanda.com/api/horoscope/' + s)); if (j && j.horoscope) return { sign: cap, glyph: glyphOf(s), text: j.horoscope } } catch (_) {}
+  return null
+}
+
+// ── THE MUSEUMS — on FILL only. AIC + Cleveland, CC0; the taste pool picks a query by the day, painty favors fine art.
+function museumQuery() { const more = words('scroll-canvas-more'), pool = more.length ? more : TASTE; const day = Math.floor(Date.now() / 864e5); return pool[day % pool.length] }
+async function museums(which) {
+  const q = encodeURIComponent(museumQuery()), out = []
+  const painty = t => /paint|print|drawing|watercolor|pastel|photograph|sculpt|relief|bronze|marble|statue|figure/i.test(t || '')
+  if (which.includes('aic')) try {   // unreachable since 2026-08-22: AIC is stripped from MUSEUM (wires.js), a bouncer in front of the pictures. Kept as the mapper, verbatim.
+    const j = JSON.parse(await grab('https://api.artic.edu/api/v1/artworks/search?q=' + q + '&limit=24&fields=id,title,image_id,artist_display,date_display,medium_display,place_of_origin,artwork_type_title'))
+    ;(j.data || []).filter(a => a.image_id && (!OPT.painty || painty(a.artwork_type_title))).forEach(a => out.push({ id: 'aic:' + a.id, title: a.title || 'Untitled', link: 'https://www.artic.edu/artworks/' + a.id, source: 'aic', ts: Date.now(), summary: [(a.artist_display || '').split('\n')[0], a.date_display, a.medium_display, a.place_of_origin].filter(Boolean).join(' · '), image: { url: 'https://www.artic.edu/iiif/2/' + a.image_id + '/full/843,/0/default.jpg', w: 843, h: null } }))
+  } catch (_) {}
+  if (which.includes('cma')) try {
+    const j = JSON.parse(await grab('https://openaccess-api.clevelandart.org/api/artworks/?q=' + q + '&has_image=1&limit=24'))
+    ;(j.data || []).filter(a => a.images && a.images.web && (!OPT.painty || painty(a.type))).forEach(a => out.push({ id: 'cma:' + a.id, title: a.title || 'Untitled', link: a.url || '', source: 'cma', ts: Date.now(), summary: [(((a.creators || [])[0] || {}).description), a.creation_date, a.technique].filter(Boolean).join(' · '), image: { url: a.images.web.url, w: a.images.web.width || null, h: a.images.web.height || null } }))
+  } catch (_) {}
+  if (which.includes('met')) try {   // The Met: search gives ids, each object is its own call; twelve is plenty for one press
+    const j = JSON.parse(await grab('https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=' + q))
+    const ids = (j.objectIDs || []).slice(0, 12)
+    const objs = await Promise.allSettled(ids.map(async id => JSON.parse(await grab('https://collectionapi.metmuseum.org/public/collection/v1/objects/' + id))))
+    objs.forEach(r => { const a = r.status === 'fulfilled' && r.value; if (a && a.primaryImageSmall && (!OPT.painty || painty(a.classification || a.objectName))) out.push({ id: 'met:' + a.objectID, title: a.title || 'Untitled', link: a.objectURL || '', source: 'met', ts: Date.now(), summary: [a.artistDisplayName, a.objectDate, a.medium].filter(Boolean).join(' · '), image: { url: a.primaryImageSmall, w: null, h: null } }) })
+  } catch (_) {}
+  if (which.includes('vam')) try {   // V&A: one call, IIIF thumbnails
+    const j = JSON.parse(await grab('https://api.vam.ac.uk/v2/objects/search?q=' + q + '&images_exist=1&page_size=24'))
+    ;(j.records || []).filter(a => a._images && a._images._iiif_image_base_url && (!OPT.painty || painty(a.objectType))).forEach(a => out.push({ id: 'vam:' + a.systemNumber, title: a._primaryTitle || a.objectType || 'Untitled', link: 'https://collections.vam.ac.uk/item/' + a.systemNumber, source: 'vam', ts: Date.now(), summary: [a._primaryMaker && a._primaryMaker.name, a._primaryDate, a._primaryPlace].filter(Boolean).join(' · '), image: { url: a._images._iiif_image_base_url + 'full/843,/0/default.jpg', w: 843, h: null } }))
+  } catch (_) {}
+  const less = words('scroll-canvas-less')
+  return less.length ? out.filter(a => !less.some(w => ((a.title || '') + ' ' + (a.summary || '')).toLowerCase().includes(w))) : out
+}
+
+// ── render: the sorter decided the columns; this only draws them
+function when(ts) { if (!ts) return ''; const d = new Date(ts); return isNaN(d) ? '' : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) }
+function artHTML(it, center) {
+  const pic = it.image && it.image.url ? `<img class="pic${center ? '' : ' pic-rail'}" src="${esc(it.image.url)}" alt="${esc(it.title)}" loading="lazy" onerror="this.remove()">` : ''   // rails keep their pictures now (smaller); the sorter decides who spills
+  return `<article data-t="${esc((it.title + ' ' + it.summary + ' ' + (it.image && it.image.url || '')).toLowerCase())}">${pic}<h3>${it.boosted ? '<span class="loud" aria-label="amplified">📣</span>' : ''}<a href="${esc(it.link)}" target="_blank" rel="noopener">${esc(it.title)}</a></h3>` +
+    `<div class="meta">${esc(NAME[it.source] || it.source)}${when(it.ts) ? ' · ' + esc(when(it.ts)) : ''}</div>` +
+    (it.summary ? `<p class="sum">${esc(String(it.summary).slice(0, center ? 220 : 140))}</p>` : '') + `</article>`
+}
+function draw(ed) {
+  $('left').innerHTML = '<h2>left rail</h2>' + ed.left.map(it => artHTML(it, false)).join('')
+  $('center').innerHTML = '<h2>the pictures</h2>' + ed.center.map(it => artHTML(it, true)).join('')
+  const hc = Array.isArray(ed.horo) && ed.horo.length ? ed.horo.map(h => `<div class="horo" role="note" aria-label="today's horoscope, ${esc(h.sign)}"><h3>${esc(h.glyph + ' ' + h.sign)}</h3><p>${esc(h.text)}</p></div>`).join('') : ''
+  $('right').innerHTML = '<h2>right rail</h2>' + hc + ed.right.map(it => artHTML(it, false)).join('')
+  $('blank').style.display = 'none'; $('page').classList.add('on')
+  applyMute()
+  if (window.BREAKDOWN) window.BREAKDOWN.dress($('page'))   // the newsie's cap on every headline (breakdown.js)
+  if (window.HULLS) { window.HULLS.forget($('page')); window.HULLS.apply() }   // fold to the reader's hull after a draw (hulls.js)
+  const s = ed.stats || {}
+  $('foot').innerHTML = `filled ${esc(new Date(ed.at).toLocaleString())} · pulled ${esc(String((ed.stats || {}).inCount || 0))} items: ${(ed.perWire || ed.wires.map(w => NAME[w] || w)).map(esc).join(' · ')}` +
+    `<br>${s.centerCount || 0} in the center · ${s.leftCount || 0} / ${s.rightCount || 0} on the rails (heights ${s.centerHeight || 0} · ${s.leftHeight || 0} / ${s.rightHeight || 0}) · ${s.dedupedCount || 0} duplicates folded · ${s.boostedCount || 0} amplified · <span id="veil-count"></span> · ${s.droppedCount || 0} dropped${s.droppedCount ? ' (' + (ed.dropped || []).filter(d => d.why === 'overflow').length + ' overflow)' : ''}` +
+    (ed.failed && ed.failed.length ? `<br>could not reach: ${ed.failed.map(esc).join(' · ')}` : '')
+}
+
+// ── THE MUZZLE ENGINE — psv-furniture.js L264-310 (the live paper's), walked over this sheet's articles. No re-carve.
+function applyMute() {
+  const low = muzzle(); let hidden = 0
+  document.querySelectorAll('#page article').forEach(b => {
+    unveil(b)
+    if (!low.length) return
+    const t = b.dataset.t || ''
+    const hit = low.filter(w => t.indexOf(w) >= 0)
+    if (hit.length) { veil(b, hit[0]); hidden++ }
+  })
+  const c = $('muz-count'), v = $('veil-count')
+  const line = !low.length ? 'nothing muzzled. he is like this anyway.' : hidden === 0 ? low.length + ' muzzled · nothing caught today' : hidden + ' veiled today · ' + low.length + ' muzzled'
+  if (c) c.textContent = line + (hidden >= 8 ? ' — that is a lot for one day. Might be worth looking at what happened.' : '')
+  if (v) { v.innerHTML = `<a href="#" id="veil-link">${esc(line)}</a>`; const l = $('veil-link'); if (l) l.addEventListener('click', e => { e.preventDefault(); $('opts').open = true; $('muzzle-head').scrollIntoView({ behavior: 'smooth', block: 'center' }) }) }
+}
+function veil(b, word) {
+  if (b.dataset.psvPeek === '1') return          // you already chose to see this one
+  if (b.querySelector(':scope > .psv-veil')) { b.classList.add('psv-muzzled'); return }
+  b.classList.add('psv-muzzled')
+  const v = document.createElement('div'); v.className = 'psv-veil'
+  v.innerHTML = `<span class="psv-veil-w">muzzled · “${esc(word)}”</span>
+    <button type="button" class="psv-veil-go">open it anyway</button>
+    <button type="button" class="psv-veil-set">the muzzle →</button>`
+  v.querySelector('.psv-veil-go').addEventListener('click', e => { e.stopPropagation(); b.dataset.psvPeek = '1'; unveil(b) })
+  v.querySelector('.psv-veil-set').addEventListener('click', e => { e.stopPropagation(); $('opts').open = true; $('muzzle-head').scrollIntoView({ behavior: 'smooth', block: 'center' }) })
+  b.appendChild(v)
+}
+function unveil(b) { b.classList.remove('psv-muzzled'); const v = b.querySelector(':scope > .psv-veil'); if (v) v.remove() }
+// a word added or removed re-walks the page without a refill
+$('muz-add').addEventListener('click', () => setTimeout(applyMute, 0)); $('muz-list').addEventListener('click', () => setTimeout(applyMute, 0))
+
+// ── archive: the shape from shell/tools.js L132, through parent (cards/clock/lb-timejump.js L285).
+//    NEVER window.SANDBOX in this frame: fs.js lives in the top window only; a local copy would be a
+//    second map that mirrors nowhere (the two-maps trap).
+function archive(ed) {
+  try { const SB = window.parent && window.parent.SANDBOX; if (SB) SB['editions/myview-' + ed.at + '.json'] = { kind: 'code', ext: 'json', mime: '', data: JSON.stringify(ed) } } catch (_) {}
+}
+function latest() {
+  try {
+    const SB = window.parent && window.parent.SANDBOX; if (!SB) return null
+    const keys = Object.keys(SB).filter(k => k.startsWith('editions/myview-')).sort()
+    if (!keys.length) return null
+    const f = SB[keys[keys.length - 1]]; return JSON.parse(f && f.data || 'null')
+  } catch (_) { return null }
+}
+
+// ── FILL: GOFAI, no model. pull → parse → sort → draw → archive.
+async function fill() {
+  const wires = armed().filter(([id]) => !MUSEUM[id]), mus = armed().filter(([id]) => MUSEUM[id]).map(([id]) => id)
+  if (!wires.length && !mus.length) { $('blank').innerHTML = 'arm at least one wire first &mdash; a paper with no wires stays blank honestly.'; return }
+  if (!window.FILL_SORT) { $('blank').innerHTML = 'the sorter did not load (fill-sort.js) &mdash; nothing filled.'; return }
+  const btn = $('fill'); btn.disabled = true; btn.setAttribute('aria-busy', 'true'); say('pulling ' + wires.length + '…')
+  const pulls = await Promise.allSettled(wires.map(async ([id, , url]) => ({ id, items: parse(await grab(url)) })))   // the idiom from scroll-news.js L238
+  const art = mus.length ? await museums(mus) : []
+  const picks = horoOn().map(x => x === 'season' ? seasonSign(new Date()).sign : x)
+  const horo = picks.length ? (await Promise.allSettled(picks.map(oneHoro))).map(r => r.status === 'fulfilled' && r.value).filter(Boolean) : null
+  const items = [], failed = [], perWire = []
+  pulls.forEach((p, i) => {
+    if (p.status !== 'fulfilled') { failed.push(NAME[wires[i][0]]); return }
+    perWire.push(NAME[p.value.id] + ' ' + p.value.items.length)
+    p.value.items.forEach((x, k) => items.push({
+      id: p.value.id + ':' + k + ':' + x.link, title: x.title, link: x.link, source: p.value.id, ts: x.ts || 0,
+      summary: x.desc || '', image: x.img ? { url: x.img, w: x.imgW, h: null } : null,
+    }))
+  })
+  try { if (window.WIRE_DB) window.WIRE_DB.upsert(items) } catch (_) {}   // the link book learns from this pull (wire-db.js); the museums stay out of it
+  art.forEach(a => { items.push(a); })
+  if (art.length) perWire.push((mus.map(m => NAME[m]).join('+')) + ' ' + art.length)
+  // the muzzle is applied AFTER the sort, in place (the paper's engine: veiled, not deleted). The megaphone rides the sorter.
+  const ed = window.FILL_SORT.sortEdition(items, { centerMax: 1e9, railMax: 1e9, centerShare: 0.42, boost: megaphone() })
+  ed.horo = horo   // NO caps; center takes 42% of the page's height in best pictures, the rest spills to the rails with pictures kept
+  ed.at = Date.now(); ed.wires = wires.map(([id]) => id).concat(mus); ed.failed = failed; ed.perWire = perWire
+  ed.names = NAME   // the Feedline reads this edition back and needs the source names too (cards/feedline/feedline.html)
+  draw(ed); archive(ed)
+  say('filled ' + (wires.length - failed.length) + '/' + wires.length)
+  btn.disabled = false; btn.removeAttribute('aria-busy')
+}
+$('fill').addEventListener('click', fill)
+
+// on open: the last edition comes back, so a tab switch never blanks a page you already filled
+const prev = latest(); if (prev && prev.center) draw(prev)
+// the draws that touch consts defined above run LAST (glyphOf, SIGNS, SF_WX): a TDZ throw here once killed the sky
+drawReadouts(); drawSigns(); sky()
+</script>
+<script src="breakdown.js?v=20260903090447"></script>   <!-- THE BREAKDOWN: the hat on every headline, the paste box, the left-through tell -->
+</body></html>

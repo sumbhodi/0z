@@ -1,0 +1,36 @@
+/* trawman.css — S. Trawman's BAR DRESS. The desk, the nameplate, the scotch on the rocks.
+   ⚠ Same three-way distinction the unicorn taught us (see uni.css's header): this is the BOT's
+   skin id 'trawman' — not an app theme, and not a "house" claim. Art lives beside the css that
+   draws it; the bot owns the decision, the stylesheet owns the file.
+   THE BAND: skin/trawman-topbar.jpg, 2048x260 — the middle cut of _etsy/trawman/desk-landscape.png
+   (6336x2688, crop y 1500..2304). Sum's pick. Re-cut from those numbers; do not eyeball it.
+   ⚠ PREVIEW AT 720x102, NEVER AT 2048 — .ab-head renders about 7:1, nearly the band's own aspect,
+   so `cover` shows almost the whole thing. Three rounds of crops were judged at the wrong size once. */
+.agent-bar[data-skin="trawman"] .ab-head {
+  background-image: url('trawman-topbar.jpg');
+  background-position: left bottom; background-size: cover; background-repeat: no-repeat;
+  border-bottom: 2px solid #7a5a3a;
+  box-shadow: inset 0 -30px 24px -20px rgba(0,0,0,.75);
+}
+.agent-bar[data-skin="trawman"] { background: #1a1008; border-color: #7a5a3a; }
+.agent-bar[data-skin="trawman"] .ab-name,
+.agent-bar[data-skin="trawman"] .ab-grip,
+.agent-bar[data-skin="trawman"] .ab-add { color: #e8c98a; text-shadow: 0 1px 4px #000; }
+
+.convo[data-skin="trawman"] { background: #1a1008; border: 2px solid #7a5a3a; border-radius: 6px; }
+.convo[data-skin="trawman"] .convo-screen { background: transparent; color: #f2e6d2; }
+.convo[data-skin="trawman"] .msg.bot { border-inline-start: 4px solid #e8c98a; color: #f6ecd9; }
+.convo[data-skin="trawman"] .msg.u   { border-inline-start: 4px solid #7a5a3a; color: #efe4d4; }
+.convo[data-skin="trawman"] .convo-head {
+  background: url('trawman-topbar.jpg') left bottom / cover no-repeat;   /* MUST match .ab-head — position AND size, or the two headers show different thirds of the desk (aoladdin.css L85's trap) */
+  border-bottom: 2px solid #7a5a3a; box-shadow: inset 0 -30px 24px -20px rgba(0,0,0,.75);
+}
+.convo[data-skin="trawman"] .head-title { color: #e8c98a; text-shadow: 0 1px 4px #000; }
+
+/* ── CLEAN TIER (clinical + corporate) — no png, same law as aoladdin.css and uni.css: the bot keeps
+      its colour, it just stops being a photograph. Solid stops, no opacity on text. ── */
+html[data-tier="clean"] .agent-bar[data-skin="trawman"] .ab-head,
+html[data-tier="clean"] .convo[data-skin="trawman"] .convo-head {
+  background: linear-gradient(180deg, #6b4a2a 0%, #2a1a0c 100%);
+  box-shadow: none;
+}

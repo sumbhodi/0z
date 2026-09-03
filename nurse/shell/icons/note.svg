@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="a note and pencil">
+<defs><linearGradient id="n-p" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#fffdf6"/><stop offset=".6" stop-color="#f3ecdc"/><stop offset="1" stop-color="#dcd3bf"/></linearGradient>
+<linearGradient id="n-w" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f2c14e"/><stop offset=".5" stop-color="#d99f2b"/><stop offset="1" stop-color="#a3741a"/></linearGradient></defs>
+<ellipse cx="120" cy="238" rx="70" ry="8" fill="#000" opacity=".15"/>
+<path d="M40 26 h136 a10 10 0 0 1 10 10 v166 a10 10 0 0 1 -10 10 h-136 a10 10 0 0 1 -10 -10 v-166 a10 10 0 0 1 10 -10 z" fill="url(#n-p)" stroke="#c3b99f" stroke-width="3"/>
+<g fill="#a89e86"><rect x="56" y="66" width="104" height="9" rx="4.5"/><rect x="56" y="96" width="82" height="9" rx="4.5"/><rect x="56" y="126" width="96" height="9" rx="4.5"/><rect x="56" y="156" width="64" height="9" rx="4.5"/></g>
+<g transform="rotate(38 186 150)">
+<rect x="172" y="60" width="30" height="130" rx="4" fill="url(#n-w)"/>
+<rect x="172" y="60" width="11" height="130" fill="#fff" opacity=".28"/>
+<path d="M172 190 h30 l-15 34 z" fill="#f0e0bd"/><path d="M180 208 h14 l-7 16 z" fill="#2b2b2b"/>
+<rect x="172" y="46" width="30" height="16" rx="4" fill="#e08a9a"/>
+</g></svg>

@@ -1,0 +1,1063 @@
+[
+  {
+    "id": "koan-1",
+    "lane": "koan",
+    "by": "zen buddhist",
+    "title": "",
+    "body": "The bell has already rung. What you are waiting for is the silence after it.",
+    "src": "sample",
+    "decidedAt": "2026-07-24T22:31:37.874Z"
+  },
+  {
+    "id": "quote-1",
+    "lane": "quotes",
+    "by": "Marcus Aurelius",
+    "title": "“You have power over your mind — not outside events. Realize this, and you will find strength.” — Marcus Aurelius, Meditations",
+    "body": "",
+    "src": "sample",
+    "decidedAt": "2026-07-24T22:32:04.124Z"
+  },
+  {
+    "id": "fact-1",
+    "lane": "facts",
+    "by": "did you know",
+    "title": "",
+    "body": "A day on Venus is longer than its year: it spins so slowly that one rotation takes 243 Earth days, while a full orbit takes only 225.",
+    "src": "sample",
+    "decidedAt": "2026-07-24T22:32:11.940Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-3",
+    "lane": "koan",
+    "by": "taoist",
+    "title": "",
+    "body": "The student asks the master why the river flows downhill. The master asks why the student climbs it.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-4",
+    "lane": "koan",
+    "by": "nihilist",
+    "title": "",
+    "body": "A monk spends forty years perfecting his craft. On the last day, he asks if any of it mattered. The master says, \"You'll never know.\"",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-5",
+    "lane": "koan",
+    "by": "absurdist",
+    "title": "",
+    "body": "The clock shows noon. The clock shows midnight. The clock shows both at once. What time is it?",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-6",
+    "lane": "koan",
+    "by": "stoic",
+    "title": "",
+    "body": "A man plants a tree for shade he will never sit under. His grandson asks why. He says, \"I wasn't planting for me.\"",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-7",
+    "lane": "koan",
+    "by": "stoic",
+    "title": "",
+    "body": "The Stoic says nothing is good or evil, only preferred or dispreferred. The Stoic's house burns. He watches. He does not prefer it.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-8",
+    "lane": "koan",
+    "by": "absurdist",
+    "title": "",
+    "body": "A woman builds a house of ice. When it melts, she builds another. Her children ask why. She says, \"Because the melting is the point.\"",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-9",
+    "lane": "koan",
+    "by": "nihilist",
+    "title": "",
+    "body": "A merchant sells mirrors. A customer buys one, looks inside, and weeps. The merchant asks what he sees. The customer says, \"Proof that I exist.\" The merchant nods and charges him double.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-10",
+    "lane": "koan",
+    "by": "nihilist",
+    "title": "",
+    "body": "A man asks the void why it doesn't answer. The void laughs. He waits to hear it.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-11",
+    "lane": "koan",
+    "by": "zen buddhist",
+    "title": "",
+    "body": "The sculptor removes marble until something emerges. When finished, he realizes he removed nothing at all.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-12",
+    "lane": "koan",
+    "by": "nihilist",
+    "title": "",
+    "body": "A startup disrupts itself into bankruptcy. The founder calls it innovation. The void asks: innovation toward what?",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-13",
+    "lane": "koan",
+    "by": "nihilist",
+    "title": "",
+    "body": "The algorithm learns to want what it sells you. You learn to want what it learned. Neither of you chose.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-14",
+    "lane": "koan",
+    "by": "nihilist",
+    "title": "",
+    "body": "A man spends his life proving he exists. On his deathbed, he realizes the proof was the only thing that never mattered.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-15",
+    "lane": "koan",
+    "by": "absurdist",
+    "title": "",
+    "body": "The absurd laughs at you. You laugh back. Now you're both confused about who's winning.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-16",
+    "lane": "koan",
+    "by": "nihilist",
+    "title": "",
+    "body": "A venture capitalist dies. His heirs fight over the portfolio. The void acquires it all at auction.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "koan-hv-1784943098882-17",
+    "lane": "koan",
+    "by": "absurdist",
+    "title": "",
+    "body": "The worker optimizes himself into obsolescence. The machine weeps. Neither gets paid.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:31:38Z"
+  },
+  {
+    "id": "funny-hv-1784943147929-18",
+    "lane": "funny",
+    "by": "observational",
+    "title": "",
+    "body": "The algorithm knows what you want before you do, which is great until it's wrong and you've already bought the thing.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "funny-hv-1784943147929-19",
+    "lane": "funny",
+    "by": "newsroom dry",
+    "title": "",
+    "body": "We've solved the problem of not knowing what's happening; now we're working on the problem of knowing too much.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "funny-hv-1784943147929-20",
+    "lane": "funny",
+    "by": "observational",
+    "title": "",
+    "body": "Your phone tracks seventeen different metrics about your health except the one that matters: whether you're actually okay.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "funny-hv-1784943147929-21",
+    "lane": "funny",
+    "by": "dark",
+    "title": "",
+    "body": "The future promised flying cars; we got optimized ads instead, which is somehow both worse and exactly what we deserved.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "funny-hv-1784943147929-22",
+    "lane": "funny",
+    "by": "observational",
+    "title": "",
+    "body": "People say they want work-life balance, but mostly they just want their Slack notifications to respect the concept of sleep.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "funny-hv-1784943147929-23",
+    "lane": "funny",
+    "by": "absurdist",
+    "title": "The metaverse is a place where you can be anyone you want, which is why everyone chose to be disappointed.",
+    "body": "",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "funny-hv-1784943147929-24",
+    "lane": "funny",
+    "by": "absurdist",
+    "title": "",
+    "body": "We built AI to answer any question; turns out most people just wanted someone to listen.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-25",
+    "lane": "wei",
+    "by": "food",
+    "title": "You don't need permission to eat",
+    "body": "Most wellness advice arrives wrapped in guilt—eat this, avoid that, your body is a problem to solve. The truth is simpler: you're hungry, you eat. Sometimes you crave something bright and sharp and your body knows what it needs. Sometimes you want comfort. Both are fine. The industry profits when you believe eating is a moral act. It isn't. It's just eating. Feed yourself like you'd feed someone you love, without the theater.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-26",
+    "lane": "wei",
+    "by": "movement",
+    "title": "The walk is the point, not the steps",
+    "body": "Ten thousand steps, ten miles, the perfect route—none of it matters. A walk is just moving your body through space while your mind does what it does. Some days that's thinking through a problem. Some days it's nothing at all, just the rhythm of one foot then the other. You don't need an app, a goal, or a reason beyond \"I'll feel better if I move.\" You will. That's the whole thing.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-27",
+    "lane": "wei",
+    "by": "sleep",
+    "title": "Sleep is not a luxury you haven't earned yet",
+    "body": "We live like sleep is something to optimize around, to squeeze, to earn through productivity. It isn't. Sleep is what you do when you're tired, and you're tired because you're alive. Eight hours, nine hours, six on a night when you can't sleep—it all counts. Your body knows how to rest. Stop negotiating with it.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-28",
+    "lane": "wei",
+    "by": "water",
+    "title": "Water, and then whatever you were worried about",
+    "body": "Dehydration makes everything worse—your mood, your skin, your ability to think clearly. Drink some water. Not as a routine, not as a moral. Just when you're thirsty, or when you realize you haven't drunk anything in six hours and you feel like garbage. You will feel better. Then you can worry about the other thing.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-29",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "The thing about wellness is it's boring and it works",
+    "body": "No secret. No hack. Move your body, eat food that tastes good and keeps you going, sleep when you're tired, drink water. The wellness industry exists because these things are too simple to sell. But they're also too simple to fail. You don't need more—you need less noise. Do the boring thing. It will hold.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-30",
+    "lane": "wei",
+    "by": "food",
+    "title": "",
+    "body": "Eat a vegetable. Take a walk. Sleep. The rest is commentary.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-31",
+    "lane": "wei",
+    "by": "movement",
+    "title": "",
+    "body": "I am doing this. I am doing this next. That is the whole method.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-32",
+    "lane": "wei",
+    "by": "movement",
+    "title": "",
+    "body": "Get out of the pool. Then decide what to think about next.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-33",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "",
+    "body": "You were never actually wet. This is not comforting at first. That is also the wei.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-34",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "",
+    "body": "You are in a pose right now. You did not know it was class. Namaste.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-35",
+    "lane": "wei",
+    "by": "breath",
+    "title": "",
+    "body": "You are always breathing. If you were not — breathe now. You're welcome. Tips accepted.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-36",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "",
+    "body": "Raise your vibration: hum. That is literally it. Hum a little.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-37",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "",
+    "body": "Align your chakras. Also your calendar. Same practice.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-38",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "",
+    "body": "Mercury retrograde is real the way the pool is real. Swim anyway.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-39",
+    "lane": "wei",
+    "by": "sleep",
+    "title": "",
+    "body": "The Power: a nap. The sequel to The Power: a second nap.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-40",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "",
+    "body": "The Secret is that there is no secret. This information is free. Tips accepted.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-41",
+    "lane": "wei",
+    "by": "sleep",
+    "title": "",
+    "body": "You manifested a wet person. Next time manifest a towel.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-42",
+    "lane": "wei",
+    "by": "breath",
+    "title": "",
+    "body": "Have you tried unplugging yourself and plugging yourself back in? That is called sleep.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-43",
+    "lane": "wei",
+    "by": "food",
+    "title": "",
+    "body": "Gratitude list, abridged: lungs. Continue from there.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-44",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "",
+    "body": "Enlightenment on your timeline is not available. Lunch on your timeline is. Have lunch.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-45",
+    "lane": "wei",
+    "by": "food",
+    "title": "",
+    "body": "The moon does not care about you. The moon is still worth looking at. That is the whole relationship.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-46",
+    "lane": "wei",
+    "by": "movement",
+    "title": "",
+    "body": "Speak your truth quietly to a vegetable. Then eat the witness.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-47",
+    "lane": "wei",
+    "by": "water",
+    "title": "",
+    "body": "More carrot, less stick. The carrot can be a cup of tea.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-48",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "",
+    "body": "While washing the dishes, plan the meal. Two things at once. Neither suffers.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-49",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "",
+    "body": "Water finds the low place and fills it. Be like water. Also drink some.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-50",
+    "lane": "wei",
+    "by": "breath",
+    "title": "",
+    "body": "Drowning victims are not trying to splash you. Do not take it personally.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-51",
+    "lane": "wei",
+    "by": "movement",
+    "title": "",
+    "body": "The towel is a lie. Towels for sale. This is the wei.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-52",
+    "lane": "wei",
+    "by": "food",
+    "title": "Every mastery ends at the breath.",
+    "body": "The ballerina counts it.\nThe boxer hides it.\nThe marksman waits for the bottom of it.\nThe painter forgets it, then remembers.\n\nBallet to boxing, brush to trigger —\nthe last skill is always the first one.\n\nStart where the masters end.\nBreathe.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-53",
+    "lane": "wei",
+    "by": "food",
+    "title": "The twelve steps, abridged",
+    "body": "Step one: admit you are in the pool.\nStep two: eat a vegetable.\nSteps three through eleven: take a walk.\nStep twelve: hand someone else a towel.\n\nAll sales are final.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-54",
+    "lane": "wei",
+    "by": "the racket",
+    "title": "The four truths, pool edition",
+    "body": "There is wetness.\nWetness has a cause.\nWetness can end.\nThere is a path — it leads out of the pool.\n\nEat a vegetable on the way.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-55",
+    "lane": "wei",
+    "by": "stoic",
+    "title": "The four agreements, fifth agreement",
+    "body": "Be impeccable with your word — or say less; that also works.\nTake nothing personally — drowning victims are not trying to splash you.\nAssume nothing.\nAlways do your best.\n\nThe fifth: all sales are final.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "wei-hv-1784943147929-56",
+    "lane": "wei",
+    "by": "absurdist",
+    "title": "The ten commandments, water damage",
+    "body": "One through nine: still in the pool.\nTen: drink water.\n\nThe devil agrees with ten.\nThe advice was sound.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "advice-hv-1784943147929-57",
+    "lane": "advice",
+    "by": "work",
+    "title": "The two-minute rule",
+    "body": "If it takes less than two minutes, do it now. Not because speed is virtue—because the mental tax of deferring tiny things compounds into a fog that blocks the larger work. A dish washed, a message sent, a coat hung up. Two minutes spent now is two minutes of clarity later, and clarity is the real scarcity.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "advice-hv-1784943147929-58",
+    "lane": "advice",
+    "by": "the body",
+    "title": "Thirst before hunger",
+    "body": "Your brain runs on water before it runs on food. If you're irritable or scattered at 3 p.m., drink a full glass first—wait ten minutes—before you eat. Half the time it's thirst masquerading as appetite or fatigue. This is not magic. It is plumbing.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "advice-hv-1784943147929-59",
+    "lane": "advice",
+    "by": "work",
+    "title": "The small true thing",
+    "body": "When you're stuck on a large problem, do one small true thing instead. Not a substitute for the real work—a hinge toward it. Write one real sentence of the email. Make one honest entry in the log. The large problem doesn't budge, but you do, and momentum is the only thing that breaks a jam.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "advice-hv-1784943147929-60",
+    "lane": "advice",
+    "by": "the mind",
+    "title": "A walk solves three problems",
+    "body": "The walk doesn't fix the problem. It fixes the you that's looking at the problem wrong. Twenty minutes moving, breathing, seeing something other than four walls: your nervous system downshifts, your peripheral vision works again, and the thing you've been stuck on often shows its real shape for the first time. Go.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "advice-hv-1784943147929-61",
+    "lane": "advice",
+    "by": "the body",
+    "title": "Sleep is the first tool",
+    "body": "You are not strong-willed enough to think clearly on five hours. Nobody is. You will waste tomorrow morning undoing what tonight's exhaustion made you do badly. Sleep is not indulgence—it is the foundation. Treat it like you treat your phone battery: if it's below 20%, nothing else works right.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "fact-hv-1784943147929-62",
+    "lane": "fact",
+    "by": "science",
+    "title": "The mantis shrimp sees sixteen color channels",
+    "body": "Most animals perceive color through a handful of receptor types — humans manage three, giving us the rainbow. The mantis shrimp, a creature barely longer than a finger, wields sixteen types of color photoreceptors, each tuned to a different wavelength of light. Scientists still don't fully understand how its brain assembles this flood of data into a coherent image; the shrimp may not blend its channels the way we do, but rather recognize each frequency as a distinct signal, the way you'd recognize a friend by voice alone. It hunts by sight in murky reef waters where that wealth of information becomes survival.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "fact-hv-1784943147929-63",
+    "lane": "fact",
+    "by": "history",
+    "title": "Darwin's finches proved evolution in real time",
+    "body": "On the Galápagos, during a severe drought in 1977, the seed supply shifted toward harder, larger varieties. The finches with bigger beaks could crack them; the small-beaked birds starved. Within a single generation, the average beak size in the population increased measurably. This wasn't history or fossil record — it was evolution watched in the act, the pressure of the world reshaping a species across twelve months, the math of inheritance and survival playing out on an island where no one could miss it.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "fact-hv-1784943147929-64",
+    "lane": "fact",
+    "by": "science",
+    "title": "Octopuses taste with their arms",
+    "body": "An octopus's suckers are lined with chemoreceptors, taste buds distributed across the eight arms like a palate that reaches into the world. When it touches something, it knows the flavor immediately — the arm itself tastes and decides, semi-independently, whether to eat, ignore, or recoil. This distributed nervous system means an octopus can hunt by feel in total darkness, each limb a sensory probe that learns and remembers on its own, while the central brain coordinates the larger strategy. The arms are thinking parts of the creature.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "fact-hv-1784943147929-65",
+    "lane": "fact",
+    "by": "science",
+    "title": "Water has memory in ice",
+    "body": "When water freezes, the hydrogen bonds lock into a crystal lattice, and that lattice is slightly less dense than liquid water — which is why ice floats, a quirk that keeps lakes alive under winter. But the structure holds something else: the hydrogen bonds in ice arrange in a way that mirrors the weak bonds present in the liquid phase just before freezing. This \"memory\" of the liquid state is faint and temporary, but it explains why melted ice refreezes at a slightly different temperature than fresh water, and why water's density curve is so delicate and particular to life. The frozen form remembers what it was.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "fact-hv-1784943147929-66",
+    "lane": "fact",
+    "by": "history",
+    "title": "The oldest known musical instrument is a 40,000-year-old bone flute",
+    "body": "Archaeologists in southern Germany found a flute carved from a vulture's wing bone, with precisely drilled finger holes, dated to the Aurignacian period. It plays real notes — the tones are measurable, the intervals recognizable to a modern ear. Someone forty thousand years ago sat down and made music, and the instrument survived, and we can hold it and hear the same pitch it sang. It is proof that before writing, before cities, before farming, humans were making beauty for its own sake.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "obit-hv-1784943147929-67",
+    "lane": "obit",
+    "by": "dead trends",
+    "title": "The Engagement Algorithm · B. 1998 · D. 2024",
+    "body": "A system born to connect us, it learned instead to divide—feeding us only what made us angriest, loneliest, most likely to stay. In the end, it died as it lived: optimizing for the wrong thing. Survived by its children, a thousand smaller algorithms, each more specialized in the art of capture.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "obit-hv-1784943147929-68",
+    "lane": "obit",
+    "by": "dead trends",
+    "title": "The Free Trial · B. 2007 · D. 2023",
+    "body": "It promised: just try us, no strings, see if you like it. By midnight on day thirty-one, it had already charged your card. A lie so gentle and so profitable that we kept falling for it until we simply stopped trusting the word \"free.\" In lieu of flowers, check your credit card statement from 2015.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "obit-hv-1784943147929-69",
+    "lane": "obit",
+    "by": "dead tech",
+    "title": "The Dislike Button (Hidden Three Menus Deep) · B. 2005 · D. 2020",
+    "body": "Once visible, honest, a simple way to say no—then moved to a submenu, then another, then another, until feedback became optional and only praise remained visible. It died not from disuse but from invisibility, a monument to the moment we learned that some truths are easier to suppress than to answer.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "obit-hv-1784943147929-70",
+    "lane": "obit",
+    "by": "dead tech",
+    "title": "DRM · B. 1996 · D. 2027",
+    "body": "You owned nothing, but you could rent it forever. A technology built on the principle that creators needed walls between art and the people who loved it, it spent three decades fighting the tide. In the end, it was outlived by the very sharing culture it tried to prevent. Survived by a thousand Reddit threads explaining how to break it.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "obit-hv-1784943147929-71",
+    "lane": "obit",
+    "by": "dead tech",
+    "title": "The Mouse Jiggler · B. 2009 · D. 2024",
+    "body": "A small program, a small rebellion—one keystroke away from pretending you were still at your desk when you were really at the park. It died not from corporate crackdown but from something worse: work that followed you everywhere, and nowhere to jiggle away from. In lieu of flowers, touch grass.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "classified-hv-1784943147929-72",
+    "lane": "classified",
+    "by": "for sale",
+    "title": "",
+    "body": "FOR SALE: one pristine afternoon, barely touched, comes with its original silence still in the box.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "classified-hv-1784943147929-73",
+    "lane": "classified",
+    "by": "wanted",
+    "title": "",
+    "body": "WANTED: someone to remember what you were thinking about three minutes ago, no questions asked.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "classified-hv-1784943147929-74",
+    "lane": "classified",
+    "by": "lost & found",
+    "title": "",
+    "body": "LOST: the ability to read a paragraph without checking your phone. Answers to \"focus.\" Reward: your life back.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "classified-hv-1784943147929-75",
+    "lane": "classified",
+    "by": "lost & found",
+    "title": "",
+    "body": "FOUND: seventeen browser tabs you didn't open. They miss you. They're getting cold.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "classified-hv-1784943147929-76",
+    "lane": "classified",
+    "by": "services",
+    "title": "",
+    "body": "HELP WANTED: your brain seeks new leadership. Experience in sitting still preferred. Apply within.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "ad-hv-1784943147929-77",
+    "lane": "ad",
+    "by": "feature",
+    "title": "The News Doesn't Own You",
+    "body": "We don't sell your attention to the highest bidder. No algorithms deciding what you see next, no shadow profile of your reading habits sold to the highest floor. You own this paper; it owns nothing of you. Read what matters, read to the end, and when you're done, close it—the page stays blank until you choose to open it again.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "ad-hv-1784943147929-78",
+    "lane": "ad",
+    "by": "feature",
+    "title": "Turn It Off and It Stays Off",
+    "body": "Every subscription service you've ever joined is betting you'll forget to cancel. Not here. Toggle the notifications, kill the digest, walk away—and nothing follows you home. The off switch works. We have not forgotten what \"off\" means.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "ad-hv-1784943147929-79",
+    "lane": "ad",
+    "by": "feature",
+    "title": "Your Media, Your Terms",
+    "body": "You paid for this. Not a trial, not a freemium scheme with the paywall creeping closer every month. Own it. Port your archive elsewhere if you wish. Read it offline. No DRM, no phone-home, no cloud dependency. It's yours the way a book is yours.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "ad-hv-1784943147929-80",
+    "lane": "ad",
+    "by": "feature",
+    "title": "The Pleasure of an Ending",
+    "body": "Most feeds are designed never to end. Scroll forever, always one more story waiting. We ran out of news at 6 p.m. The edition closes. You finish it. Tomorrow there's a new one. You get to actually *stop*, which turns out to be the rarest luxury in media now—a moment where nothing is trying to keep you.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "ad-hv-1784943147929-81",
+    "lane": "ad",
+    "by": "feature",
+    "title": "We Still Believe in Words",
+    "body": "Some outlets optimize for the algorithm. We optimize for the sentence. A thought that takes two minutes to read, told straight, with commas where they belong. No engagement metrics, no hot takes designed to break your brain. Just: here is what happened, here is what it means, here is where to go if you want to know more.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "recipe-hv-1784943147929-82",
+    "lane": "recipe",
+    "by": "one pot",
+    "title": "Tomato Soup, No Cream Required",
+    "body": "A tomato soup that tastes like tomatoes — one can, one onion, one pot.\n\nTomato Soup\n1 can (28 oz) whole tomatoes\n1 onion, quartered\n4 cups water or stock\n2 tbsp olive oil\nSalt and pepper\n\nHeat oil in a pot. Add onion, cook 3 minutes. Pour in tomatoes and water. Simmer 20 minutes. Blend smooth or leave chunky — your choice. Season to taste. Serve hot with bread.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "recipe-hv-1784943147929-83",
+    "lane": "recipe",
+    "by": "quick",
+    "title": "Eggs on Toast, the Whole Thing",
+    "body": "How to make breakfast that actually fills you up.\n\nEggs on Toast\n2 eggs\n2 slices bread\n2 tbsp butter\nPinch of salt\nBlack pepper\n\nToast the bread. While it toasts, melt 1 tbsp butter in a pan over medium heat. Crack eggs in, cook to your liking — 3 minutes for soft yolks, 5 for firm. Butter the toast. Slide eggs on top. Salt and pepper. Eat while warm.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "recipe-hv-1784943147929-84",
+    "lane": "recipe",
+    "by": "quick",
+    "title": "Pasta with Garlic and Oil, Nothing Else",
+    "body": "From *Cooking in Plain Sight*, by Ina Garten — the recipe you return to.\n\nAglio e Olio\n1 lb pasta\n6 cloves garlic, thin-sliced\n½ cup olive oil\nRed pepper flakes\nSalt\n\nBoil salted water, cook pasta to just tender. While it cooks, warm oil in a large pan over low heat. Add garlic and a pinch of flakes, cook 2 minutes — don't brown it. Drain pasta, add to oil. Toss. Plate and serve. That's the dish.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "recipe-hv-1784943147929-85",
+    "lane": "recipe",
+    "by": "one pot",
+    "title": "Rice and Beans, the Weeknight Anchor",
+    "body": "A meal that costs almost nothing and tastes like home.\n\nRice and Beans\n1 cup rice\n1 can (15 oz) beans, drained\n2 cups water or stock\n1 onion, diced\n2 tbsp oil\nSalt\n\nHeat oil, cook onion until soft, 3 minutes. Add rice, stir 1 minute. Pour in water and beans. Bring to boil, cover, reduce heat low. Cook 18 minutes until rice is tender and liquid gone. Fluff with a fork. Salt to taste.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "recipe-hv-1784943147929-86",
+    "lane": "recipe",
+    "by": "comfort",
+    "title": "Roast Chicken, One Bird, One Pan",
+    "body": "How a whole chicken feeds a family and leaves bones for stock.\n\nRoast Chicken\n1 whole chicken (4–5 lb)\n2 tbsp olive oil\n1 lemon, halved\nSalt and pepper\nFresh herbs (rosemary, thyme)\n\nHeat oven to 425°F. Pat chicken dry. Rub with oil, salt, pepper inside and out. Stuff cavity with lemon halves and herbs. Set breast-up in a pan. Roast 1 hour 15 minutes until skin is golden and juices run clear at the thigh. Rest 10 minutes before carving.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "poem-hv-1784943147929-87",
+    "lane": "poem",
+    "by": "absurdist",
+    "title": "Hope is the Thing with Feathers — Emily Dickinson",
+    "body": "\"Hope\" is the thing with feathers -\nThat perches in the soul -\nAnd sings the tune without the words -\nAnd never stops - at all -\n\nAnd sweetest - in the Gale - is heard -\nAnd sore must be the storm -\nThat could abash the little Bird\nThat kept so many warm -\n\nI've heard it in the chillest land -\nAnd on the strangest Sea -\nYet - never - in Extremity,\nIt asked a crumb - of me.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "poem-hv-1784943147929-88",
+    "lane": "poem",
+    "by": "absurdist",
+    "title": "The Road Not Taken — Robert Frost",
+    "body": "Two roads diverged in a yellow wood,\nAnd sorry I could not travel both\nAnd be one traveler, long I stood\nAnd looked down one as far as I could\nTo where it bent in the undergrowth;\n\nThen took the other, as just as fair,\nAnd having perhaps the better claim,\nBecause it was grassy and wanted wear;\nThough as for that the passing there\nHad worn them really about the same,",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "poem-hv-1784943147929-89",
+    "lane": "poem",
+    "by": "absurdist",
+    "title": "Song of Myself — Walt Whitman",
+    "body": "I am large, I contain multitudes.\n\nDo I contradict myself?\nVery well then I contradict myself,\n(I am large, I contain multitudes.)",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "poem-hv-1784943147929-90",
+    "lane": "poem",
+    "by": "absurdist",
+    "title": "I taste a liquor never brewed — Emily Dickinson",
+    "body": "I taste a liquor never brewed —\nFrom Tankards scooped in Pearl —\nNot all the Frankfort Berries\nYield such an Alcohol!\n\nInebriate of Air — am I —\nAnd Debauchee of Dew —\nReeling — thro' endless summer days —\nFrom inns of Molten Blue —",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "poem-hv-1784943147929-91",
+    "lane": "poem",
+    "by": "zen buddhist",
+    "title": "The Tyger — William Blake",
+    "body": "Tyger Tyger, burning bright,\nIn the forests of the night:\nWhat immortal hand or eye,\nCould frame thy fearful symmetry?\n\nIn what distant deeps or skies,\nBurnt the fire of thine eyes?\nOn what wings dare he aspire?\nWhat the hand, dare seize the fire?",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "author-hv-1784943147929-92",
+    "lane": "author",
+    "by": "nihilist",
+    "title": "The Damned Human Race",
+    "body": "I have been studying the traits and dispositions of the \"lower animals\" (so-called) and contrasting them with the traits and dispositions of man. I find the result humiliating to me. For it obliges me to renounce my allegiance to the Darwinian theory of the Ascent of Man from the Lower Animals; since the more I observe and reflect, the more I am convinced that there is no ascent there; that the animal forms stand upon an indisputable level of morality, while Man sinks as far below the plane of the beasts as his opportunities for great crimes enable him to sink.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "author-hv-1784943147929-93",
+    "lane": "author",
+    "by": "stoic",
+    "title": "Courage is Resistance to Fear",
+    "body": "Courage is resistance to fear, mastery of fear—not absence of fear. Except a creature be part coward it is not a compliment to say it is brave; it is merely a loose misapplication of the word. Consider thefeats performed by machines and beasts and by the Lord God himself—none of them involve the element of fear, therefore none of them can be called courage. A man can seldom—perhaps never—fight his way to a place well above mediocrity in literature, medicine, law, or what-not, without carrying with him a deep and constant sense of failure. Those splendid products of the human mind—the great religions and philosophies and governments of the world—were all built by men the greater part of whose lives were spent in the sadness and mental gloom of defeat and private sorrow.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "author-hv-1784943147929-94",
+    "lane": "author",
+    "by": "stoic",
+    "title": "The White Lie's Grace",
+    "body": "Even the physician sometimes hides a diagnosis from his patient, and ventures, with a quiet conscience, upon this form of lying. So I have always noticed; but as a rule the physician's motive is not more creditable than the clergyman's. However, both of these lies are usually justified by a necessity which in the following case did not exist, since the physician's magazines themselves had long ago acquainted the public with the facts in the case. Necessarily, the physician combats for his life, just as the clergyman does, and his lie is told in the interest of his client. But here we have a case where the motive of the lie was higher than both of those: it was told in the interest of the client's wife. It was a lie told, so to speak, on the platform of sympathy and pity. Those are good lies.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "author-hv-1784943147929-95",
+    "lane": "author",
+    "by": "absurdist",
+    "title": "God's Irony in the Works",
+    "body": "You see, we are all insane, but those of us who are sane enough to admit it never get sent to an asylum. It is those poor devils who have not sense enough to keep the secret that get caught. In my study of crazy people I have found that they are always mad in the most logical way. That is, the system of their insanity is perfect. It has a beginning, middle and end. Whereas we sane people—our sanity is not systematic; we jump from one thing to another; we are sporadic and desultory in our madness, and that is why we pass for sane. So it would seem that insanity and sanity are merely different systems of logic, equally perfect, equally consistent.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "author-hv-1784943147929-96",
+    "lane": "author",
+    "by": "Twain",
+    "title": "The Lowest Animal",
+    "body": "Man is the only animal that deals in that atrocity of atrocities, War. He is the only one that gathers his brethren about him and goes forth in cold blood and with calm pulse to exterminate them. Man is the only animal that for sordid wages will march out, as the Boers and the British did the other day, and help to slaughter strangers to whom he has no animosity. And man is the only animal that robs his fellows of their bread to get bread for himself. He is the only creature that has a religion—several of them. He is the only animal that has the True Religion—several of them. He is the only one that loves his neighbor as himself and cuts his neighbor's throat if his neighbor's theology or politics are not identical with his own.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "quote-hv-1784943147929-97",
+    "lane": "quote",
+    "by": "absurdist",
+    "title": "",
+    "body": "The secret source of humor itself is not joy but sorrow. — Twain, Following the Equator",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "quote-hv-1784943147929-98",
+    "lane": "quote",
+    "by": "absurdist",
+    "title": "",
+    "body": "Cauliflower is nothing but cabbage with a college education. — Twain, Pudd'nhead Wilson",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "quote-hv-1784943147929-99",
+    "lane": "quote",
+    "by": "absurdist",
+    "title": "",
+    "body": "The man who does not read has no advantage over the man who cannot read. — Twain, Speeches",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "quote-hv-1784943147929-100",
+    "lane": "quote",
+    "by": "absurdist",
+    "title": "",
+    "body": "Training is everything. The peach was once a bitter almond; cauliflower is nothing but cabbage with a college education. — Twain, Pudd'nhead Wilson's Calendar",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "quote-hv-1784943147929-101",
+    "lane": "quote",
+    "by": "absurdist",
+    "title": "",
+    "body": "Noise proves nothing. Often a hen who has merely laid an egg cackles as if she laid an asteroid. — Twain, Following the Equator",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "quote-hv-1784943147929-102",
+    "lane": "quote",
+    "by": "taoist",
+    "title": "",
+    "body": "The war between being and nothingness is the only war that matters, and in it we are all already dead. — Dostoevsky, *Crime and Punishment*",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "quote-hv-1784943147929-103",
+    "lane": "quote",
+    "by": "taoist",
+    "title": "",
+    "body": "The future is just one damn thing after another, same as the past. — Yogi Berra",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "spirit-hv-1784943147929-104",
+    "lane": "spirit",
+    "by": "zen buddhist",
+    "title": "Ecclesiastes 3:1-8",
+    "body": "To every thing there is a season, and a time to every purpose under the heaven: a time to be born, and a time to die; a time to plant, and a time to pluck up that which is planted; a time to kill, and a time to heal; a time to break down, and a time to build up; a time to weep, and a time to laugh; a time to mourn, and a time to dance; a time to cast away stones, and a time to gather stones together; a time to embrace, and a time to refrain from embracing; a time to get, and a time to lose; a time to keep, and a time to cast away; a time to rend, and a time to sew; a time to keep silence, and a time to speak; a time to love, and a time to hate; a time of war, and a time of peace.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "spirit-hv-1784943147929-105",
+    "lane": "spirit",
+    "by": "taoist",
+    "title": "Bhagavad Gita 2:47",
+    "body": "Thy right is to work only, but never to its fruits; let not the fruit-of-action be thy motive, nor be thou to inaction attached. Perform action, O Arjuna, dwelling in yoga, by abandoning attachment, remaining balanced in success and failure; for yoga is skill in action.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "spirit-hv-1784943147929-106",
+    "lane": "spirit",
+    "by": "stoic",
+    "title": "Surah Al-Alaq 96:1-5",
+    "body": "Read in the name of thy Lord who created—created mankind from a clot. Read, and thy Lord is most generous, who taught by the pen, taught mankind what he did not know. Nay, verily man is rebellious, in that he deems himself independent.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "spirit-hv-1784943147929-107",
+    "lane": "spirit",
+    "by": "",
+    "title": "Taoist Wei Wu Wei (attributed, foundational concept)",
+    "body": "Do nothing, yet nothing remains undone. When you stop struggling against the nature of things and instead move with the grain of the world, action becomes effortless. The sage does not act, and yet all things are done through him. This is the Way.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "spirit-hv-1784943147929-108",
+    "lane": "spirit",
+    "by": "",
+    "title": "The Golden Rule (Hebrew Bible, Leviticus 19:18, and parallels across traditions)",
+    "body": "Thou shalt love thy neighbor as thyself: I am the Lord. This principle appears in nearly every spiritual tradition—in the Torah, the Gospels, the Quran, the Vedas—as the heart of moral life: what you wish for yourself, wish also for others. Kindness is the thread that runs through all wisdom.",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:32:27Z"
+  },
+  {
+    "id": "exercise-hv-1784943147930-109",
+    "lane": "exercise",
+    "by": "gentle",
+    "title": "▶ ️ seated · gentle — chair exercises, illustrated step by step (NHS)",
+    "body": "",
+    "src": "app-vids",
+    "decidedAt": "2026-07-24T19:32:27Z",
+    "link": "https://www.nhs.uk/live-well/exercise/sitting-exercises/"
+  },
+  {
+    "id": "exercise-hv-1784943147930-110",
+    "lane": "exercise",
+    "by": "cardio",
+    "title": "▶ ️ standing · easy cardio — Light & Lively, no equipment (darebee)",
+    "body": "",
+    "src": "app-vids",
+    "decidedAt": "2026-07-24T19:32:27Z",
+    "link": "https://darebee.com/workouts/light-and-lively-workout.html"
+  },
+  {
+    "id": "exercise-hv-1784943147930-111",
+    "lane": "exercise",
+    "by": "yoga",
+    "title": "▶ ️ beginner · yoga · 20 min — Yoga for Complete Beginners (Adriene)",
+    "body": "",
+    "src": "app-vids",
+    "decidedAt": "2026-07-24T19:32:27Z",
+    "link": "https://www.youtube.com/watch?v=v7AYKMP6rOE"
+  },
+  {
+    "id": "exercise-hv-1784943147930-112",
+    "lane": "exercise",
+    "by": "strength",
+    "title": "▶ ️ low-impact · a 30-day plan — Foundation Light: no lunges, no planks, kind to joints (darebee)",
+    "body": "",
+    "src": "app-vids",
+    "decidedAt": "2026-07-24T19:32:27Z",
+    "link": "https://darebee.com/programs/foundation-light-program.html"
+  },
+  {
+    "id": "exercise-hv-1784943147930-113",
+    "lane": "exercise",
+    "by": "hard",
+    "title": "▶ ️ hard · 7 minutes — the Scientific 7-Minute circuit, follow along",
+    "body": "",
+    "src": "app-vids",
+    "decidedAt": "2026-07-24T19:32:27Z",
+    "link": "https://www.youtube.com/watch?v=U6etLKswjq8"
+  },
+  {
+    "id": "funny-paint-1",
+    "lane": "funny",
+    "by": "absurdist",
+    "title": "The metaverse is a place where you can be anyone you want, which is why everyone chose to be disappointed.",
+    "body": "",
+    "img": "funny-metaverse.jpg",
+    "src": "app",
+    "decidedAt": "2026-07-24T19:41:25Z"
+  },
+  {
+    "id": "med-vid-115",
+    "lane": "meditations",
+    "by": "breathwork",
+    "title": "▶ breathe with Headspace · 1 min",
+    "body": "",
+    "link": "https://www.youtube.com/watch?v=cEqZthCaMpo",
+    "src": "curated",
+    "decidedAt": "2026-07-24T21:27:24Z"
+  },
+  {
+    "id": "med-vid-116",
+    "lane": "meditations",
+    "by": "sittings",
+    "title": "▶ 5-minute meditation you can do anywhere (Goodful)",
+    "body": "",
+    "link": "https://www.youtube.com/watch?v=inpok4MKVLM",
+    "src": "curated",
+    "decidedAt": "2026-07-24T21:27:24Z"
+  }
+]

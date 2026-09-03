@@ -1,0 +1,15 @@
+/* agent-wellness.css — the founder's side-project comic: LAVENDER on dark. failed yoga instructor turned
+   stand-up bot, useless at both, but it reads your plate (and your pint) from a photo. the head wears the
+   retreat — a panoramic crystal cavern (wellness-retreat.png, already strip-shaped so `cover` crops clean). */
+.agent-bar.agent-wellness { background: var(--well-bg); border-color: var(--lav); }
+.agent-bar.agent-wellness .ab-head { background: var(--well-bg) url('wellness-retreat.png') center / cover no-repeat; border-bottom: none; box-shadow: inset 0 -2px 0 var(--lav); }
+.agent-bar.agent-wellness .ab-name { color: var(--well-text); letter-spacing: 1.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.9); }
+.agent-bar.agent-wellness .ab-grip { color: var(--lav-bright); text-shadow: 0 1px 4px rgba(0,0,0,0.9); }
+.agent-bar.agent-wellness .ab-add { background: rgba(28,22,48,0.65); color: var(--well-text); border-color: var(--lav-deep); text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+.agent-bar.agent-wellness .ab-add:hover { border-color: var(--lav); color: #ffffff; background: rgba(28,22,48,0.85); }
+.agent-bar.agent-wellness .convo,
+.agent-bar.agent-wellness .convo-screen { background: var(--well-screen); }
+.agent-bar.agent-wellness .convo .msg-bot,
+.agent-bar.agent-wellness .convo .msg-u,
+.agent-bar.agent-wellness .convo .msg-stream { color: var(--well-msg); }
+.agent-bar.agent-wellness .convo .msg-stream:empty::before { color: var(--well-dim); }

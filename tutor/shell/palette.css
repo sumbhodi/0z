@@ -1,0 +1,13 @@
+/* palette.css — OZ_PALETTE, the typo-free ⌘K surface. clean + neutral (a core tool, not a themed card). */
+.oz-pal { position: fixed; inset: 0; z-index: 100000; display: flex; align-items: flex-start; justify-content: center; padding-top: 12vh; background: rgba(0,0,0,.55); }
+.oz-pal-box { width: min(560px, 92vw); max-height: 70vh; display: flex; flex-direction: column; background: #16181d; border: 1px solid #34363e; border-radius: 12px; box-shadow: 0 24px 60px rgba(0,0,0,.6); overflow: hidden; }
+.oz-pal-in { padding: 16px 18px; background: transparent; border: none; border-bottom: 1px solid #2a2c33; outline: none; color: #e8e8ea; font: 500 16px/1 system-ui, sans-serif; }
+.oz-pal-in::placeholder { color: #6a6c74; font-size: var(--fs-ui); }
+.oz-pal-list { overflow-y: auto; padding: 6px; }
+.oz-pal-grp { color: #7a7c84; font-size: var(--fs-ui); text-transform: uppercase; letter-spacing: 1.5px; padding: 9px 10px 4px; }
+.oz-pal-item { display: flex; align-items: baseline; gap: 10px; width: 100%; text-align: left; padding: 10px 12px; cursor: pointer; background: transparent; border: none; border-radius: 7px; color: #d8d8da; font: 500 var(--fs-ui)/1.2 system-ui, sans-serif; }
+.oz-pal-item.on { background: var(--accent, #6ea8ff); color: #0a0d12; }
+.oz-pal-item.on .oz-pal-hint { color: rgba(10,13,18,.7); }
+.oz-pal-lbl { flex-shrink: 0; }
+.oz-pal-hint { color: #8a8c94; font-size: var(--fs-ui); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.oz-pal-empty { color: #6a6c74; padding: 16px; text-align: center; font: 500 var(--fs-ui) system-ui; }

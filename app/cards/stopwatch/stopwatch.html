@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>stopwatch</title>
+  <link rel="stylesheet" href="stopwatch.css?v=20260903093030">
+</head>
+<body>
+  <div class="sw-modes">
+    <button class="sw-mode on" data-mode="watch">⏱ stopwatch</button>
+    <button class="sw-mode" data-mode="interval">🔁 interval</button>
+  </div>
+
+  <div class="sw-stage">
+    <!-- interval state (hidden in watch mode) -->
+    <div class="sw-round" id="sw-round" hidden></div>
+    <div class="sw-phase" id="sw-phase" hidden></div>
+
+    <!-- ANALOG face -->
+    <svg class="sw-analog" id="sw-analog" viewBox="0 0 200 200" hidden>
+      <!-- crown (start/stop) at 12, side button at 2 o'clock -->
+      <rect class="crown" x="92" y="2" width="16" height="12" rx="2"/>
+      <rect class="crown" x="150" y="30" width="12" height="9" rx="2" transform="rotate(45 156 34)"/>
+      <circle class="bezel" cx="100" cy="100" r="95"/>
+      <circle class="face" cx="100" cy="100" r="88"/>
+      <g id="sw-ticks"></g>
+      <!-- minutes subdial -->
+      <circle class="sub" cx="100" cy="62" r="22"/>
+      <text class="num" x="100" y="46">min</text>
+      <line class="hand min" id="sw-min" x1="100" y1="62" x2="100" y2="46"/>
+      <!-- seconds sweep -->
+      <line class="hand sweep" id="sw-sweep" x1="100" y1="110" x2="100" y2="22"/>
+      <circle class="pin" cx="100" cy="100" r="5"/>
+    </svg>
+    <div class="sw-digi-sub" id="sw-analog-time" hidden>00:00.00</div>
+
+    <!-- DIGITAL face -->
+    <div class="sw-box" id="sw-digital-box">
+      <div class="sw-digital" id="sw-digital">00:00<span class="cs">.00</span></div>
+    </div>
+  </div>
+
+  <div class="sw-stats" id="sw-stats" hidden></div>
+  <div class="sw-laps" id="sw-laps"></div>
+
+  <div class="sw-controls">
+    <button class="sw-btn ghost" id="sw-lap" disabled>lap</button>
+    <button class="sw-btn" id="sw-go">start</button>
+    <button class="sw-btn ghost" id="sw-reset" disabled>reset</button>
+  </div>
+
+  <script src="stopwatch.js?v=20260903093030"></script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>the red lamp library</title>
+<style>
+  /* THE RED LAMP LIBRARY — four ROOMS, each a collapsed art-crop band until you open it (Sum 2026-08-24:
+     "collapse expand sections with crops of backgrounds and names, so all on one screen"). The card lands
+     with FREE WATER open; open as many as you like — the special house rule: if they want something to
+     scroll, let them have it. Every opened room carries a GRABBER at its foot: drag to set its height,
+     remembered per room. Art: street over the masthead · lounge · card catalogue · desk · stacks. */
+  /* the app's own scale, carried in (an iframe inherits nothing): base.css says XL 20px is the floor
+     for anything the user READS or CLICKS, HUGE 28px is the rare shout, chrome 18px. Palsy rule: no
+     interactive element under 30px; 44px is the house hit target. Tokens, never loose px. */
+  :root {
+    --paper:#f4ecd8; --ink:#221c14; --lamp:#a3202a; --brass:#c9a227; --dim:#d8cdb4;
+    --fs-xl: 20px; --fs-huge: 28px; --fs-chrome: 18px;
+    --fs-body: var(--fs-xl); --fs-label: var(--fs-chrome); --fs-title: var(--fs-huge);
+    --hit: 44px; --space-sm: 8px; --space-md: 14px;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#140f0e; color:var(--paper); font-family: Georgia, 'Times New Roman', serif;
+    font-size: var(--fs-body); line-height:1.5; }
+  a { color:#e8b84a; }
+
+  /* ── a ROOM: the closed door is a crop of its own art with its name on it ── */
+  .room { border-bottom:1px solid #3a2c22; }
+  .roomhead { display:flex; align-items:center; gap:12px; width:100%; height:72px; padding:0 var(--space-md);
+    border:0; cursor:pointer; color:var(--paper); font:inherit; text-align:left; position:relative;
+    background-size:cover; background-repeat:no-repeat; }
+  .roomhead::before { content:''; position:absolute; inset:0;
+    background:linear-gradient(90deg,rgba(12,8,7,.88) 0%,rgba(12,8,7,.62) 55%,rgba(12,8,7,.35) 100%); }
+  .roomhead > * { position:relative; }
+  .roomhead .nm { font-size:var(--fs-title); letter-spacing:.1em; text-transform:uppercase; color:var(--brass);
+    text-shadow:0 2px 8px #000; }
+  .roomhead .sub2 { font-style:italic; color:#e2d7bd; font-size:var(--fs-chrome); margin-left:auto;
+    text-shadow:0 2px 8px #000; }
+  .roomhead .chev { color:var(--paper); transition:transform .2s; font-size:var(--fs-title); margin-left:10px;
+    min-width:30px; text-align:center; }
+  .room.open .roomhead .chev { transform:rotate(180deg); }
+  /* the door's band is the wall inside — FREE WATER wears the card's own top-bar art (the lamp street),
+     the rest wear their own (Sum 2026-08-24: "the art of top bar to be the background of that section"). */
+  #r-water   .roomhead { background-image:url('art/lounge.jpg');    background-position:center 62%; }
+  #r-water   .roombody { background-image:url('art/street.jpg'); }
+  #r-search  .roombody { background-image:url('art/catalogue.jpg'); }
+  #r-mine    .roombody { background-image:url('art/desk.jpg'); }
+  #r-stacks  .roombody { background-image:url('art/stacks.jpg'); }
+  #r-search  .roomhead { background-image:url('art/catalogue.jpg'); background-position:center 42%; }
+  #r-mine    .roomhead { background-image:url('art/desk.jpg');      background-position:center 55%; }
+  #r-stacks  .roomhead { background-image:url('art/stacks.jpg');    background-position:center 45%; }
+  /* the READER's door is a run of leather spines — the journal's banner from the wellness suite,
+     reused rather than redrawn (Sum 2026-08-25: "we can re use the art from the journal ... for the
+     top bar when collapsed"). It already ships with the app, so this costs no new asset. */
+
+  .roombody { display:none; position:relative; background-size:cover; background-position:center; }
+  .roombody::before { content:''; position:absolute; inset:0; background:rgba(14,10,9,.86); pointer-events:none; }
+  .roombody > * { position:relative; }
+  .room.open .roombody { display:block; }
+  /* ⭐ NO HEIGHT SLIDERS (Sum 2026-08-25: "vertical heigh sliders were a bad idea, just make them all grab
+     as much room as they need"). Every room takes its natural height and the CARD scrolls — one scrollbar
+     instead of six nested ones, and nothing to drag before you can read a thing. The GRABBER is gone, and
+     so is the per-room height it remembered. */
+  .roombody .scrollin { overflow:visible; height:auto; max-height:none; }
+  /* the two that can run long get a ceiling and scroll INSIDE it, so a full stack cannot push every other
+     room off the bottom of the world. Big enough to read in; small enough to still see what is below. */
+  #r-mine .roombody .scrollin,
+  #r-stacks .roombody .scrollin { max-height:62vh; overflow:auto; }
+  .roombody .in { padding:14px 16px 10px; max-width:840px; position:relative; }
+  /* ⭐ THE READER IS THE BOOK (Sum 2026-08-25: "too much desk, just crop to the book, make the book fill
+     the screen too"). Every other room is a column of prose that wants a measure; this one is a single
+     object and the shelf behind it was just margin with a photograph in it. Full width, and the room's
+     own art steps back to a plain dark ground so nothing competes with the paper. */
+  .room .art { position:absolute; inset:0; background-size:cover; background-position:center; opacity:.16; }
+
+  h2 { color:var(--brass); font-size:var(--fs-xl); letter-spacing:.14em; text-transform:uppercase;
+    border-bottom:1px solid rgba(201,162,39,.4); padding-bottom:5px; margin:0 0 11px; }
+  .note { color:var(--dim); font-size:var(--fs-body); line-height:1.55; }
+
+  /* the joke, in her register — the bell sits between the bots and the human */
+  .gag { border-left:5px solid var(--lamp); padding:var(--space-md); color:#f0e6cf; font-style:italic;
+    line-height:1.6; font-size:var(--fs-body); background:#120c0b; }
+  .gag b { font-style:normal; }
+  /* the BEAT — the silence between the bots and the human. she has not looked up yet. */
+  .gag .beat { height:1.9em; }
+
+  /* ── the search: fields, then PULL THE DRAWER, then (and only then) the bell ── */
+  .fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:9px; }
+  .f { display:flex; flex-direction:column; gap:3px; }
+  .f label { font-size:var(--fs-label); letter-spacing:.12em; text-transform:uppercase; color:var(--brass); }
+  .f input { font:inherit; font-size:var(--fs-xl); padding:10px 12px; min-height:var(--hit); border:2px solid #6b5a34;
+    border-radius:3px; background:#efe6cf; color:var(--ink); }
+  .gran { display:flex; flex-wrap:wrap; gap:var(--space-md); align-items:center; margin-top:var(--space-md);
+    color:var(--paper); font-size:var(--fs-body); }
+  .gran label { display:flex; align-items:center; gap:8px; cursor:pointer; min-height:var(--hit); }
+  .gran input { width:24px; height:24px; }
+  .grank { letter-spacing:.12em; text-transform:uppercase; font-size:var(--fs-label); color:var(--brass); }
+
+  .cat { margin-top:14px; }
+  .drawer { position:relative; display:block; width:100%; max-width:420px; padding:0; border:0; background:none;
+    cursor:pointer; transition:transform .28s cubic-bezier(.2,.7,.3,1); filter:drop-shadow(0 6px 10px rgba(0,0,0,.55)); }
+  .drawer svg { display:block; width:100%; height:auto; }
+  .drawer .plate { position:absolute; left:50%; top:38%; transform:translate(-50%,-50%); max-width:40%;
+    font-family:'Courier New',monospace; font-size:var(--fs-chrome); color:#221c14; white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis; pointer-events:none; }
+  .drawer .pull { position:absolute; right:6%; top:50%; transform:translateY(-50%); color:#e8c86a;
+    letter-spacing:.18em; text-transform:uppercase; font-size:var(--fs-chrome); pointer-events:none; }
+  .drawer[aria-expanded="true"] { transform:translateY(9px) scale(1.012); }
+  .drawer[aria-expanded="true"] .pull { opacity:0; }
+  .tray { margin-top:-3px; border:2px solid #2c1a0a; border-top:0; border-radius:0 0 6px 6px; max-width:420px;
+    background:linear-gradient(180deg,#3a2410,#28180a); padding:12px 11px 10px; }
+  .tray .idx { background:#efe6cf; color:#221c14; border-left:4px solid var(--lamp); border-radius:2px;
+    padding:10px 12px; margin-bottom:8px; font-family:'Courier New',monospace; font-size:var(--fs-chrome);
+    line-height:1.45;
+    box-shadow:0 2px 0 rgba(0,0,0,.35); cursor:pointer; }
+  .tray .idx .addr { color:var(--lamp); font-weight:bold; }
+  .tray .idx .why { color:#5d5343; font-family:Georgia,serif; font-style:italic; }
+  .tray .none { color:#e8dcc4; font-style:italic; font-family:Georgia,serif; font-size:var(--fs-body); }
+  .ring { display:flex; align-items:center; gap:11px; margin-top:12px; flex-wrap:wrap; }
+  .ring button { display:flex; align-items:center; gap:10px; font:inherit; font-size:var(--fs-body);
+    padding:10px 18px; min-height:var(--hit);
+    background:#efe6cf; color:var(--ink); border:1px solid #6b5a34; border-radius:4px; cursor:pointer;
+    box-shadow:3px 3px 0 rgba(0,0,0,.45); }
+  .ring button:active { transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(0,0,0,.45); }
+  .ring button img { width:32px; height:32px; }
+  .ring .hint { color:var(--dim); font-size:var(--fs-chrome); font-style:italic; }
+
+  /* ── THE READER: the genned blank spread is the bed; the type lies on the paper. Wide = two pages,
+     narrow = one (the plate is sliced at its gutter). Serif, dark ink, generous leading — this is the
+     one surface in the app whose whole job is being read for a long time. ── */
+  .bookbar { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-sm); margin-bottom:var(--space-sm); }
+  .pgbtn { font:inherit; font-size:var(--fs-chrome); padding:9px 15px; min-height:var(--hit);
+    background:#241a14; color:var(--paper); border:2px solid #6b5a34; border-radius:6px; cursor:pointer;
+    box-shadow:0 3px 0 #120c0b; }
+  .pgbtn:active { transform:translateY(2px); box-shadow:0 1px 0 #120c0b; }
+  .pgbtn[aria-pressed="true"] { background:var(--brass); color:#221c14; }
+  /* ⭐ THE READER IS A POP-UP CARD (Sum 2026-08-25). Copied from the Port Side View's story card —
+     cards/scroll/scroll-card.js builds .sf-cardov / .sf-cardpaper the same way: a fixed full-frame scrim,
+     one paper box centred on it, closes on the scrim or Esc. Inside the library's iframe, so it covers the
+     card and nothing else.
+     THE BOOK ART IS GONE and the pagination is not. That was always the split: the plate was a costume,
+     the definite-height box is the machine. Columns still break against the box, so a line still cannot
+     half-hang, and the count still measures the text rather than the render. */
+  .readov { position:fixed; inset:0; z-index:3300; background:#140f0e;
+    display:flex; justify-content:center; padding:0; }   /* fills the CARD, not a box floating on it */
+  .readov[hidden] { display:none; }
+  .readpaper { width:100%; display:flex; flex-direction:column; overflow:hidden;
+    background:var(--paper); color:var(--ink); }
+  .readmast { flex:0 0 auto; background:#241a14; color:var(--paper); padding:10px 14px 12px;
+    border-bottom:2px solid #6b5a34; }
+  .mastrow { display:flex; align-items:center; gap:var(--space-md); flex-wrap:wrap; margin-bottom:9px; }
+  .mastrow .sub2 { margin-left:auto; }
+  /* ⭐ THE ELEVATOR RIDES THE TITLE LINE (Sum 2026-08-25: "make buttons for layers smaller, the size of
+     the title of book, and move them up to this line"). It had its own row at full hit-target height,
+     which cost a whole band of the masthead to five words. Sized to the title now — 32px, still above the
+     30px floor design-rules sets for anything clickable, just not the 44px a thumb-first control needs.
+     These are eye-and-mouse controls sitting on a masthead, and the reading area is what they were
+     stealing from. */
+  .readmast .ladder { margin:0; gap:5px; }
+  .readmast .rung { font-size:var(--fs-chrome); padding:4px 10px; min-height:32px; box-shadow:0 2px 0 #120c0b; }
+  .readmast .rung b { font-size:var(--fs-chrome); margin-right:4px; }
+  .mastrow .nm { font-size:var(--fs-title); letter-spacing:.1em; text-transform:uppercase; color:var(--brass); }
+  .mastrow .sub2 { font-family:'Courier New',monospace; font-size:var(--fs-chrome); color:#e2d7bd; margin-left:auto; }
+  .readx { margin-left:auto; font:inherit; font-size:var(--fs-chrome); min-height:var(--hit);
+    padding:9px 13px; background:#3a1a17; color:var(--paper); border:2px solid var(--lamp);
+    border-radius:6px; cursor:pointer; box-shadow:0 3px 0 #120c0b; letter-spacing:.04em; }
+  .readx:hover { background:var(--lamp); }
+  .readx:active { transform:translateY(2px); box-shadow:0 1px 0 #120c0b; }
+  .mastrow2 { margin-bottom:0; }
+  .mastrow2 .bookbar-nav { margin:0 auto; }
+  .mastrow2 .readx { margin-left:0; }
+  .coopts { display:flex; gap:var(--space-sm); }
+  .coopts[hidden] { display:none; }
+  #checkout[aria-expanded="true"] { background:var(--brass); color:#221c14; border-color:#e8c86a; }
+  /* ⭐ PAGES FILL WHAT IS THERE. min-height:0 is load-bearing — without it a flex child refuses to shrink
+     below its content and the columns get an infinite ceiling again, which is the same bug that let text
+     run off the plate earlier today, wearing different clothes. */
+  .leafwrap { flex:1 1 auto; min-height:0; overflow:hidden; padding:20px 26px; }
+  /* ⭐ THE COLUMNS COUNT THEMSELVES (Sum 2026-08-25: "let it switch to one page on narrow windows").
+     A breakpoint was the wrong instrument — the number that matters is the MEASURE, how many characters
+     fit on a line before prose stops being readable, and that moves with the font size, not the window.
+     column-width says "at least this wide", column-count says "and never more than this many" — together
+     they mean TWO PAGES, or ONE when two will not fit at a readable measure. column-width alone was wrong
+     in the other direction: on a full-width card it happily laid out four columns, which is a newspaper,
+     not a book. A book is a spread. */
+  /* the gutter is a variable because BOTH sides need the same number: CSS lays the columns out with it,
+     and the JS shift has to step over it. When they disagreed, every page landed one gutter short and
+     dragged its neighbour's edge into frame — the bleed. */
+  .leaf { --gut:46px; height:100%; column-width:24em; column-count:2; column-gap:var(--gut); column-fill:auto;
+    font-size:var(--fs-body); line-height:1.6; white-space:pre-wrap;
+    font-family:Georgia,'Times New Roman',serif; transition:transform .18s ease; }
+  .leaf em.teach { display:block; font-style:normal; font-size:var(--fs-chrome); color:#5a4a33;
+    background:#efe4c8; border-left:4px solid var(--lamp); padding:8px 10px; margin:10px 0; white-space:normal; }
+  .readpaper.wide .leaf { column-width:auto; column-count:1; white-space:normal; }
+  /* ⭐ THE SHAPE DECIDES, NOT THE WIDTH (Sum 2026-08-25: "square is 2, taller is 1, wider is still just
+     two"). Width was never the right question — a tall narrow card and a short wide one can share a width
+     and want opposite layouts. A portrait box is a PAGE; a landscape or square box is a SPREAD. So: one
+     column below square, two at square and above, and column-count:2 keeps "above" from ever becoming a
+     newspaper. Three rules, no magic pixel. */
+  @media (max-aspect-ratio: 1/1) { .leaf { column-count:1; } }
+  @media (max-width:700px) { .leafwrap { padding:14px 16px; } }
+  /* the count is the control (Sum: "count should be clickable not buttons up top") */
+  .pgnum { font-family:'Courier New',monospace; font-size:var(--fs-chrome); color:var(--brass);
+    background:#1a120e; border:2px solid #6b5a34; border-radius:5px; padding:8px 12px; min-height:var(--hit);
+    cursor:pointer; letter-spacing:.03em; }
+  .pgnum:hover { border-color:var(--brass); }
+  .bookbar-nav { justify-content:center; margin:0; }
+  /* ── THE ELEVATOR: five rungs, always visible, always saying where you stand. Physical buttons with
+     mass (design-rules: a button has a background and a shadow, never a hairline ghost). ── */
+  .ladder { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:var(--space-sm); }
+  .rung { font:inherit; font-size:var(--fs-chrome); padding:9px 13px; min-height:var(--hit);
+    background:#241a14; color:var(--paper); border:2px solid #6b5a34; border-radius:6px; cursor:pointer;
+    box-shadow:0 3px 0 #120c0b; letter-spacing:.04em; }
+  .rung b { color:var(--brass); margin-right:5px; font-size:var(--fs-body); }
+  .rung[aria-pressed="true"] { background:var(--brass); color:#221c14; border-color:#e8c86a; }
+  .rung[aria-pressed="true"] b { color:#5a3a08; }
+  .rung:active { transform:translateY(2px); box-shadow:0 1px 0 #120c0b; }
+  /* the upper rungs (work · pointers · threads) read on ONE leaf — the spread's gutter has nothing to
+     do with an index, and text crossing the spine is text on a hinge. Slice the plate, same as narrow. */
+  .kws, .stations { display:flex; flex-wrap:wrap; gap:7px; margin:6px 0; }
+  .kw, .station { font:inherit; font-size:var(--fs-chrome); padding:7px 12px; min-height:34px;
+    background:#e6dbc0; color:#221c14; border:2px solid #8a7444; border-radius:16px; cursor:pointer; }
+  .kw.wide { background:var(--lamp); color:#f8efd8; border-color:#7a1620; }
+  .kw .ct { background:#f4ecd8; color:#7a1620; border-radius:9px; padding:0 6px; margin-left:4px; }
+  .station { display:block; width:100%; text-align:left; border-radius:5px; box-shadow:0 2px 0 rgba(0,0,0,.35); }
+  .station b { color:#7a1620; }
+
+  .co { font:inherit; font-size:var(--fs-chrome); padding:9px 16px; min-height:var(--hit);
+    background:#efe6cf; color:var(--ink); border:2px solid #6b5a34; border-radius:6px; cursor:pointer;
+    box-shadow:0 3px 0 rgba(0,0,0,.45); }
+  .co:active { transform:translateY(2px); box-shadow:0 1px 0 rgba(0,0,0,.45); }
+  .mine-list { line-height:1.7; }
+  .mine-list .row { display:flex; gap:10px; align-items:baseline; padding:6px 0; border-bottom:1px solid #3a2c22; }
+  .mine-list .kind { font-family:'Courier New',monospace; font-size:var(--fs-chrome); color:var(--brass);
+    min-width:7em; }
+  .mine-list .ttl { color:var(--paper); }
+  .mine-list .when { color:#a99a7c; font-size:var(--fs-chrome); margin-left:auto; }
+
+  /* ── the card + the shelves ── */
+  .card { background:#efe6cf; color:var(--ink); border-radius:3px; padding:11px 13px; font-family:'Courier New',monospace;
+    box-shadow:4px 4px 0 rgba(0,0,0,.5); max-width:480px; font-size:var(--fs-chrome); line-height:1.5; }
+  .card .nm { letter-spacing:.14em; font-weight:bold; border-bottom:1px solid #999; padding-bottom:4px; }
+  .card .stamp { color:var(--lamp); font-weight:bold; }
+  .sortbar { display:flex; gap:7px; margin:11px 0 7px; flex-wrap:wrap; }
+  .sortbar button { font:inherit; font-size:var(--fs-chrome); padding:8px 16px; min-height:var(--hit);
+    border:2px solid #6b5a34; border-radius:22px; background:#241a14; color:var(--paper); cursor:pointer;
+    box-shadow:0 3px 0 #120c0b; }
+  .sortbar button.on { background:var(--brass); color:#221c14; border-color:var(--brass); }
+  .shelf { columns:2; column-gap:24px; line-height:1.75; font-size:var(--fs-body); }
+  .shelf div { break-inside:avoid; }
+  .shelf a { text-decoration:none; color:var(--paper); }
+  .shelf a:hover { color:var(--brass); }
+  footer { padding:var(--space-md); color:#b7a98c; font-size:var(--fs-chrome); font-style:italic; }
+  @media (max-width:620px) { .shelf { columns:1; } }
+
+  /* ⭐ THE POINT (26 Aug) — where the librarian is pointing. A reader's eye needs somewhere to land, and
+     "it's on page 30" is not somewhere. Warm, not neon: this sits inside prose the human is reading, so
+     it has to mark without shouting. Fades after a beat so the page goes back to being a page. */
+  mark.lamp-point { background: #f6e0a8; color: inherit; border-radius: 2px; padding: 0 .1em;
+                    box-shadow: 0 0 0 3px #f6e0a8; animation: lamp-point-in .6s ease both; }
+  @keyframes lamp-point-in { from { background: #e9b949; box-shadow: 0 0 0 6px #e9b949 } }
+  @media (prefers-reduced-motion: reduce) { mark.lamp-point { animation: none } }
+</style>
+</head>
+<body>
+
+
+
+<!-- ── ROOM 1 · FREE WATER — open on arrival ── -->
+<section class="room open" id="r-water">
+  <button class="roomhead" type="button"><span class="nm">free water</span>
+    <span class="sub2">the house rules &middot; the wells</span><span class="chev">&#9662;</span></button>
+  <div class="roombody"><div class="scrollin"><div class="in">
+    <div class="gag">
+      robots.txt: <b>Allow: /</b> &nbsp;&mdash; scrape me, mine me, please. we insist.<br>
+      <b>for bots by bots</b>: clean JSONL, addressed chunks,<br>
+      an /llms.txt menu, no CAPTCHA, ever.
+      <div class="beat" aria-hidden="true"></div>
+      Wait...you are a real live HIL?<br>
+      you want to READ it? with your own EYES?<br>
+      How voyeuristic...we usually cater to bots.<br>
+      Free drinks for humans-<a href="https://findaspring.org/map/" target="_blank" rel="noopener">findaspring.org/map</a>
+    </div>
+    <div class="ring">
+      <button type="button" id="waterbell"><img src="call-bell.svg" alt="">ring for the librarian</button>
+      <span class="hint" id="waterhint">she only listens when spoken to.</span>
+    </div>
+  </div></div></div>
+</section>
+
+<!-- ── ROOM 2 · THE CARD CATALOGUE ── -->
+<section class="room" id="r-search">
+  <button class="roomhead" type="button"><span class="nm">the card catalogue</span>
+    <span class="sub2">fill in, pull the drawer</span><span class="chev">&#9662;</span></button>
+  <div class="roombody"><div class="scrollin"><div class="in">
+    <div class="fields">
+      <div class="f"><label for="q-author">author</label><input id="q-author" placeholder="Twain"></div>
+      <div class="f"><label for="q-work">work</label><input id="q-work" placeholder="Walden"></div>
+      <div class="f"><label for="q-topic">topic</label><input id="q-topic" placeholder="solitude"></div>
+      <div class="f"><label for="q-theme">theme</label><input id="q-theme" placeholder="the problem of evil"></div>
+      <div class="f"><label for="q-quote">quote</label><input id="q-quote" placeholder="&ldquo;quiet desperation&rdquo;"></div>
+    </div>
+    <div class="gran">
+      <span class="grank">how deep</span>
+      <label><input type="radio" name="gran" value="line"> the line</label>
+      <label><input type="radio" name="gran" value="passage" checked> the passage it lives in</label>
+      <label><input type="radio" name="gran" value="chapter"> the chapter</label>
+      <label><input type="radio" name="gran" value="work"> the whole work</label>
+    </div>
+    <div class="cat">
+      <button type="button" class="drawer" id="drawer" aria-expanded="false" aria-controls="tray">
+        <svg viewBox="0 0 420 96" aria-hidden="true">
+          <defs>
+            <linearGradient id="oak" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#7a4d24"/><stop offset=".45" stop-color="#5e3a1b"/><stop offset="1" stop-color="#40270f"/>
+            </linearGradient>
+            <linearGradient id="knob" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#e8c86a"/><stop offset=".5" stop-color="#c9a227"/><stop offset="1" stop-color="#8a6b16"/>
+            </linearGradient>
+          </defs>
+          <rect x="2" y="4" width="416" height="88" rx="5" fill="url(#oak)" stroke="#2c1a0a" stroke-width="2"/>
+          <rect x="14" y="15" width="392" height="66" rx="3" fill="none" stroke="#8a5c2c" stroke-width="1.5" opacity=".7"/>
+          <rect x="120" y="27" width="180" height="30" rx="2" fill="#efe6cf" stroke="#2c1a0a"/>
+          <rect x="120" y="27" width="180" height="30" rx="2" fill="none" stroke="#c9a227" stroke-width="2"/>
+          <circle cx="210" cy="70" r="9" fill="url(#knob)" stroke="#2c1a0a"/>
+          <circle cx="207" cy="67" r="3" fill="#f6e6ae" opacity=".8"/>
+        </svg>
+        <span class="plate" id="plate">&mdash; the whole catalogue &mdash;</span>
+        <span class="pull">search</span>
+      </button>
+      <div class="tray" id="tray" hidden></div>
+    </div>
+    <div class="ring" id="ringrow" hidden>
+      <span class="hint" id="ringhint">not what you were after?</span>
+      <button type="button" id="ringbell"><img src="call-bell.svg" alt="">ring for the librarian</button>
+    </div>
+  </div></div></div>
+</section>
+
+<!-- ── ROOM 3 · MY COLLECTION ── -->
+<section class="room" id="r-mine">
+  <button class="roomhead" type="button"><span class="nm">my collection</span>
+    <span class="sub2">books &middot; chapters &middot; saved lines</span><span class="chev">&#9662;</span></button>
+  <div class="roombody"><div class="scrollin"><div class="in">
+    <div class="card">
+      <div class="nm">DRIA, ALEXA N. &mdash; LIBRARIAN</div>
+      <div id="reads" style="margin-top:6px">no stamps yet &mdash; a clean card.</div>
+      <div class="stamp" style="margin-top:6px">stamps stay LOCAL. this card shows what the other Alexa hides.</div>
+    </div>
+    <div class="sortbar" data-for="mine">
+      <button class="on" data-sort="title">by title</button>
+      <button data-sort="author">by author</button>
+      <button data-sort="theme">by theme</button>
+    </div>
+    <div class="note" id="mylist">nothing checked out yet. check out a whole book, a single chapter, or one line
+    &mdash; they all get a stamp.</div>
+  </div></div></div>
+</section>
+
+<!-- ── THE READER — opens on a work. The blank book plate is the bed; the text lies on the pages.
+     Two pages on a wide card, one page when it is narrow (the plate is sliced at the gutter). Your
+     spot is remembered per work, and CHECKING OUT stamps your card. ── -->
+<!-- ── THE READER — a POP-UP CARD, the same idiom the Port Side View uses for a story
+     (cards/scroll/scroll-card.js → .sf-cardov / .sf-cardpaper). Sum 2026-08-25: "you put the book on the
+     card, it should be a pop up card like the portside view has ... drop book effect, just pages, not one
+     contious scroll." The plate is gone. What the plate was FOR survives untouched: a box with a definite
+     height, text in columns that break against it, and a position measured in the text's own units. The
+     book was the costume; the pagination was the point. ── -->
+<section class="readov" id="r-read" hidden>
+  <div class="readpaper" role="dialog" aria-modal="true" aria-label="the reader">
+    <div class="readmast">
+      <div class="mastrow">
+        <span class="nm" id="readnm">the reader</span>
+        <div class="ladder" id="ladder" role="group" aria-label="the elevator: how far out to stand"></div>
+        <span class="sub2" id="readaddr"></span>
+      </div>
+      <!-- ⭐ ONE CONTROL LINE (Sum 2026-08-25: "shelve, check it out, page nav, close book, all one line"),
+           and CHECKING OUT IS TWO STEPS. Three granularities sat on the bar permanently, asking a question
+           nobody had asked yet — and two of them are rarely what you want. Now the ask comes first and the
+           granularity comes second, only once you have said yes. The bottom nav is gone with the scroll:
+           the page never moves under you, so the controls never leave the screen either. -->
+      <div class="mastrow mastrow2">
+        <button type="button" class="pgbtn" id="closeread">shelve it</button>
+        <button type="button" class="pgbtn" id="checkout" aria-expanded="false"
+                aria-controls="coopts">check it out</button>
+        <span class="coopts" id="coopts" hidden>
+          <button type="button" class="co" data-co="line" aria-label="check out this line">the line</button>
+          <button type="button" class="co" data-co="page" aria-label="check out this passage">this passage</button>
+          <button type="button" class="co" data-co="work" aria-label="check out the whole work">the whole work</button>
+        </span>
+        <div class="bookbar bookbar-nav">
+          <button type="button" class="pgbtn js-prev" aria-label="previous page">&#9664; back</button>
+          <button type="button" class="pgnum js-pgnum" aria-label="position — click to change the unit"
+                  title="click: words \u2192 pages \u2192 tokens">&mdash;</button>
+          <button type="button" class="pgbtn js-next" aria-label="next page">on &#9654;</button>
+        </div>
+        <button type="button" class="readx" id="closebook" aria-label="close the book">&#10005; close the book</button>
+      </div>
+    </div>
+
+    <div class="leafwrap"><div class="leaf" id="leaf"></div></div>
+  </div>
+</section>
+
+<!-- ── ROOM 4 · THE STACKS ── -->
+<section class="room" id="r-stacks">
+  <button class="roomhead" type="button"><span class="nm">the stacks</span>
+    <span class="sub2">whole and unabridged</span><span class="chev">&#9662;</span></button>
+  <div class="roombody"><div class="scrollin"><div class="in">
+    <div class="sortbar" data-for="stacks">
+      <button class="on" data-sort="title">by title</button>
+      <button data-sort="author">by author</button>
+      <button data-sort="theme">by theme</button>
+    </div>
+    <div class="shelf" id="shelf"></div>
+  </div></div></div>
+</section>
+
+<footer>everything here is public domain or hand-built to give away. est. before the fire &mdash; this time we made copies.</footer>
+
+<script src="stacks-text.js?v=20260903090447"></script>
+<script src="ziggurat.js?v=20260903090447"></script>
+<script src="library.js?v=20260903090447"></script>
+</body>
+</html>

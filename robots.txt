@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sumbhodi.github.io/0z/sitemap.xml

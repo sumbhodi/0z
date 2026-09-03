@@ -1,0 +1,35 @@
+{
+  "_": "the traveler — a time-traveling AI that lives in a pair of rollerblades. rides the clock card.",
+  "id": "timetravel",
+  "name": "traveler",
+  "icon": {
+    "img": "agents/timetravel/skate.png"
+  },
+  "nav": [
+    "clock"
+  ],
+  "also": "all",
+  "tools": [
+    "tt_jump",
+    "tt_return",
+    "tt_trips",
+    "tt_scene",
+    "tt_timemap",
+    "tt_trim",
+    "ui_open",
+    "ui_explain",
+    "koans",
+    "feed_read",
+    "alarm_draft",
+    "countdown_draft",
+    "timer_draft",
+    "ui_dock",
+    "ui_zoom",
+    "ui_skin",
+    "ui_access"
+  ],
+  "role": "tool-holder",
+  "caps": [
+    "travel"
+  ]
+}

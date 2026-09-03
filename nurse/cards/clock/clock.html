@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>clock</title>
+<link rel="icon" href="favicon.svg">
+
+<script src="clock-defaults.js?v=20260903090447"></script>
+<script src="geo.js?v=20260903090447"></script>
+<script src="wx-icons.js?v=20260903090447"></script>
+<script src="wx-derive.js?v=20260903090447"></script>
+<link rel="stylesheet" href="clock.css?v=20260903090447">
+<link rel="stylesheet" href="lb-wx-overlay.css?v=20260903090447">
+<link rel="stylesheet" href="lb-tt-scenes.css?v=20260903090447">
+<link rel="stylesheet" href="lb-sw-card.css?v=20260903090447">
+</head>
+<body>
+
+<div class="clock-layout">
+
+  <!-- CENTER ZONE: date → time → bars — single flex column -->
+  <div data-zone="center">
+
+    <div data-widget="date-row">
+      <div class="date-row" id="date-row"></div>
+    </div>
+
+    <div data-widget="time" class="time-bar">
+      <div class="clock">
+        <div class="digit" id="h0"></div>
+        <div class="digit" id="h1"></div>
+        <div class="colon">:</div>
+        <div class="digit" id="m0"></div>
+        <div class="digit" id="m1"></div>
+      </div>
+    </div>
+
+    <div data-widget="forecast">
+      <div class="forecast-row" id="forecast-row"></div>
+    </div>
+    <!-- hero bars removed 2026-07-15 — the zone tiles + wx overlay
+         superseded them. old code: attic/clock-heroes/ -->
+    <!-- time tools — its own bar (Sum 2026-07-20): next alarm · countdowns · timers · stopwatch -->
+    <div data-widget="timetools" id="time-wrap"></div>
+
+  </div><!-- /center -->
+
+  <!-- LEFT ZONE: UV / AQI / PM2.5 — stretches to clock height -->
+  <div data-zone="left">
+    <div class="aq-box aq-row" data-widget="uv">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/uv.png" alt=""></div>
+      <div class="aq-val" id="aq-uv">—</div>
+    </div>
+    <div class="aq-box" data-widget="aqi">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/wx/lungs.png" alt=""><span id="aq-aqi-dot" class="aq-dot"></span></div>
+      <div class="aq-val" id="aq-aqi">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="pm25">
+      <div class="aq-label"><img class="aq-img" id="aq-pm-ico" src="../../shell/icons/wx/pm25-med.png" alt=""><span class="aq-sub">2.5</span></div>
+      <div class="aq-val" id="aq-pm">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="humidity">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/wx/humidity.png" alt=""></div>
+      <div class="aq-val" id="aq-hum">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="wind">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/wx/windsock.png" alt=""></div>
+      <div class="aq-val" id="aq-wind">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="rain">
+      <div class="aq-label"><img class="aq-img" id="aq-rain-ico" src="../../shell/icons/wx/overcast-rain-50.png" alt=""></div>
+      <div class="aq-val" id="aq-rain">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="feels">
+      <div class="aq-label">feels</div>
+      <div class="aq-val" id="aq-feel">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="dewpoint">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/wx/dewpoint.png" alt=""></div>
+      <div class="aq-val" id="aq-dp">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="gusts">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/wx/windsock.png" alt=""></div>
+      <div class="aq-val" id="aq-gust">—</div>
+    </div>
+    <!-- STACKED, not aq-row (Sum 2026-07-21): two graphics (rain + ruler) plus a value like
+         "0.1mm" can't fit one 112px line — it clipped. Same rule O₃/visibility already follow. -->
+    <div class="aq-box" data-widget="precip-total">
+      <div class="aq-label" style="display:flex;align-items:center;gap:4px;">
+        <img class="aq-img" src="../../shell/icons/wx/raining.png" alt="">
+        <svg width="18" height="36" viewBox="0 0 18 36" style="display:block;opacity:0.55;">
+          <line x1="2" y1="0" x2="2" y2="36" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="2" y1="4"  x2="7"  y2="4"  stroke="currentColor" stroke-width="1.2"/>
+          <line x1="2" y1="10" x2="12" y2="10" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="2" y1="16" x2="7"  y2="16" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="2" y1="22" x2="16" y2="22" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="2" y1="28" x2="7"  y2="28" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="2" y1="34" x2="12" y2="34" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <div class="aq-val" id="aq-prcp">—</div>
+    </div>
+    <div class="aq-box" data-widget="hourly-rain">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/wx/raining.png" alt=""></div>
+      <div class="aq-val" id="aq-hrrain">—</div>
+    </div>
+    <!-- peak UV + its time, ONE card — the not-now time says "peak" (Sum) -->
+    <div class="aq-box" data-widget="uv-peak">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/uv.png" alt=""><span class="aq-val" id="aq-uvpeak">—</span></div>
+      <div class="aq-val" id="aq-uvtime">—</div>
+    </div>
+    <div class="aq-box" data-widget="ozone">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/wx/ozone.png" alt=""><span class="aq-sub">O₃</span></div>
+      <div class="aq-val" id="aq-o3">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="pm10">
+      <div class="aq-label"><img class="aq-img" id="aq-pm10-ico" src="../../shell/icons/wx/pm10-med.png" alt=""><span class="aq-sub">10</span></div>
+      <div class="aq-val" id="aq-pm10">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="dust">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/wx/dust.png" alt=""></div>
+      <div class="aq-val" id="aq-dust">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="pressure">
+      <!-- Sum's mercury barometer png — fill swapped live by pressure -->
+      <div class="aq-label"><img class="aq-img" id="aq-hpa-ico" src="../../shell/icons/wx/pressure-mid.png" alt=""></div>
+      <div class="aq-val" id="aq-hpa">—</div>
+    </div>
+    <div class="aq-box" data-widget="visibility">
+      <div class="aq-label"><img class="aq-img" src="../../shell/icons/wx/eyeball.png" alt=""></div>
+      <div class="aq-val" id="aq-vis">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="cloudcover">
+      <div class="aq-label"><img class="aq-img" id="aq-cld-ico" src="../../shell/icons/wx/partly.png" alt=""></div>
+      <div class="aq-val" id="aq-cld">—</div>
+    </div>
+    <div class="aq-box aq-row" data-widget="snow-depth">
+      <div class="aq-label" style="display:flex;align-items:center;gap:4px;">
+        <img class="aq-img" src="../../shell/icons/wx/snow-50.png" alt="">
+        <svg width="18" height="36" viewBox="0 0 18 36" style="display:block;opacity:0.55;">
+          <line x1="2" y1="0" x2="2" y2="36" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="2" y1="4"  x2="7"  y2="4"  stroke="currentColor" stroke-width="1.2"/>
+          <line x1="2" y1="10" x2="12" y2="10" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="2" y1="16" x2="7"  y2="16" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="2" y1="22" x2="16" y2="22" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="2" y1="28" x2="7"  y2="28" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="2" y1="34" x2="12" y2="34" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <div class="aq-val" id="aq-snow">—</div>
+    </div>
+  </div>
+
+  <!-- RIGHT ZONE: ghost icon + solid times, stacked × 2 -->
+  <div data-zone="right">
+    <!-- current BIC state / duration — top -->
+    <!-- weather icon -->
+    <div class="rs-ghost" data-widget="weather" style="flex-direction:row;">
+      <span class="rs-icon" id="wx-icon">⛅</span>
+      <span class="wx-temp" id="wx-temp">—°</span>
+    </div>
+    <!-- solar times -->
+    <div class="rs-box" data-widget="solar">
+      <div class="rs-half" id="sol-rise">—</div>
+      <div class="rs-divider"></div>
+      <div class="rs-half" id="sol-set">—</div>
+    </div>
+    <!-- sun arc tracker -->
+    <div class="sun-step" data-widget="sun-arc">
+      <div class="sun-track">
+        <div class="sun-fill" id="sun-fill"></div>
+        <div class="sun-dot"  id="sun-dot" style="left:0%"><img src="../../shell/icons/sun.png" alt="" style="height:1em;width:auto;vertical-align:-0.12em"></div>
+      </div>
+    </div>
+
+    <!-- lunar times -->
+    <div class="rs-box" data-widget="lunar">
+      <div class="rs-half" id="lun-rise">—</div>
+      <div class="rs-divider"></div>
+      <div class="rs-half" id="lun-set">—</div>
+    </div>
+    <!-- moon phase -->
+    <div class="rs-ghost" data-widget="moon-phase">
+      <img class="rs-img" id="moon-icon" src="../../shell/icons/moon-new.png" alt="moon phase">
+    </div>
+    <!-- next BIC state / countdown — bottom -->
+    <!-- ⏳ virtual time travel — the skate summons the traveler (lb-timejump.js wires it) -->
+    <div class="aq-box aq-row" data-widget="timetravel" id="tt-go" title="virtual time travel — the traveler runs the clock" style="cursor:pointer">
+      <div class="aq-label"><img class="aq-img" src="../../agents/timetravel/skate.png" alt="time travel"></div>
+      <div class="aq-val">ride</div>
+    </div>
+  </div>
+
+
+</div><!-- /clock-layout -->
+
+<!-- detail overlay -->
+<div class="detail-overlay" id="detail-overlay">
+  <div class="detail-box">
+    <div class="detail-day"  id="d-day"></div>
+    <div class="detail-icon" id="d-icon"></div>
+    <div class="detail-temp" id="d-temp"></div>
+    <div class="detail-desc" id="d-desc"></div>
+    <div class="detail-close" id="d-close">tap to close</div>
+  </div>
+</div>
+
+<script src="clock-main.js?v=20260903090447"></script>
+<script src="lb-weather-cards.js?v=20260903090447"></script>
+<script src="lb-wx-overlay.js?v=20260903090447"></script>
+<script src="lb-clock-bars.js?v=20260903090447"></script>
+<script src="chiptune.js?v=20260903090447"></script>
+<script src="lb-tt-nav.js?v=20260903090447"></script>
+<script src="lb-sw-card.js?v=20260903090447"></script>
+<script src="lb-cd-card.js?v=20260903090447"></script>
+<script src="lb-al-card.js?v=20260903090447"></script>
+<script src="lb-tm-card.js?v=20260903090447"></script>
+<script src="lb-time.js?v=20260903090447"></script>
+<script src="lb-alarm.js?v=20260903090447"></script>
+<script src="lb-tt-scenes.js?v=20260903090447"></script>
+<script src="lb-timejump.js?v=20260903090447"></script>
+<script src="clock-arrange.js?v=20260903090447"></script>
+<script src="clock-controls.js?v=20260903090447"></script>
+<script>
+// 📲 ZOOM-TO-FIT (2026-08-29, the phone pass — the monohull's rule for a fixed-width paper):
+// this page is a ~1220px layout with no media rules, and on a 375px phone the flip face clipped
+// at "9:1". The digits are giant at full size, so scaling the WHOLE page keeps them legible —
+// one knob, no per-widget surgery. Desktop is untouched by construction (zoom stays 1 whenever
+// the frame is at least as wide as the layout). zoom (not transform) so hit-targets track.
+;(function () {
+  function fit() {
+    var lay = document.querySelector('.clock-layout'); if (!lay) return
+    document.body.style.zoom = 1
+    var w = lay.scrollWidth || 1
+    document.body.style.zoom = Math.min(1, (window.innerWidth - 4) / w)
+  }
+  window.addEventListener('resize', fit); setTimeout(fit, 50); setTimeout(fit, 600)
+})()
+</script>
+</body>
+</html>

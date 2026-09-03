@@ -1,0 +1,35 @@
+/* neo.css — CRT terminal. green-on-black, scanlines, monospace. (no png; pure CSS.) */
+.convo[data-skin="neo"] {
+  background: var(--neo-frame);
+  border: 1px solid var(--neo-frame-line);
+  border-radius: 6px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.convo[data-skin="neo"] .convo-screen {
+  background: var(--neo-screen);
+  background-image: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+  font-family: ui-monospace, 'SF Mono', 'Fira Code', monospace;
+  color: var(--neo-ph);
+  line-height: 1.65;
+  border-radius: 4px;
+  outline: 6px solid var(--neo-outline);
+  outline-offset: -1px;
+  box-shadow: 0 0 0 9px var(--neo-ring), 0 0 0 10px var(--neo-ring-deep), inset 4px 4px 12px rgba(0,0,0,0.7);
+}
+.convo[data-skin="neo"] .msg-u   { color: var(--neo-user); }
+.convo[data-skin="neo"] .msg-u::before   { content: '~ '; color: var(--neo-user-pre); }
+.convo[data-skin="neo"] .msg-bot { color: var(--neo-ph); }
+.convo[data-skin="neo"] .msg-bot::before { content: '= '; color: var(--neo-bot-pre); }
+.convo[data-skin="neo"] .msg-stream:empty::before { color: var(--neo-dim); }
+/* the neo HEAD — the CRT's beige-plastic case */
+.agent-bar[data-skin="neo"] .ab-head {
+  background: var(--neo-head);
+  border-bottom: 1px solid var(--neo-head-line);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), inset 0 -2px 0 rgba(0,0,0,0.18);
+}
+.agent-bar[data-skin="neo"] .ab-name { color: var(--neo-head-text); }
+.agent-bar[data-skin="neo"] .ab-grip { color: var(--neo-head-line); }
+/* the convo box's own top bar */
+.convo[data-skin="neo"] .convo-head { background: var(--neo-head); border-bottom: 2px solid var(--neo-head-line); }
+.convo[data-skin="neo"] .head-title { color: var(--neo-head-text); letter-spacing: 2px; }

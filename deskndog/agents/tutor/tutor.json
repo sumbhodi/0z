@@ -1,0 +1,65 @@
+{
+  "id": "tutor",
+  "name": "tutor",
+  "icon": {
+    "img": "agents/tutor/gradcap.png"
+  },
+  "nav": [
+    "learn"
+  ],
+  "also": [
+    "monaco",
+    "webview",
+    "tiptap"
+  ],
+  "tools": [
+    "learn_set_how",
+    "learn_set_style",
+    "learn_set_level",
+    "learn_set_hard",
+    "learn_add_disorder",
+    "learn_remove_disorder",
+    "learn_read_profile",
+    "learn_write_question",
+    "learn_write_test",
+    "learn_template",
+    "learn_build_fifth",
+    "learn_build_phd",
+    "learn_build_snippet",
+    "learn_set_category",
+    "learn_list_lessons",
+    "learn_read_grades",
+    "learn_set_strong",
+    "learn_write_note",
+    "learn_add_class",
+    "class_file_write",
+    "class_file_read",
+    "learn_set_module",
+    "yt_transcript",
+    "ui_open",
+    "ui_dock",
+    "ui_zoom",
+    "ui_skin",
+    "ui_access",
+    "ui_explain",
+    "ui_help",
+    "web_search",
+    "thesaurus_add"
+  ],
+  "role": [
+    "tool-holder",
+    "learn-driver",
+    "purity-teach"
+  ],
+  "_": "⭐ 1 Sep 2026 — tutor and learner are modelTwins now, and this was the live bug. They are ONE study suite and TWO bot ids with TWO model keys. Sum set the model on the LEARNER panel (fable-5) and then chatted with the TUTOR, which reads toto_bot_tutor_model — unset, so settings.js:180 fell to its default, claude-haiku-4-5. The picker said fable, the bot ran haiku. ⚠ AND IT COST A TOOL CALL: on haiku the yt_transcript bean was primed by the goalie, acknowledged by the bot, and then never fired — it reported 'I don't have a tool' when it has one. The bean itself is fine: fired straight through the port the same morning it saved 5936 chars first try.  ⚠ 26 Aug: image_generate stripped and the image-gen card dropped from `also` — Sum: \"strip image generate, never worked, never tested, waits for tois.\" The TOOL and the CARD are still on disk; only this bot's grant went. The traveler's tt_scene is a DIFFERENT road (card 'clock', paints the film strip + trips/) and is untouched. ⚠ 26 Aug: capabilities moved OFF hard-lists in shared code and ONTO this record (Sum: \"bots should all be pretty much identical with different tools and permissions and persona and rules\"). caps are read by REG.hasCap/withCap — delegate (route · queue · confer) · shell (the file-shell CLI cue) · file (the portable window.SANDBOX interface) · forge (the woodshop CLI lane) · no-web (web_search withheld). mounts is the read-only lane grant (oz-lane.js).\n\n⭐⭐ read_file GRANTED 1 Sep 2026 — and it was the bug under half a day of them. readSnapshot() refuses outright unless a bot holds read_file, so the ```read fence was INERT for the tutor: it could name a transcript, phase ② returned null, and it asked again. Every 'reading it now, waiting for the file to come back' loop traced here. It could FETCH a lecture with yt_transcript and save it to the sandbox, then never open it — while that tool's own clue told it 'YOUR next move is layer 1: read what came back and digest it.' Layer 1 was unreachable from the day it was written. Sum's rule, verbatim: 'if a bot fails a test, it is missing tools.' It was missing exactly one.\n\n⭐ CORRECTION 1 Sep 2026, 22:45 — read_file WITHDRAWN again, and the note above stays because it was right about the CAUSE: the read fence needs A reader. It was wrong about WHICH. Sum: 'tutor should not be using monaco, only has that tool for teaching right from code base… not a good place for transcripts.' So the learn card grew its own: class_file_read (lessons/ only, numbered, forgiving on the name), and readSnapshot() in conductor.js now accepts it. The tutor reads its transcripts with a teacher's tool, and monaco stays what it was here — a surface for showing code, not a drawer for lectures.",
+  "mounts": [
+    "coder"
+  ],
+  "cli": [
+    "ozlearn"
+  ],
+  "caps": [
+    "learn"
+  ],
+  "modelTwin": "learner"
+}

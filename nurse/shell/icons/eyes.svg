@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="a pair of watching eyes">
+<defs><radialGradient id="e-w" cx=".4" cy=".32" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe6ec"/></radialGradient>
+<radialGradient id="e-i" cx=".38" cy=".3" r=".78"><stop offset="0" stop-color="#7fc4dd"/><stop offset=".6" stop-color="#3d7fa4"/><stop offset="1" stop-color="#1d4560"/></radialGradient></defs>
+<ellipse cx="128" cy="212" rx="88" ry="9" fill="#000" opacity=".14"/>
+<g>
+<ellipse cx="76" cy="128" rx="60" ry="46" fill="url(#e-w)" stroke="#9aa6b2" stroke-width="4"/>
+<circle cx="84" cy="128" r="27" fill="url(#e-i)"/><circle cx="84" cy="128" r="12" fill="#12212b"/>
+<circle cx="75" cy="118" r="8" fill="#fff" opacity=".85"/>
+</g>
+<g>
+<ellipse cx="180" cy="128" rx="60" ry="46" fill="url(#e-w)" stroke="#9aa6b2" stroke-width="4"/>
+<circle cx="188" cy="128" r="27" fill="url(#e-i)"/><circle cx="188" cy="128" r="12" fill="#12212b"/>
+<circle cx="179" cy="118" r="8" fill="#fff" opacity=".85"/>
+</g></svg>

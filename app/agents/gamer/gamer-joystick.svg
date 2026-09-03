@@ -1,0 +1,17 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="the gamer — an arcade joystick">
+  <defs>
+    <linearGradient id="gj-steel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8e8ee"/><stop offset="1" stop-color="#9aa0ad"/></linearGradient>
+    <radialGradient id="gj-ball" cx="0.4" cy="0.34" r="0.78"><stop offset="0" stop-color="#ff6a5a"/><stop offset="0.5" stop-color="#e2352a"/><stop offset="1" stop-color="#9e1810"/></radialGradient>
+  </defs>
+  <!-- the round steel base -->
+  <ellipse cx="256" cy="418" rx="150" ry="46" fill="#8f95a3"/>
+  <ellipse cx="256" cy="402" rx="150" ry="46" fill="url(#gj-steel)" stroke="#6f7688" stroke-width="4"/>
+  <!-- the black dust washer -->
+  <ellipse cx="256" cy="392" rx="48" ry="17" fill="#25252b"/>
+  <!-- the shaft -->
+  <rect x="240" y="188" width="32" height="210" rx="14" fill="#1c1c22"/>
+  <rect x="248" y="190" width="8" height="206" fill="#3a3a44"/>
+  <!-- the ball top -->
+  <circle cx="256" cy="168" r="76" fill="url(#gj-ball)" stroke="#7a140c" stroke-width="3"/>
+  <ellipse cx="232" cy="142" rx="27" ry="17" fill="#ffffff" opacity="0.45"/>
+</svg>

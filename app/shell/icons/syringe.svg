@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="a syringe">
+<defs><linearGradient id="y-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4fafd"/><stop offset=".5" stop-color="#d3e4ee"/><stop offset="1" stop-color="#9db3c1"/></linearGradient>
+<linearGradient id="y-m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eef4"/><stop offset="1" stop-color="#8c9aa8"/></linearGradient></defs>
+<ellipse cx="128" cy="238" rx="76" ry="8" fill="#000" opacity=".15"/>
+<g transform="rotate(-40 128 128)">
+<path d="M120 24 h16 v34 h-16 z" fill="url(#y-m)"/>
+<rect x="98" y="52" width="60" height="12" rx="4" fill="url(#y-m)"/>
+<rect x="102" y="62" width="52" height="120" rx="8" fill="url(#y-b)" stroke="#7f909e" stroke-width="3"/>
+<rect x="106" y="112" width="44" height="68" rx="5" fill="#6fbfe0"/>
+<rect x="106" y="66" width="15" height="112" fill="#fff" opacity=".5"/>
+<rect x="98" y="180" width="60" height="14" rx="5" fill="url(#y-m)"/>
+<path d="M124 194 h8 v26 h-8 z" fill="url(#y-m)"/>
+<path d="M126 220 h4 l-2 22 z" fill="#b9c6d1"/>
+<g fill="#7f909e"><rect x="140" y="82" width="12" height="3"/><rect x="140" y="100" width="12" height="3"/><rect x="140" y="118" width="12" height="3"/></g>
+</g></svg>

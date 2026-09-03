@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>stopwatch — settings</title>
+  <link rel="stylesheet" href="stopwatch.css?v=20260903090447">
+  <style>
+    body { overflow-y: auto; display: block; padding: 20px 18px 60px; }
+    .wrap { max-width: 520px; margin: 0 auto; }
+    h1 { font-size: 24px; margin: 0 0 4px; }
+    .lede { color: var(--sw-dim); font-size: 15px; margin: 0 0 24px; }
+    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--sw-dim);
+      margin: 26px 0 12px; }
+    .faces { display: flex; gap: 12px; }
+    .fc { flex: 1; border: 2px solid var(--sw-line); background: var(--sw-panel); border-radius: 16px;
+      padding: 18px 12px; cursor: pointer; text-align: center; }
+    .fc.on { border-color: var(--sw-accent); }
+    .fc .ic { font-size: 34px; line-height: 1; }
+    .fc .nm { margin-top: 8px; font-weight: 700; }
+    .fc .ds { font-size: 13px; color: var(--sw-dim); margin-top: 2px; }
+    .rows { display: flex; flex-direction: column; gap: 12px; }
+    .row { display: flex; align-items: center; gap: 12px; }
+    .row label { flex: 1; font-size: 16px; }
+    .row .sub { display: block; font-size: 13px; color: var(--sw-dim); }
+    .stepper { display: flex; align-items: center; gap: 0; border: 1px solid var(--sw-line);
+      border-radius: 12px; overflow: hidden; }
+    .stepper button { width: 44px; height: 46px; border: none; background: var(--sw-panel);
+      color: var(--sw-ink); font-size: 22px; cursor: pointer; }
+    .stepper button:hover { background: var(--sw-line); }
+    .stepper input { width: 66px; height: 46px; border: none; background: var(--sw-face);
+      color: var(--sw-ink); text-align: center; font-size: 20px; font-variant-numeric: tabular-nums;
+      font-family: ui-monospace, monospace; }
+    .preview { margin-top: 18px; padding: 14px; border: 1px solid var(--sw-line); border-radius: 12px;
+      color: var(--sw-dim); font-size: 14px; line-height: 1.6; }
+    .preview b { color: var(--sw-accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>stopwatch</h1>
+    <p class="lede">the face, and your interval routine. changes apply the moment you flip back.</p>
+
+    <h2>interval routine <span style="color:var(--sw-dim);font-weight:400;text-transform:none;letter-spacing:0">— work / rest × rounds</span></h2>
+    <div class="rows" id="rows"></div>
+    <div class="preview" id="preview"></div>
+  </div>
+  <script>
+    const FIELDS = [
+      { k: 'sw-work', label: 'work', sub: 'seconds hard', def: 30, min: 5, max: 900, step: 5 },
+      { k: 'sw-rest', label: 'rest', sub: 'seconds easy', def: 15, min: 0, max: 900, step: 5 },
+      { k: 'sw-rounds', label: 'rounds', sub: 'how many times through', def: 8, min: 1, max: 99, step: 1 },
+      { k: 'sw-prep', label: 'prep', sub: 'a countdown before round 1', def: 5, min: 0, max: 60, step: 1 },
+    ]
+    const get = (k, d) => { const v = localStorage.getItem(k); return v == null || isNaN(+v) ? d : +v }
+    function drawRows() {
+      const host = document.getElementById('rows'); host.innerHTML = ''
+      FIELDS.forEach(f => {
+        const val = get(f.k, f.def)
+        const row = document.createElement('div'); row.className = 'row'
+        row.innerHTML = `<label>${f.label}<span class="sub">${f.sub}</span></label>
+          <div class="stepper"><button data-d="-1">−</button><input type="number" value="${val}" min="${f.min}" max="${f.max}"><button data-d="1">+</button></div>`
+        const input = row.querySelector('input')
+        const commit = v => { v = Math.max(f.min, Math.min(f.max, v || 0)); input.value = v; localStorage.setItem(f.k, v); drawPreview() }
+        row.querySelectorAll('button').forEach(b => b.onclick = () => commit(get(f.k, f.def) + (+b.dataset.d) * f.step))
+        input.onchange = () => commit(+input.value)
+        host.appendChild(row)
+      })
+    }
+    function drawPreview() {
+      const w = get('sw-work', 30), r = get('sw-rest', 15), n = get('sw-rounds', 8), p = get('sw-prep', 5)
+      const total = p + n * (w + r), mm = Math.floor(total / 60), ss = total % 60
+      document.getElementById('preview').innerHTML =
+        `<b>${n}</b> rounds of <b>${w}s</b> work + <b>${r}s</b> rest${p ? `, after a <b>${p}s</b> prep` : ''}.<br>total workout: <b>${mm}m ${String(ss).padStart(2, '0')}s</b>. a beep marks every change; 3-2-1 ticks warn you.`
+    }
+    drawRows(); drawPreview()
+  </script>
+</body>
+</html>

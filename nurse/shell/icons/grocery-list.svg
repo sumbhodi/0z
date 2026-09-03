@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="a grocery list, part way checked off">
+  <defs>
+    <linearGradient id="pg" x1=".1" y1="0" x2=".9" y2="1">
+      <stop offset="0" stop-color="#fffdf7"/><stop offset=".55" stop-color="#f6efe0"/><stop offset="1" stop-color="#e3d9c4"/>
+    </linearGradient>
+    <linearGradient id="cl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8dfca"/><stop offset="1" stop-color="#c3b79c"/>
+    </linearGradient>
+    <linearGradient id="ck" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#63c187"/><stop offset="1" stop-color="#3a8d5c"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="rotate(-4 128 128)">
+    <ellipse cx="132" cy="230" rx="72" ry="9" fill="#000" opacity=".16"/>
+    <path d="M52 26 h152 a8 8 0 0 1 8 8 v176 l-30 26 h-130 a8 8 0 0 1 -8 -8 v-194 a8 8 0 0 1 8 -8 z" fill="url(#pg)"/>
+    <path d="M212 210 l-30 26 v-18 a8 8 0 0 1 8 -8 z" fill="url(#cl)"/>
+
+    <!-- done -->
+    <g>
+      <rect x="70" y="60" width="20" height="20" rx="5" fill="url(#ck)"/>
+      <path d="M74.5 70.5 l4 4.5 l7.5 -9" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="100" y="66" width="84" height="8" rx="4" fill="#c8bfa9"/>
+      <rect x="98" y="68.5" width="88" height="3" rx="1.5" fill="#9a917c"/>
+    </g>
+    <g>
+      <rect x="70" y="96" width="20" height="20" rx="5" fill="url(#ck)"/>
+      <path d="M74.5 106.5 l4 4.5 l7.5 -9" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="100" y="102" width="66" height="8" rx="4" fill="#c8bfa9"/>
+      <rect x="98" y="104.5" width="70" height="3" rx="1.5" fill="#9a917c"/>
+    </g>
+    <g>
+      <rect x="70" y="132" width="20" height="20" rx="5" fill="url(#ck)"/>
+      <path d="M74.5 142.5 l4 4.5 l7.5 -9" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="100" y="138" width="78" height="8" rx="4" fill="#c8bfa9"/>
+      <rect x="98" y="140.5" width="82" height="3" rx="1.5" fill="#9a917c"/>
+    </g>
+
+    <!-- still to get -->
+    <g>
+      <rect x="70" y="168" width="20" height="20" rx="5" fill="#fffdf7" stroke="#a89e88" stroke-width="3"/>
+      <rect x="100" y="174" width="72" height="8" rx="4" fill="#8d8471"/>
+    </g>
+    <g>
+      <rect x="70" y="204" width="20" height="20" rx="5" fill="#fffdf7" stroke="#a89e88" stroke-width="3"/>
+      <rect x="100" y="210" width="58" height="8" rx="4" fill="#8d8471"/>
+    </g>
+  </g>
+</svg>

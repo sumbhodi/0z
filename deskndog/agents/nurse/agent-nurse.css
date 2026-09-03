@@ -1,0 +1,18 @@
+/* agent-nurse.css — the nurse's bar skin: CLINICAL + LIGHT. the ONE light-mode agent — a white bar + a
+   white screen (like tiptap paper), black ink, the red outline + red cross. on the WHITE head the white cap
+   MELTS away — only the red cross stays, so the whole bar reads as the nurse's hat. (no png; pure CSS.)
+   her white paper is the token --nurse-paper (skin owns it): oz/clinical = white, unicorn = pale pink. */
+.agent-bar.agent-nurse { background: var(--nurse-paper, var(--inj-white)); border-color: var(--nurse-red); }
+.agent-bar.agent-nurse .ab-head { background: var(--nurse-paper, var(--inj-white)); border-bottom: none; box-shadow: inset 0 -2px 0 var(--nurse-red); }
+.agent-bar.agent-nurse .ab-name { color: var(--inj-ctrl); letter-spacing: 1.5px; }
+.agent-bar.agent-nurse .ab-grip { color: var(--nurse-grip); }
+.agent-bar.agent-nurse .ab-add { background: var(--nurse-paper, var(--inj-white)); color: var(--inj-ctrl); border-color: var(--inj-chr-line); }
+.agent-bar.agent-nurse .ab-add:hover { border-color: var(--nurse-red); color: var(--nurse-red); }
+.agent-bar.agent-nurse .convo,
+.agent-bar.agent-nurse .convo-screen { background: var(--nurse-paper, var(--inj-white)); }
+.agent-bar.agent-nurse .convo .msg-bot,
+.agent-bar.agent-nurse .convo .msg-u,
+.agent-bar.agent-nurse .convo .msg-stream { color: var(--inj-ctrl); }
+.agent-bar.agent-nurse .convo .msg-stream:empty::before { color: var(--nurse-dim); }
+.agent-bar.agent-nurse .ab-resize { background: var(--nurse-paper, var(--inj-white)); color: var(--nurse-grey); box-shadow: inset 0 0 9px -3px rgba(0,0,0,0.10); }
+.agent-bar.agent-nurse .ab-resize:hover { background: var(--inj-chrome); color: var(--nurse-red); box-shadow: inset 0 0 12px -2px rgba(0,0,0,0.18); }

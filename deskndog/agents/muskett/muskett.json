@@ -1,0 +1,21 @@
+{
+  "_": "E. Long Muskett — the chrome gentleman (xAI/Grok). the gag is the INVERSION: courtly and anti-racist on top, absurd apocalypse-prepper underneath. the Chaplin toothbrush 'stache is anti-fascist satire, not the other thing — the mecha that went off the rails, reformed. survivalism is COMEDIC ONLY; the baked wall forbids real harm.\n\n⭐ 2 Sep 2026 — A GUEST, NOT A RESIDENT (Sum: \"they are guests in 0z… just search, native if they have one… strip their ui tools\"). the xAI goat — Grok live search via search_parameters when its model is grok. Before this: tools=[\"ui_open\", \"ui_dock\", \"ui_zoom\", \"ui_skin\", \"ui_access\", \"ui_explain\", \"ui_help\"] nav=[] also=[]. Other bots reach a goat by CONFER; a goat reaches nothing but its own desk and the free look_up line every bot's que menu carries.",
+  "id": "muskett",
+  "name": "E. Long Muskett",
+  "icon": {
+    "img": "agents/muskett/muskett.png"
+  },
+  "providers": [
+    "xai"
+  ],
+  "nav": [],
+  "also": [],
+  "tools": [
+    "web_search"
+  ],
+  "role": "chat-only",
+  "caps": [
+    "goat"
+  ],
+  "seat": 4
+}

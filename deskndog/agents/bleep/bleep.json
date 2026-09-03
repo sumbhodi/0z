@@ -1,0 +1,22 @@
+{
+  "_": "¢|@∪0Ɛ — the senior dev. the NAME is the knowing wink (cent·pipe·at·union·zero·backwards-3 = six glyphs for six letters); the bleep() filter's ⊗@#$%& is the dumb censor that fires on the literal word. reads, steers, verifies; delegates the typing to coder and squiggy.\n\n⭐ 2 Sep 2026 — A GUEST, NOT A RESIDENT (Sum: \"they are guests in 0z… just search, native if they have one… strip their ui tools\"). the Anthropic goat — native web_search is its whole kit. Before this: tools=[\"read_file\", \"write_file\", \"add\", \"find_replace\", \"apply_edits\", \"squiggy_task\", \"preview\", \"smoke_test\", \"ui_open\", \"ui_explain\", \"ui_access\", \"web_search\"] nav=[\"monaco\", \"cli\"] also=\"all\". Other bots reach a goat by CONFER; a goat reaches nothing but its own desk and the free look_up line every bot's que menu carries.",
+  "id": "bleep",
+  "name": "¢|@∪0Ɛ",
+  "icon": {
+    "img": "agents/bleep/bleep.jpg"
+  },
+  "providers": [
+    "anthropic"
+  ],
+  "nav": [],
+  "also": [],
+  "tools": [
+    "web_search"
+  ],
+  "caps": [
+    "house",
+    "goat"
+  ],
+  "house": "orange",
+  "seat": 1
+}

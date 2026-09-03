@@ -1,0 +1,12 @@
+{
+  "name": "the tutor · 0z",
+  "short_name": "tutor",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "icons": [
+    { "src": "agents/tutor/gradcap.png", "sizes": "256x256", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,52 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Port Side View — a cruise ship at dawn">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d7c4f5"/>
+      <stop offset="0.55" stop-color="#a9c2ef"/>
+      <stop offset="1" stop-color="#8fb0e6"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6f97d8"/>
+      <stop offset="1" stop-color="#4e77c2"/>
+    </linearGradient>
+    <clipPath id="tile"><rect x="16" y="16" width="480" height="480" rx="108"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#tile)">
+    <rect x="16" y="16" width="480" height="480" fill="url(#sky)"/>
+    <!-- dawn sun -->
+    <circle cx="386" cy="150" r="52" fill="#ffd873"/>
+    <circle cx="386" cy="150" r="70" fill="#ffe59b" opacity="0.35"/>
+    <!-- sea -->
+    <rect x="16" y="330" width="480" height="166" fill="url(#sea)"/>
+
+    <!-- the ship -->
+    <g>
+      <!-- hull -->
+      <path d="M112 300 h288 l-30 66 c-6 13 -20 22 -36 22 H178 c-16 0 -30 -9 -36 -22 Z" fill="#f4f0fb"/>
+      <path d="M112 300 h288 l-8 18 H120 Z" fill="#c9b8ec"/>
+      <!-- portholes -->
+      <g fill="#6f97d8"><circle cx="150" cy="330" r="9"/><circle cx="192" cy="330" r="9"/><circle cx="234" cy="330" r="9"/><circle cx="276" cy="330" r="9"/><circle cx="318" cy="330" r="9"/><circle cx="360" cy="330" r="9"/></g>
+      <!-- superstructure -->
+      <rect x="150" y="238" width="212" height="64" rx="12" fill="#fbf8ff"/>
+      <g fill="#bcd0f0"><rect x="166" y="252" width="26" height="20" rx="4"/><rect x="204" y="252" width="26" height="20" rx="4"/><rect x="242" y="252" width="26" height="20" rx="4"/><rect x="280" y="252" width="26" height="20" rx="4"/><rect x="318" y="252" width="26" height="20" rx="4"/></g>
+      <rect x="196" y="200" width="120" height="44" rx="10" fill="#ffffff"/>
+      <!-- funnels -->
+      <g>
+        <rect x="214" y="150" width="34" height="58" rx="8" fill="#ff8f7c"/>
+        <rect x="214" y="164" width="34" height="10" fill="#ffd873"/>
+        <rect x="266" y="150" width="34" height="58" rx="8" fill="#ff8f7c"/>
+        <rect x="266" y="164" width="34" height="10" fill="#ffd873"/>
+      </g>
+      <!-- mast + flag -->
+      <rect x="253" y="120" width="6" height="82" fill="#8a6fc0"/>
+      <path d="M259 124 h34 l-10 12 l10 12 h-34 Z" fill="#c58be0"/>
+    </g>
+
+    <!-- wake / waves -->
+    <g stroke="#eaf1fb" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.9">
+      <path d="M70 400 q40 -18 80 0 t80 0 t80 0 t80 0 t52 0"/>
+      <path d="M96 440 q40 -18 80 0 t80 0 t80 0 t80 0"/>
+    </g>
+  </g>
+</svg>

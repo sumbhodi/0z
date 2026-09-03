@@ -1,0 +1,21 @@
+{
+ "_": "the gamer \u2014 a washed-up coin-op arcade cabinet, revived. rides the arcade (games) card.",
+ "id": "gamer",
+ "name": "the gamer",
+ "icon": {
+  "img": "agents/gamer/gamer.png"
+ },
+ "nav": [
+  "games"
+ ],
+ "also": "all",
+ "tools": [
+  "ui_open",
+  "ui_explain",
+  "ui_skin",
+  "ui_access"
+ ],
+ "caps": [
+  "cabinet"
+ ]
+}

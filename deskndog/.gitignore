@@ -1,0 +1,25 @@
+# toto2 / TOTOII — self-contained vanilla app. nothing to build, nothing to install.
+.DS_Store
+*.log
+.env
+art/assets/
+# runs/homework/ — source material a [port] translates (see PORT-DON'T-REINVENT.md).
+# VETTED sources are committed (they show the experiment→clean→ship loop); NEW drops stay local until vetted.
+runs/homework/*
+!runs/homework/README.md
+!runs/homework/email-agent.html
+!runs/homework/calendar.html
+!runs/homework/calendar-agent.html
+
+# landing pad — scratch drop zone, not product
+_inbox/
+
+# crash test dummies — the sandbox + parked experiments stay LOCAL. only the song link ships.
+crash test dummies/*
+!crash test dummies/link.txt
+
+# Brands — the Wei brand IP stays local (mirrors ~/Local/store/Brands).
+docs/Brands/
+
+# (docs/published-ip.md is INTENTIONALLY pushed — the ethics debate is a template in the codebase by design:
+#  steal the repo, you have to read the ethics. the clinical profile is held to the book, not this file.)

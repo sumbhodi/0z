@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="an apple with a bite taken out">
+  <defs>
+    <radialGradient id="ap-skin" cx=".32" cy=".26" r=".9">
+      <stop offset="0" stop-color="#ff6d55"/><stop offset=".4" stop-color="#e12f21"/><stop offset=".8" stop-color="#ac1810"/><stop offset="1" stop-color="#780e09"/>
+    </radialGradient>
+    <linearGradient id="ap-leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#93d95d"/><stop offset="1" stop-color="#3d8626"/>
+    </linearGradient>
+    <linearGradient id="ap-flesh" x1=".1" y1="0" x2=".9" y2="1">
+      <stop offset="0" stop-color="#fffdf0"/><stop offset="1" stop-color="#ecdcb2"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="120" cy="234" rx="62" ry="9" fill="#000" opacity=".17"/>
+
+  <path d="M120 68 C96 52 58 60 42 92 C26 124 36 182 62 208 C78 224 98 226 120 214 C138 224 160 222 176 208 C184 200 190 191 194 181 A58 58 0 0 1 192 72 C184 64 170 58 156 58 C144 58 130 60 120 68 Z" fill="url(#ap-skin)"/>
+
+  <path d="M194 181 A58 58 0 0 1 192 72 C170 94 166 160 194 181 Z" fill="url(#ap-flesh)"/>
+  <path d="M192 72 C176 92 172 158 194 181 L190 176 C172 154 176 96 190 78 Z" fill="#dccaa0" opacity=".7"/>
+  <g fill="#5b3a1c" opacity=".8">
+    <ellipse cx="180" cy="112" rx="4.5" ry="7" transform="rotate(-16 180 112)"/>
+    <ellipse cx="180" cy="142" rx="4.5" ry="7" transform="rotate(16 180 142)"/>
+  </g>
+
+  <path d="M68 96 C58 118 56 150 64 174 C50 150 50 114 68 96 Z" fill="#fff" opacity=".32"/>
+  <path d="M120 68 C122 50 126 34 134 22" fill="none" stroke="#6b4326" stroke-width="9" stroke-linecap="round"/>
+  <path d="M134 30 C154 12 190 14 200 30 C182 52 148 52 134 30 Z" fill="url(#ap-leaf)"/>
+  <path d="M138 32 C156 24 182 24 196 31" fill="none" stroke="#2f6a1c" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+</svg>
