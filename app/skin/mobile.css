@@ -142,6 +142,11 @@
        good tool — it is just not this fix. Kept for the trail:
        @supports (-webkit-touch-callout: none) { html[data-game="play"] { --play-gutter: 76px; } }
        @media (display-mode: standalone) { html[data-game="play"] { --play-gutter: max(env(safe-area-inset-bottom), 8px); } } */
+    /* ⚠ CORRECTION 15:40 — and vv.height lied too ("bottom is cut off again"), so the 15:15 withdrawal was half right: the reserve IS
+       needed, the 76 was the wrong size. Sum: "find a middle path". 8 → 37px past the glass, 76 → 31px short: 42 lands within 3px.
+       Same iOS-only trick, same standalone re-take. app/?probe prints the real numbers on the stage for the next tune. */
+    @supports (-webkit-touch-callout: none) { html[data-game="play"] { --play-gutter: 42px; } }
+    @media (display-mode: standalone) { html[data-game="play"] { --play-gutter: max(env(safe-area-inset-bottom), 8px); } }
     html[data-game="play"] .card[data-card="games"] .arc-hud { top: 0; bottom: 0; height: auto; width: 44px; left: env(safe-area-inset-left, 0px); flex-direction: column; justify-content: flex-start; padding: 6px 0 0; gap: 6px; }
     html[data-game="play"] .card[data-card="games"] .arc-hud .arc-fab, html[data-game="play"] .card[data-card="games"] .arc-hud .arc-home { width: 40px; margin: 0 2px; }
     html[data-game="play"][data-game-side="left"] .card[data-card="games"] .arc-hud { left: auto; right: env(safe-area-inset-right, 0px); }   /* the player holds the left → the column steps to the right (Ping's ⇄) */
