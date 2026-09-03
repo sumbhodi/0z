@@ -151,7 +151,22 @@ END IC SHIP PASS
   #turn{display:none;position:fixed;inset:0;z-index:20;align-items:center;justify-content:center;flex-direction:column;gap:14px;
     background:rgba(7,11,15,.92);color:#e6eef4;font:600 22px/1.3 system-ui,sans-serif;text-align:center;padding:24px;}
   #turn b{font-size:64px;line-height:1;display:block;transform:rotate(90deg)}
-  @media (orientation: portrait) and (pointer: coarse) { #turn{display:flex} }
+  /* 3 Sep 2026, 12:40 (Sum: "that is unplayable, need just the game — rotate to pause and see score, just pong on screen when
+     rotated"). Coarse pointer only. SIDEWAYS: the court alone, as tall as the frame, centred; the hud, the hint and the banner
+     go. UPRIGHT: the court goes, the scoreboard and its buttons ARE the pause screen (the game pauses itself on the turn, in
+     the script below), and the banner sits at the bottom as a strip, not a curtain. Desktop and mouse: untouched. */
+  @media (pointer: coarse) and (orientation: landscape) {
+    .wrap{padding:0;gap:0}
+    .hud, .hint, #turn{display:none !important}
+    .court{width:auto;height:100vh;height:100dvh;max-width:100vw;aspect-ratio:900/560}
+  }
+  @media (pointer: coarse) and (orientation: portrait) {
+    .court{display:none}
+    .wrap{justify-content:flex-start;padding-top:24px}
+    .hud{flex-direction:column;gap:12px}
+    #turn{display:flex;inset:auto 0 0 0;flex-direction:row;gap:12px;padding:14px 18px;font-size:16px;background:rgba(7,11,15,.96);border-top:1px solid #1f2a36}
+    #turn b{font-size:28px;display:inline-block}
+  }
 </style>
 </head>
 <body>
@@ -1077,6 +1092,13 @@ END IC SHIP PASS
     }
   }
   function togglePause(){ paused ? resume() : pause(); }
+  // 3 Sep 2026 — on a phone, turning upright pauses (the scoreboard is the pause screen); turning back does not resume — the
+  //    player taps ▶ or the court, as always. Coarse pointer only, so a desktop window that happens to be tall is left alone.
+  try {
+    const upright = matchMedia('(pointer: coarse) and (orientation: portrait)');
+    const onTurn = () => { if (upright.matches) pause(); };
+    if (upright.addEventListener) upright.addEventListener('change', onTurn); else if (upright.addListener) upright.addListener(onTurn);
+  } catch (_) {}
 
   function switchSides(){ playerSide = (playerSide==='left')?'right':'left'; layout(); updateHint(); draw(); }
 
