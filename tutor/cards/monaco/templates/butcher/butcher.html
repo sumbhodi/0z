@@ -619,10 +619,15 @@ function resize(){
   PORTRAIT = W < H; TOP = PORTRAIT ? 44 : 0;
   try{ const b=document.getElementById('bench'); if(b) b.style.left = (PORTRAIT && window.__OZ_DESK) ? window.__OZ_DESK.left+'px' : ''; }catch(_){}
   const hudCols = PORTRAIT ? 0 : 7;
-  const BOTTOM = PORTRAIT ? 28 : 0;   // 3 Sep — room under the board on a phone (Sum: "need to leave more padding at bottom")
-  cell=Math.max(10,Math.floor(Math.min((H-40-TOP-BOTTOM)/ROWS,(W-20)/(COLS+hudCols))));
+  // 3 Sep 11:35 (Sum: "game play can be bigger?") — portrait: the board sits FLUSH under the band (no vertical centring) and
+  //    the only reserve under it is what the host asks for (the 0z desk passes __OZ_DESK.bottom = the part of the frame its
+  //    browser's bar still covers; standalone keeps 28). Every spare pixel goes to the cell.
+  const desk = window.__OZ_DESK || null;
+  const BOTTOM = PORTRAIT ? (desk && desk.bottom ? desk.bottom : 28) : 0;
+  const VPAD = PORTRAIT ? 8 : 40;
+  cell=Math.max(10,Math.floor(Math.min((H-VPAD-TOP-BOTTOM)/ROWS,(W-20)/(COLS+hudCols))));
   ox=Math.max(8,Math.floor((W-(COLS+hudCols)*cell)/2));
-  oy=Math.max(8+TOP,Math.floor((H-BOTTOM-ROWS*cell+TOP)/2));
+  oy=PORTRAIT ? (8+TOP) : Math.max(8,Math.floor((H-ROWS*cell)/2));
 }
 window.addEventListener("resize",resize);
 
