@@ -1367,19 +1367,24 @@ mountTopbar()
   //    a human scroll), this door steps aside for that gesture — the two never disagree, they only take turns. Touches that
   //    start on the bars themselves (the top bar scrolls sideways now) or in a text field are not gestures.
   const gesture = { y: null, scrolled: false }
+  const gStart = y => { gesture.y = y; gesture.scrolled = false }
+  const gMove = y => {
+    if (gesture.y == null || gesture.scrolled) return
+    const dy = y - gesture.y
+    if (dy < -28) { gesture.y = y; set(true) }         // finger up = pulling the content up = room
+    else if (dy > 12) { gesture.y = y; set(false) }    // finger down = the bar
+  }
+  const gEnd = () => { gesture.y = null }
   window.addEventListener('touchstart', e => {
     const t0 = e.touches && e.touches[0]; const el = e.target
     const onChrome = el && el.closest && el.closest('#topbar, #subbar, #greenroom-bar, input, textarea, select, [contenteditable]')
-    gesture.y = (t0 && !onChrome) ? t0.clientY : null; gesture.scrolled = false
+    if (t0 && !onChrome) gStart(t0.clientY); else gesture.y = null
   }, { passive: true })
-  window.addEventListener('touchmove', e => {
-    const t0 = e.touches && e.touches[0]; if (gesture.y == null || !t0 || gesture.scrolled) return
-    const dy = t0.clientY - gesture.y
-    if (dy < -28) { gesture.y = t0.clientY; set(true) }         // finger up = pulling the content up = room
-    else if (dy > 12) { gesture.y = t0.clientY; set(false) }    // finger down = the bar
-  }, { passive: true })
-  window.addEventListener('touchend', () => { gesture.y = null }, { passive: true })
-  window.addEventListener('touchcancel', () => { gesture.y = null }, { passive: true })
+  window.addEventListener('touchmove', e => { const t0 = e.touches && e.touches[0]; if (t0) gMove(t0.clientY) }, { passive: true })
+  window.addEventListener('touchend', gEnd, { passive: true })
+  window.addEventListener('touchcancel', gEnd, { passive: true })
+  // (3 Sep 09:30–09:50: a relayed-finger listener sat here — cabinet.js posted the game's touches to this door. Pulled the
+  //  same morning: a drag inside a game is the game's control, never the desk's. The three handlers above are the door.)
   window.addEventListener('wheel', human, { passive: true })
   document.addEventListener('scroll', e => {
     if (Date.now() - lastHuman > 1200) {   // no human near this scroll → machinery; remember, never judge

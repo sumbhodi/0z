@@ -32,6 +32,17 @@
   .agent-bar.collapsed { width: 100% !important; min-width: 0 !important; height: 46px; }   /* a collapsed rail turns strip in the hull */
 
   .card { margin: 4px 2px; border-radius: 8px; }
+  /* 📱 THE PANES (Sum, 3 Sep 2026: "on phone I don't think we need sliders at all, just full size cards. I don't even think we
+     need wings if I can have a bot and a card open at the same time… yes, do it"). Under 800px, saved dock geometry — edge,
+     size, collapsed-as-rail — is DESKTOP state and is not read: every open bar and card is one visible screen tall, full
+     width, in the hull's column; a collapsed one is the 46px strip. The top bar is the switcher: a tile brings its pane onto
+     the glass (workspace.js OZ_HULL.scrollTo — the one helper every opener calls). Bot + card open at once = two screens
+     stacked; scroll between them; scroll down and the chrome tucks away (the judge), so the pane owns the glass — the arcade
+     idiom for everything. Desktop untouched: its geometry survives the trip and comes back on a wide window.
+     ⚠ !important here beats the INLINE heights the desk writes for its own geometry — that is the point, not a broken cascade. */
+  #desk .agent-bar:not(.collapsed) { height: 100dvh !important; max-height: none; }
+  #desk .card:not(.collapsed) { height: 100dvh !important; max-height: none; }
+  #desk .card.collapsed { height: 46px !important; }
   /* 3 Sep 2026 — NO SLIDERS ON THE PHONE (Sum: "on phone I don't think we need sliders at all, just full size cards"; the
      toto handle had landed between the bot's controls and the arcade). Every bar and card is full width in the hull, so a
      resize handle has nothing to resize; it goes. Desktop keeps its sliders. */
@@ -81,8 +92,11 @@
      — the same state a scroll-down already produces — and returns into its card the moment the chrome returns. The
      shim inside every game (cabinet.js) relays the finger to the desk's gesture door, so a swipe INSIDE the game is the
      swipe that fills it, and the swipe down that shrinks it back. games.js still stamps html[data-arcade="play"]. */
-  html[data-arcade="play"][data-chrome="away"] .card[data-card="games"] .arc-stage { position: fixed; inset: 0; z-index: 60; height: auto; background: #000; }
-  html[data-arcade="play"][data-chrome="away"] .card[data-card="games"] .arc-frame { width: 100%; height: 100%; }
+  /* CORRECTION 3 Sep 09:50 — the fill state is gone too, with the finger relay that fed it (Sum: "drag down is fast drop…
+     scroll on piece needs to still fast drop and keep game play big"): a touch inside a game belongs to the game, full stop.
+     The arcade card is now a full-screen PANE like every other (below), so the frame is the screen minus its play bar,
+     and the game's own portrait pass (score strip as an overlay, full-width board, touch controls) is the game's — riffed,
+     not built here. games.js still stamps html[data-arcade="play"] for whatever that pass needs. */
 
   /* the notch / dynamic island (standalone PWA draws under the status bar) */
   #topbar { padding-top: max(6px, env(safe-area-inset-top)); }

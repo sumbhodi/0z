@@ -370,7 +370,7 @@ window.toggleCard = function (id, on, meta) {
   if (on && _P && _P.cards && id !== 'gear' && id !== 'setup' && id !== 'fupm' && _P.cards.indexOf(id) < 0) return false
 
   if (on && mountedCards[id]) {
-    expandOnly(mountedCards[id])                         // already on the desk → bring it forward (open it, the rest become bars)
+    expandOnly(mountedCards[id]); if (window.OZ_HULL) window.OZ_HULL.scrollTo(mountedCards[id])                         // already on the desk → bring it forward (open it, the rest become bars)
   } else if (on) {
     // 💤 THE CARD'S CODE MAY NOT BE IN YET (shell/lazy.js — monaco and its templates come in on idle,
     //    after first paint). If it is missing but a bundle covers it, the placeholder holds the seat
@@ -391,11 +391,12 @@ window.toggleCard = function (id, on, meta) {
     cardStack.scrollTop = 0
     const head = el.querySelector('.card-head')
     if (head) head.addEventListener('click', () => {     // a collapsed bar → OPEN it (expandOnly runs the desk accordion only for desk cards) · the open one → collapse
-      if (el.classList.contains('collapsed')) expandOnly(el)
+      if (el.classList.contains('collapsed')) { expandOnly(el); if (window.OZ_HULL) window.OZ_HULL.scrollTo(el) }
       else el.classList.add('collapsed')
       if (window.syncSolo) window.syncSolo()             // (Sum) re-stamp data-orient — a wing card that just collapsed becomes a rail → rotate its art
     })
     expandOnly(el)                                       // a freshly opened card is THE open one; every other card becomes a bar
+    if (window.OZ_HULL) window.OZ_HULL.scrollTo(el)   // the hull: land it on the glass (3 Sep)
   } else if (!on && mountedCards[id]) {
     const wasOpen = !mountedCards[id].classList.contains('collapsed')
     const hadFocus = mountedCards[id].contains(document.activeElement)   // ♿ closing the card you're IN strands focus

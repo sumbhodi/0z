@@ -1383,13 +1383,8 @@ mountTopbar()
   window.addEventListener('touchmove', e => { const t0 = e.touches && e.touches[0]; if (t0) gMove(t0.clientY) }, { passive: true })
   window.addEventListener('touchend', gEnd, { passive: true })
   window.addEventListener('touchcancel', gEnd, { passive: true })
-  // 3 Sep 2026 — THE RELAYED FINGER. A touch inside a game's iframe never reaches this window; cabinet.js's shim posts it
-  //    (cabinet-gesture: start · move · end) and it walks through the same three handlers. Same-origin srcdoc frames only
-  //    speak this; a foreign frame's message is ignored by shape.
-  window.addEventListener('message', e => {
-    const d = e.data; if (!d || d.oz !== 'cabinet-gesture') return
-    if (d.type === 'start') gStart(+d.y); else if (d.type === 'move') gMove(+d.y); else if (d.type === 'end') gEnd()
-  })
+  // (3 Sep 09:30–09:50: a relayed-finger listener sat here — cabinet.js posted the game's touches to this door. Pulled the
+  //  same morning: a drag inside a game is the game's control, never the desk's. The three handlers above are the door.)
   window.addEventListener('wheel', human, { passive: true })
   document.addEventListener('scroll', e => {
     if (Date.now() - lastHuman > 1200) {   // no human near this scroll → machinery; remember, never judge

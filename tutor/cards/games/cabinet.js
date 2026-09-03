@@ -146,6 +146,9 @@
   let active = null   // { key, frame, ctl }
   const beats = []    // the running report, keep the last 40 (the bot can be asked for the tape)
 
+  // 3 Sep 2026, 09:30 — the shim RELAYED THE FINGER to the desk's gesture door for an hour (a swipe inside the game filled the
+  //    glass, a swipe down shrank it). Pulled 09:50, Sum: "drag down is fast drop… scroll on piece needs to still fast drop" —
+  //    a touch inside a game belongs to the game. In/out nav for full-screen play is a riff (a handle strip, ⛶), not a swipe.
   // ⏸ THE PAUSE SHIM (2 Sep 2026) — EVERY game gets this, driver or not. Prepended so it runs before the game's own scripts:
   //    it wraps requestAnimationFrame / setInterval / setTimeout so their callbacks HOLD while paused (rAF re-queues, an interval
   //    skips its tick, a timeout chain waits and then fires) and swallows keys, so a paused board stays a paused board. The

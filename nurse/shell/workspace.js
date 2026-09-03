@@ -1214,7 +1214,7 @@ function wireDrag(bar) {
       if (!dragging) {
         const moved = Math.abs(ev.clientX - sx) > 6 || Math.abs(ev.clientY - sy) > 6
         if (!moved) {
-          bar.classList.toggle('collapsed'); syncSolo(); saveGeo(bar)   // a true CLICK = collapse / expand (a drag on an expanded bar does nothing — no accidental collapse)
+          bar.classList.toggle('collapsed'); syncSolo(); saveGeo(bar); if (!bar.classList.contains('collapsed')) window.OZ_HULL.scrollTo(bar)   // a true CLICK = collapse / expand (a drag on an expanded bar does nothing — no accidental collapse)
           // (Sum 2026-07-11) expanding a DESK bot → one-at-a-time: collapse the other desk occupants (cards + bots)
           if (!bar.classList.contains('collapsed') && window.expandCard) window.expandCard(bar)
         }
@@ -1343,6 +1343,17 @@ function applyGeo(bar) {   // paint a freshly-built bar with its remembered edge
 }
 
 // ── toggle an agent bar on/off. returns false if id isn't an agent bar ──
+// 📱 3 Sep 2026 — THE HULL'S SWITCHER (Sum: "the top bar is the switcher: a tile brings its bot or card to the top… yes, do
+//    it"). Under 800px every open pane is one screen tall (skin/mobile.css), so 'bring it to the top' is a scroll: the pane
+//    you asked for lands on the glass, geometry untouched. Called by every opener — toggleAgent, ozSummon, the bar head's
+//    expand, toggleCard and the card head's expand (cards.js) — never by boot restore, which lays the column out quietly.
+//    Above 800px it is a no-op, so the desk never moves.
+window.OZ_HULL = {
+  on: () => { try { return !!(window.matchMedia && window.matchMedia('(max-width: 800px)').matches) } catch (_) { return false } },
+  // a short timer, not rAF: the pane has to exist in layout first (a fresh mount paints on the next frame), and a timer also
+  //    fires in a hidden tab where rAF never does — which is how this was verified from the Browser pane (bug-bible, 2 Sep).
+  scrollTo: el => { if (!el || !window.OZ_HULL.on()) return; setTimeout(() => { try { el.scrollIntoView({ block: 'start', behavior: 'auto' }) } catch (_) { try { el.scrollIntoView(true) } catch (__) {} } }, 40) },   // 'auto', not smooth: a jump is what a tile does on a phone, and a smooth scroll is an animation that never runs where frames do not
+}
 window.toggleAgent = function(id, on) {
   if (!AGENT_BARS[id]) return false
   // ⭐ THE PROFILE GATE, 2026-08-30. Sum, on the deployed strip: "coder is still in run it in
@@ -1368,6 +1379,7 @@ window.toggleAgent = function(id, on) {
     let edge = b.dataset.edge || AGENT_BARS[id].edge || 'right'
     if (edge === 'center' || edge === 'desk') window.OZ_DOCK.toDesk(b)   // (Sum 2026-07-09) the desk (center stack)
     else window.OZ_DOCK.toWing(b, edge)                                  // a wing — ONE per wing, docked expanded (same path as the drag → no stale-rail bug on reload)
+    window.OZ_HULL.scrollTo(b)                                             // the hull: the pane you asked for lands on the glass (3 Sep)
     loadOrder.push(id)
     if (window.OZ_SYS) window.OZ_SYS.wakeFor(id)   // a LOCAL-model bot? ping yocal awake so its RAM read is live
   } else if (!on && bars[id]) {
@@ -1390,6 +1402,7 @@ window.ozSummon = function (id) {
   if (!bars[id]) window.toggleAgent(id, true)
   const bar = bars[id]; if (!bar) return false
   bar.classList.remove('collapsed')
+  window.OZ_HULL.scrollTo(bar)
   return true
 }
 
