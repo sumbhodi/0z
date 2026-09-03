@@ -121,7 +121,10 @@ END IC SHIP PASS
   /* the BENCH — save / load / restart, top-left. big targets, no fiddle. */
   #bench{position:fixed;top:10px;left:10px;z-index:5;display:none;gap:8px;}
   /* 3 Sep 2026 — portrait: the bench lives in the top band (44px), compact, one row; the desk offsets it past its buttons */
-  @media (max-width: 500px){ #bench{top:3px;gap:4px;right:6px;flex-wrap:nowrap;} #bench button{height:38px;padding:0 7px;font-size:12px;} }
+  /* 3 Sep 11:30 (Sum: "just need an x scroll on top buttons, like bars have — on pause, scroll over for more buttons"):
+     the bench PANS sideways in the band, no scrollbar, every button its full size. */
+  @media (max-width: 500px){ #bench{top:3px;gap:4px;right:6px;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x;}
+    #bench::-webkit-scrollbar{display:none;} #bench button{height:38px;padding:0 7px;font-size:12px;flex:0 0 auto;white-space:nowrap;} }
   #bench button, #slots button{font:inherit;font-weight:bold;font-size:15px;height:38px;
     padding:0 14px;border-radius:8px;cursor:pointer;user-select:none;
     background:rgba(30,23,14,0.85);color:#e7d6b3;border:1px solid #6b5836;
