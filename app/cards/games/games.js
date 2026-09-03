@@ -32,7 +32,7 @@
     const s = document.createElement('style'); s.id = 'arcade-css'
     s.textContent = `
       .arcade{display:flex;flex-direction:column;height:100%;min-height:420px}
-      .arc-menu{padding:18px}
+      .arc-menu{padding:18px;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}   /* 3 Sep 2026: on a phone the four game cards stack taller than the pane — the menu scrolls, or Snek is unreachable (Sum: "can't even get to snake") */
       .arc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
       .arc-card{display:flex;flex-direction:column;align-items:flex-start;gap:3px;cursor:pointer;text-align:left;
         border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:16px 14px;color:#e9eef3;

@@ -450,7 +450,7 @@ let W=0,H=0,DPR=1;
 //  and tighter gaps (three times the side room), a cheaper lurch and creep (the same march takes ~2× as long to reach you), a
 //  touch slower everywhere, and no bombs from the mouse tier on — the conveyor is still a fight, just a shooting one.
 const PORTRAIT=()=>W<H;
-const PHONE={ cellMul:0.85, cellMin:22, gapX:0.35, edgeDropMul:0.30, driftPxFrame:0.08, tempo:1.25, descentMul:0.8, bombsUntilTier:4 };
+const PHONE={ cellMul:0.85, cellMin:22, gapX:0.35, edgeDropMul:0.30, driftPxFrame:0.08, tempo:1.25, descentMul:0.8, bombsUntilTier:3 };   // 11:58 — Sum: "at blue alien stop bombs is even better than at ant": bombs through the green alien only
 const knob=(k)=>(PORTRAIT()&&PHONE[k]!=null)?PHONE[k]:CONFIG[k];
 
 function resize(){
@@ -1282,7 +1282,7 @@ function stepGrid(dt){
   // bombs — one per living ROW rhythm (so rows×bombs scales exactly)
   const rowsAlive=new Set(alive.map(e=>e.row)).size;
   G.bombTimer+=dt*16.667;
-  const bombsOn=!(PORTRAIT()&&curTier().n>PHONE.bombsUntilTier);   // phone: bombs only through tier 4 (blue alien); the mouse on is a shooting fight
+  const bombsOn=!(PORTRAIT()&&curTier().n>PHONE.bombsUntilTier);   // phone: bombs only through tier 3 (green alien); from the blue alien on it is a shooting fight
   if(bombsOn && G.bombTimer>=bombInterval(rowsAlive)){
     G.bombTimer=0;
     const shooter=alive[(Math.random()*alive.length)|0];
@@ -1315,7 +1315,8 @@ function stepConveyor(dt){
   // bombs — one per living ROW-equivalent (living lanes)
   const lanesAlive=new Set(G.enemies.filter(e=>e.alive).map(e=>e.lane)).size;
   G.bombTimer+=dt*16.667;
-  if(lanesAlive>0 && G.bombTimer>=bombInterval(lanesAlive)){
+  const bombsOn=!(PORTRAIT()&&curTier().n>PHONE.bombsUntilTier);   // phone: the conveyor (ants on) throws nothing — Sum: "turn off bombs once ants start too"
+  if(bombsOn && lanesAlive>0 && G.bombTimer>=bombInterval(lanesAlive)){
     G.bombTimer=0;
     const alive=G.enemies.filter(e=>e.alive);
     const shooter=alive[(Math.random()*alive.length)|0];
