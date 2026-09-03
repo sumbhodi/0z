@@ -2,7 +2,9 @@
    scroll down for the bot, up for the card desk, up again for the other wing. full-width everything,
    bigger text ("i keep forgetting how small text is"). LAYOUT ONLY, media-gated — desktop untouched.
    loads LAST of the structure css (after shell/desk.css) so it wins ties. tag to code: this file. */
-@media (max-width: 800px) {
+/* 3 Sep 2026 — the hull's gate is the PHONE PREDICATE now (zoom.js OZ_PHONE_MQ, same string): width under 800, OR a coarse
+   pointer with a short side under 500 — so a phone turned sideways stays in the hull instead of falling onto the desktop layout. */
+@media (max-width: 800px), ((hover: none) and (pointer: coarse) and (max-height: 500px)) {
   html { font-size: 17px; }
   body { font-size: 1.06em; }
 
@@ -122,6 +124,15 @@
   html[data-game="play"] .card[data-card="games"] .arc-hud { display: flex; top: env(safe-area-inset-top, 0px); }   /* 11:25 — flush with the game's 44px band, not 8px under it */
 
   @media (display-mode: standalone) { html[data-game="play"] { --play-gutter: max(env(safe-area-inset-bottom), 16px); } }
+
+  /* 📐 LANDSCAPE PLAY (3 Sep 2026): 44px of a 393px-tall glass is too big a bite across the top, so the band becomes a COLUMN
+     at the left edge — joystick over pause — clear of the notch; Chrome has no bottom bar sideways, so the gutter is the home
+     indicator only. Games return to their wide layouts on their own (taller-than-wide is false). */
+  @media (orientation: landscape) {
+    html[data-game="play"] { --play-gutter: max(env(safe-area-inset-bottom), 8px); }
+    html[data-game="play"] .card[data-card="games"] .arc-hud { top: 0; bottom: 0; height: auto; width: 44px; left: env(safe-area-inset-left, 0px); flex-direction: column; justify-content: flex-start; padding: 6px 0 0; gap: 6px; }
+    html[data-game="play"] .card[data-card="games"] .arc-hud .arc-fab, html[data-game="play"] .card[data-card="games"] .arc-hud .arc-home { width: 40px; margin: 0 2px; }
+  }
 
   /* the notch / dynamic island (standalone PWA draws under the status bar) */
   #topbar { padding-top: max(6px, env(safe-area-inset-top)); }

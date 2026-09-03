@@ -11,6 +11,13 @@
 // the stage is #zoom-root (topbar · subbar · desk). overlays live on <body>, OUTSIDE it, so
 // menus/toasts/modals stay viewport-pinned (transform would re-anchor their fixed positions).
 
+// 3 Sep 2026 — THE PHONE PREDICATE (Sum: "turning your phone breaks the portrait/landscape phone rule"). The hull used to be
+//    'width under 800' — true of a phone in portrait by coincidence; rotate an iPhone and the width is 852, the hull switched
+//    off, and a phone got the desktop layout. A phone is a coarse pointer with a short side under ~500px, whichever way it is
+//    held. One string, read by every site that asks (workspace.js OZ_HULL · orientOf · the media listener; this clamp; the
+//    same query heads skin/mobile.css). zoom.js loads first, so it owns the string.
+window.OZ_PHONE_MQ = '(max-width: 800px), ((hover: none) and (pointer: coarse) and (max-height: 500px))'
+
 function applyZoom() {
   const z = parseFloat(localStorage.getItem('toto_zoom') || '1')
   const root = document.getElementById('zoom-root')
@@ -34,7 +41,7 @@ function applyZoom() {
   // 2 Sep 2026 — the floor is a WINDOW floor. In the hull (≤800px, skin/mobile.css) the stage's min-width is 0 — the glass is
   //    the floor — so the clamp never applies there; an 'auto' overflow on a phone was the horizontal pan Sum saw as the desk
   //    bleeding off the right of his iPhone.
-  const hull = (() => { try { return window.matchMedia && window.matchMedia('(max-width: 800px)').matches } catch (_) { return false } })()
+  const hull = (() => { try { return window.matchMedia && window.matchMedia(window.OZ_PHONE_MQ).matches } catch (_) { return false } })()
   document.body.style.overflowX = (!hull && window.innerWidth / z < 360) ? 'auto' : ''
   document.body.style.overflowY = (!hull && window.innerHeight / z < 480) ? 'auto' : ''
 }

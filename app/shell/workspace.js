@@ -502,7 +502,7 @@ function orientOf(bar) {
   //    landing on the bar"). skin/mobile.css remaps the left/right zones to top/bottom BANDS and turns a collapsed bar
   //    into a 46px full-width strip — but this function still read the EDGE (left → solo → vertical) and stacked the
   //    head into a column inside that strip. Under 800px every collapsed bar is a strip, so every one is horizontal.
-  try { if (window.matchMedia && window.matchMedia('(max-width: 800px)').matches) return 'horizontal' } catch (_) {}
+  try { if (window.matchMedia && window.matchMedia(window.OZ_PHONE_MQ || '(max-width: 800px)').matches) return 'horizontal' } catch (_) {}
   const e = bar.dataset.edge, solo = bar.dataset.solo
   const side = e === 'left' || e === 'right'
   const topbot = e === 'top' || e === 'bottom'
@@ -510,7 +510,7 @@ function orientOf(bar) {
 }
 
 // mark each bar solo (alone in its zone) or sharing — drives the collapse mode + the orient
-try { const mq = window.matchMedia && window.matchMedia('(max-width: 800px)'); if (mq && mq.addEventListener) mq.addEventListener('change', () => { try { syncSolo() } catch (_) {} }) } catch (_) {}   // 2 Sep: rotate / resize across the hull line → re-orient
+try { const mq = window.matchMedia && window.matchMedia(window.OZ_PHONE_MQ || '(max-width: 800px)'); if (mq && mq.addEventListener) mq.addEventListener('change', () => { try { syncSolo() } catch (_) {} }) } catch (_) {}   // 2 Sep: rotate / resize across the hull line → re-orient
 function syncSolo() {
   desk.querySelectorAll('.zone').forEach(z => {
     const solo = z.children.length === 1 ? '1' : '0'
@@ -1349,7 +1349,7 @@ function applyGeo(bar) {   // paint a freshly-built bar with its remembered edge
 //    expand, toggleCard and the card head's expand (cards.js) — never by boot restore, which lays the column out quietly.
 //    Above 800px it is a no-op, so the desk never moves.
 window.OZ_HULL = {
-  on: () => { try { return !!(window.matchMedia && window.matchMedia('(max-width: 800px)').matches) } catch (_) { return false } },
+  on: () => { try { return !!(window.matchMedia && window.matchMedia(window.OZ_PHONE_MQ || '(max-width: 800px)').matches) } catch (_) { return false } },
   // a short timer, not rAF: the pane has to exist in layout first (a fresh mount paints on the next frame), and a timer also
   //    fires in a hidden tab where rAF never does — which is how this was verified from the Browser pane (bug-bible, 2 Sep).
   scrollTo: el => { if (!el || !window.OZ_HULL.on()) return; setTimeout(() => { try { el.scrollIntoView({ block: 'start', behavior: 'auto' }) } catch (_) { try { el.scrollIntoView(true) } catch (__) {} } }, 40) },   // 'auto', not smooth: a jump is what a tile does on a phone, and a smooth scroll is an animation that never runs where frames do not

@@ -111,6 +111,8 @@
   //    two names in the shape the shim already understands (a global togglePause and a state getter) makes this game read
   //    exactly like Butcher: the desk's ⏸/▶ drive the game's pause, and the convergence loop hears its blur-pause.
   try { window.togglePause = togglePause; Object.defineProperty(window, 'state', { get: function () { return G.state }, configurable: true }) } catch (_) {}
+  // the rig's hands (reads and steps only — no frames run in a hidden pane): jump to a tier, meet a quota, step the conveyor
+  try { window.__ozColTest = { toTier: function (n) { G.level = n - 1; buildWave() }, fill: function () { G.killsThisLevel = CONFIG.conveyorQuota }, step: function (dt) { stepConveyor(dt || 1) }, enemies: function () { return G.enemies.map(function (e) { return { t: e.tier, alive: e.alive, lane: e.lane } }) }, lanes: function () { return G.laneX.length } } } catch (_) {}
   function begin(){ post('start','the cabinet takes the controls — space colonialism'); T=setInterval(step,50) }
   function step(){
     if(!ON) return
@@ -175,8 +177,8 @@
     let out = String(html)
     // the bottom reserve a desk-aware game keeps clear: in a browser tab Chrome iOS's bar still covers ~39px of the frame past the
     //    56px gutter (44); installed to the home screen there is no bar, so nothing (8) — and the board takes the full width.
-    let standalone = false; try { standalone = !!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || !!(navigator.standalone) } catch (_) {}
-    const tag = '<scr' + 'ipt>' + PAUSE_SHIM.replace('__BOTTOM__', standalone ? '8' : '44') + '</scr' + 'ipt>'
+    let standalone = false, landscape = false; try { standalone = !!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || !!(navigator.standalone); landscape = !!(window.matchMedia && window.matchMedia('(orientation: landscape)').matches) } catch (_) {}
+    const tag = '<scr' + 'ipt>' + PAUSE_SHIM.replace('__BOTTOM__', (standalone || landscape) ? '8' : '44') + '</scr' + 'ipt>'   // sideways, Chrome has no bottom bar either
     const m = /<head[^>]*>/i.exec(out)
     out = m ? out.slice(0, m.index + m[0].length) + tag + out.slice(m.index + m[0].length) : tag + out
     html = out

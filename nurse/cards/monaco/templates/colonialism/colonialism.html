@@ -1294,6 +1294,20 @@ function stepGrid(dt){
   if(maxY>=G.ship.y-G.ship.h){ loseGame(endLine()); }
 }
 
+// 3 Sep 2026 — THE ONE LONG CONVEYOR (Sum, phone: "ant lizard ape levels, make it all one level — x ants just followed by x
+//    lizards, so you just keep shooting, more things keep falling, no reset levels, just one long scroll till end"). Portrait only.
+//    When a conveyor tier's quota is met and the next tier is also a conveyor, nothing is cleared: the level advances, the lanes
+//    retool to the next tier's count and tempo, the timers restagger, and the enemies already falling keep falling as what they
+//    are (each remembers its species). The humanoid's quota still hands off to the Concepts as before. Desk: levels as ever.
+function retoolConveyor(){
+  G.level=Math.min(G.level+1,TIERS.length-1);
+  const tier=curTier(), cfg=CONFIG.conveyor[tier.n], cell=G.cell;
+  const cols=cfg.lanes, gapX=cell*0.9, formW=cols*cell+(cols-1)*gapX, startX=(W-formW)/2+cell/2;
+  G.laneX=[]; for(let c=0;c<cols;c++)G.laneX.push(startX+c*(cell+gapX));
+  G.conveyor=cfg; G.spawnTimers=[]; for(let c=0;c<cols;c++)G.spawnTimers.push(Math.random()*cfg.spawnMs);
+  G.killsThisLevel=0; saveRun(); G.ship.inv=800;
+}
+
 // ── tiers 6-9: the conveyor. lanes spawn enemies above the top; they march
 //    straight down forever. clear a QUOTA of kills to advance. ──
 function stepConveyor(dt){
@@ -1304,7 +1318,7 @@ function stepConveyor(dt){
     G.spawnTimers[c]-=dt*16.667;
     if(G.spawnTimers[c]<=0){
       G.spawnTimers[c]+=cfg.spawnMs;
-      G.enemies.push({x:G.laneX[c],y:-G.cell,row:c,alive:true,wob:0,lane:c});
+      G.enemies.push({x:G.laneX[c],y:-G.cell,row:c,alive:true,wob:0,lane:c,tier:curTier().n});   // 3 Sep: remembers its species — on the phone's one long conveyor the ants keep falling while the lizards start
     }
   }
 
@@ -1330,8 +1344,11 @@ function stepConveyor(dt){
   // drop enemies that somehow slip past the bottom (safety)
   G.enemies=G.enemies.filter(e=>e.alive && e.y<H+G.cell);
 
-  // quota met -> advance
-  if(G.killsThisLevel>=CONFIG.conveyorQuota){ nextLevel(); }
+  // quota met -> advance. phone: the next conveyor tier joins the same scroll; the desk (and the hand-off to the Concepts) rebuilds
+  if(G.killsThisLevel>=CONFIG.conveyorQuota){
+    const nt=TIERS[Math.min(G.level+1,TIERS.length-1)];
+    if(PORTRAIT()&&nt.form==="conveyor") retoolConveyor(); else nextLevel();
+  }
 }
 
 // ── tier 10: THE CONCEPTS. descends at a FIXED rate. nothing the player
@@ -1461,7 +1478,7 @@ function render(){
     // SPECIES table can draw a different accumulating creature per row.
     if(tier.form!=="concept"){
       for(const e of G.enemies){ if(!e.alive)continue;
-        drawTier(e.x,e.y,G.cell,tier,e.wob,performance.now(),e.row); }
+        drawTier(e.x,e.y,G.cell,(e.tier&&TIERS[e.tier-1])||tier,e.wob,performance.now(),e.row); }   // its own species, not the level's
     }
 
     // the concept line — tier 10, shimmering, descending
