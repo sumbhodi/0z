@@ -1412,12 +1412,33 @@ END IC SHIP PASS
 
     // playfield mouse — left-click turns left, right-click turns right.
     // preventDefault so a click never selects or scrolls; menu is killed below.
+    // CORRECTION 3 Sep 2026 (Sum, on his iPhone: "needs left and right, whichever side of snake to tap — right now it always
+    //   turns left"): a tap arrived as a left button, so every tap was a left turn. A tap now turns the snake TOWARD the side
+    //   of its heading the tap is on — the cross product of the heading and the head→tap vector, in screen coordinates (y down):
+    //   positive = the tap is on the heading's right. Same rule for a desktop left-click; the right button stays a right turn.
+    //   touchstart is wired directly (below) so a phone tap is instant and never doubles as an emulated click.
+    function turnToward(clientX, clientY) {
+        const head = gameState.snake && gameState.snake[0]; if (!head) return;
+        const r = canvas.getBoundingClientRect();
+        const sx = canvas.width / (r.width || 1), sy = canvas.height / (r.height || 1);
+        const px = (clientX - r.left) * sx, py = (clientY - r.top) * sy;
+        const hx = (head.x + 0.5) * cellSize, hy = (head.y + 0.5) * cellSize;
+        const d = gameState.direction;
+        const cross = d.x * (py - hy) - d.y * (px - hx);
+        if (cross > 0) turnRight(); else if (cross < 0) turnLeft();   // dead ahead / behind (cross 0): no turn
+    }
     canvas.addEventListener('mousedown', (e) => {
         e.preventDefault();
         if (!gameStarted) { beginGame(); return; }
-        if (e.button === 0) turnLeft();        // left button → turn left
-        else if (e.button === 2) turnRight();  // right button → turn right
+        if (e.button === 0) turnToward(e.clientX, e.clientY);   // tap / left button → toward the tapped side
+        else if (e.button === 2) turnRight();                    // right button → turn right
     });
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const t = e.touches && e.touches[0]; if (!t) return;
+        if (!gameStarted) { beginGame(); return; }
+        turnToward(t.clientX, t.clientY);
+    }, { passive: false });
 
     // kill the right-click menu on the field so right = steer, never a menu
     canvas.addEventListener('contextmenu', (e) => e.preventDefault());
