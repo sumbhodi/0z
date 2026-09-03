@@ -574,7 +574,10 @@ END IC SHIP PASS
     // ⚙️ GAME SETTINGS
     // ═══════════════════════════════════════════════════════════════
 
-    const MAX_CANVAS_SIZE = Math.min(window.innerWidth * 0.82, window.innerHeight * 0.62, 560);
+    // 3 Sep 2026 15:40 (Sum: "snake can fit x for gameplay and be a bit bigger"): on a coarse pointer the board takes the width
+    //    (16px of air), not 82% of it — 322 → 377 on a 393 glass. The desk keeps 0.82; the height cap still binds sideways.
+    let PHONE = false; try { PHONE = matchMedia('(pointer: coarse)').matches } catch (_) {}
+    const MAX_CANVAS_SIZE = Math.min(PHONE ? window.innerWidth - 16 : window.innerWidth * 0.82, window.innerHeight * 0.62, 560);
     let cellSize = 30;
 
     const levels = [

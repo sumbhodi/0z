@@ -64,6 +64,9 @@
     document.head.appendChild(s)
   }
 
+  // 15:40 — app/?game=<key> opens the arcade on its own (topbar's ?open=<id> road is for cards and suites; the tile is this card's
+  //    business). After 'load' so the saved layout is already restored (topbar.js bootLayout runs at DOMContentLoaded).
+  try { if (new URLSearchParams(location.search).get('game')) window.addEventListener('load', () => { try { window.toggleCard && window.toggleCard('games', true) } catch (_) {} }) } catch (_) {}
   window.CARD_BUILDERS = window.CARD_BUILDERS || {}
   window.CARD_BUILDERS.games = function buildGames() {
     injectCSS()
@@ -119,13 +122,33 @@
     const stage = body.querySelector('.arc-stage')
     // 10:45 — the stage's HEIGHT is CSS now (top 0 → bottom var(--play-gutter)): Chrome iOS overlays its bottom bar and every JS
     //    height counts the strip under it. fit() only follows the visual viewport's top offset (the collapsing URL bar).
-    const fit = () => { try { const vv = window.visualViewport; if (document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { stage.style.top = Math.round(vv.offsetTop || 0) + 'px' } else { stage.style.top = '' } stage.style.height = '' } catch (_) {} }
+    // 3 Sep 14:05 (Sum, sideways Ping: "bottom of play is offscreen on my iPhone again"): in LANDSCAPE Chrome iOS puts its bar on TOP and
+    //    the visual viewport starts ~50–75px down the layout (vv.offsetTop). fit() pushed the stage down by that much and left its CSS
+    //    height alone, so the same amount fell off the bottom. Whatever offset the stage takes at the top it now gives back at the
+    //    bottom: height = calc(100dvh - gutter - offsetTop). offsetTop is 0 in portrait (bar at the bottom), so the 10:45 rule holds there.
+    // ⚠ CORRECTION 15:15 — the 14:05 line above was half right and the 14:50 CSS reserve (76px) doubled it: Sum's screenshot had the
+    //    court ending 31px short with a black band under it. Read off the glass: layout viewport 393 tall, shifted ~45px under Chrome's
+    //    top bar; visible = layout 30..348; vv.offsetTop = 30. Subtracting BOTH the offset and a 76px reserve from 100dvh left 287. The
+    //    honest number is visualViewport.height itself (318): when Chrome has shifted the visual viewport (offsetTop > 0) it is tracking
+    //    the bar, so the stage takes its top AND its height from it and no CSS reserve applies. offsetTop 0 (portrait, the Pixel, the
+    //    pane) keeps the CSS height and the 10:45 gutter — that geometry is the bottom-bar overlay, where vv.height is the one that lies.
+    // ⚠ CORRECTION 15:40 — vv.height was NOT honest either: "bottom is cut off again" (Sum). So it counts the strip past the glass
+    //    like every other JS height here (10:45 was right about all of them). Sum: "can we find a middle path" — the two measured
+    //    builds bracket the answer: 8px reserve → 37px past the glass, 76px reserve → 31px short. The middle, 42px, lands within 3px.
+    //    So: height = calc(100dvh − gutter − offsetTop), the 14:05 form, with the iOS-only landscape gutter at 42 (skin/mobile.css).
+    //    And a PROBE so the next number comes off the glass, not a screenshot: app/?probe prints innerHeight · vv.height/offsetTop ·
+    //    screen · the gutter in the corner of the stage. One screenshot of that ends the guessing (and it is the APK's number too).
+    let probe = null; try { if (new URLSearchParams(location.search).has('probe')) { probe = document.createElement('div'); probe.style.cssText = 'position:absolute;right:4px;bottom:4px;z-index:99;font:11px/1.3 ui-monospace,monospace;color:#9fb3c8;background:rgba(0,0,0,.7);padding:3px 6px;border-radius:6px;pointer-events:none;white-space:pre'; stage.appendChild(probe) } } catch (_) {}
+    const fit = () => { try { const vv = window.visualViewport; if (document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { const off = Math.round(vv.offsetTop || 0); stage.style.top = off + 'px'; stage.style.height = off ? 'calc(100dvh - var(--play-gutter) - ' + off + 'px)' : '' } else { stage.style.top = ''; stage.style.height = '' }
+      if (probe) { const vv2 = window.visualViewport; probe.textContent = 'inner ' + innerWidth + 'x' + innerHeight + '  vv ' + (vv2 ? Math.round(vv2.width) + 'x' + Math.round(vv2.height) + ' @' + Math.round(vv2.offsetTop) : '-') + '  scr ' + screen.width + 'x' + screen.height + '  gutter ' + getComputedStyle(document.documentElement).getPropertyValue('--play-gutter').trim() + '  stage ' + Math.round(stage.getBoundingClientRect().height) } stage.style.height = '' } catch (_) {} }
     try { if (window.visualViewport) { window.visualViewport.addEventListener('resize', fit); window.visualViewport.addEventListener('scroll', fit) } } catch (_) {}
     window.addEventListener('resize', fit)
 
+    const tiles = {}
     GAMES.forEach(g => {
       const c = document.createElement('button'); c.className = 'arc-card'; c.style.setProperty('--ac', g.accent)
       c.innerHTML = `<span class="arc-gly">${g.glyph}</span><span class="arc-name">${g.name}</span><span class="arc-blurb">${g.blurb}</span>`
+      c.dataset.key = g.key; tiles[g.key] = c   // 15:40 — the deep link finds its tile by key
       c.addEventListener('click', () => {
         const html = gameHTML(g.key)
         if (!html) { titleEl.textContent = g.name + ' — not loaded'; return }
@@ -140,6 +163,10 @@
       })
       grid.appendChild(c)
     })
+    // 3 Sep 15:40 (Sum: "butcher and space are ready for a direct link to this game open in com — but let's do all 4 at once"):
+    //    app/?game=<key> (butcher · colonialism · snek · pong) lands on that tile. The bundle that holds the games is lazy (shell/lazy.js
+    //    pulls it on idle), so the press waits for it. Fires once per page; the card itself is opened by the load hook above.
+    try { const want = new URLSearchParams(location.search).get('game'); if (want && !window.__ozDeepLinked && tiles[want]) { window.__ozDeepLinked = true; const go = () => { try { tiles[want].click() } catch (_) {} }; if (window.OZ_LAZY && !window.OZ_LAZY.ready('games')) window.OZ_LAZY.need('games').then(go).catch(() => {}); else go() } } catch (_) {}
     body.querySelector('.arc-back').addEventListener('click', () => {
       if (window.OZ_CABINET) window.OZ_CABINET.closed()   // the 🤖 controls leave with the game
       frame.srcdoc = ''; play.style.display = 'none'; menu.style.display = 'block'   // stop the running game
