@@ -138,7 +138,11 @@ END IC SHIP PASS
   .toast{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
     gap:8px;text-align:center;background:rgba(7,11,15,.62);backdrop-filter:blur(2px);
     transition:opacity .2s ease}
-  .toast.hide{opacity:0;pointer-events:none}
+  /* 3 Sep 2026 (Sum, sideways: "still can't tap to serve"): the toast is a layer over the whole court, so a real tap on YOUR
+     SERVE landed on the toast and never reached the canvas (a synthetic touch skips hit-testing, which is why the rig passed).
+     It is display only — no target in it — so it never takes the pointer. Click-to-serve on the desk was quietly the same bug. */
+  .toast{pointer-events:none}
+  .toast.hide{opacity:0}
   .toast h1{margin:0;font-size:30px;font-weight:800;letter-spacing:.02em}
   .toast p{margin:0;color:var(--dim);font-size:13px;max-width:460px}
   .toast .key{color:var(--ink)}
@@ -162,7 +166,15 @@ END IC SHIP PASS
     /* 12:55 (Sum: "put New match and Switch sides on that left bar; on switch sides it goes to the right bar"): the hud is a
        narrow strip under the desk's two buttons — ⇄ and ↻ only; tap serves, the desk pauses. Player on the left → strip right. */
     .hud{position:fixed;top:100px;left:2px;width:40px;z-index:5;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:6px}
-    .hud .mode,.hud .board,#play,#pause,.lbl{display:none !important}
+    /* 13:40 (Sum: "the green play button is what we need on the side rail sideways — add pause to it"): ▶ joins the rail,
+       one button — serve · resume · pause. #pause stays hidden here; the desk's own ⏸ in the column does that job too. */
+    .hud .mode,#pause,.lbl{display:none !important}
+    #play{order:-1}
+    /* 13:25 (Sum: "score overlay top of play, keep the board the same size — left and right clear, mid-top can be cluttered"):
+       the scoreboard floats top-centre over the court, small, and never takes the pointer. */
+    .hud .board{display:flex !important;position:fixed;top:4px;left:50%;transform:translateX(-50%);gap:14px;z-index:6;pointer-events:none;
+      padding:2px 10px;border-radius:8px;background:rgba(7,11,15,.45)}
+    .hud .board .lvl .cap{font-size:8px} .hud .board .lvl.pts .row{font-size:22px} .hud .board .lvl.gms .row,.hud .board .lvl.set .row{font-size:14px}
     .ctrls{flex-direction:column;flex-wrap:nowrap;justify-content:flex-start;gap:6px}
     .ctrls button{width:40px;height:40px;padding:0;font-size:18px;line-height:40px}
     body[data-side="left"] .hud{left:auto;right:2px}
@@ -193,7 +205,7 @@ END IC SHIP PASS
     </div>
 
     <div class="ctrls">
-      <button id="play" class="go">▶ Play</button>
+      <button id="play" class="go" aria-label="play"><span id="goGlyph">▶</span> <span class="lbl">Play</span></button>
       <button id="pause">⏸ Pause</button>
       <button id="sides">⇄ <span class="lbl">Sides</span></button>
       <button id="reset">↻ <span class="lbl">New match</span></button>
@@ -1017,6 +1029,7 @@ END IC SHIP PASS
   // ── render ──────────────────────────────────────────────────────────────────
   function rr(x,y,w,h,r){ ctx.beginPath(); ctx.roundRect(x,y,w,h,r); ctx.fill(); }
   function draw(){
+    try { reflectGo() } catch (_) {}   // 13:40 — glyph tracks serving/over/running (see goPress)
     ctx.clearRect(0,0,W,H);
     ctx.strokeStyle='rgba(255,255,255,.10)'; ctx.lineWidth=3; ctx.setLineDash([10,16]);
     ctx.beginPath(); ctx.moveTo(W/2,8); ctx.lineTo(W/2,H-8); ctx.stroke(); ctx.setLineDash([]);
@@ -1077,6 +1090,7 @@ END IC SHIP PASS
   function reflectPause(){
     pauseBtn.textContent = paused ? '▶ Resume' : '⏸ Pause';
     pauseBtn.classList.toggle('go', paused);
+    try { reflectGo() } catch (_) {}   // 13:40 — the rail's one button follows too (hoisted; defined below)
   }
   function pause(){
     if (paused || over) return;
@@ -1117,7 +1131,20 @@ END IC SHIP PASS
   function switchSides(){ playerSide = (playerSide==='left')?'right':'left'; layout(); updateHint(); draw(); tellSide(); }
   tellSide();
 
-  document.getElementById('play').onclick  = play;
+  // 3 Sep 2026 13:40 (Sum: "make the play button from desktop work in landscape, and add pause to it — that is the button to
+  // start and serve we are missing"): ONE green button. Paused → resume (and serve if it is yours). Waiting → play() as before
+  // (new match · serve · start). Rally on → pause. The glyph says which: ▶ when a press starts something, ⏸ when it stops.
+  const goBtn = document.getElementById('play'), goGlyph = document.getElementById('goGlyph');
+  function goPress(){
+    if (paused) { resume(); if (serving && serveBy==='player') serve(); reflectGo(); return; }
+    if (over || serving || !running) { play(); reflectGo(); return; }
+    pause(); reflectGo();
+  }
+  function reflectGo(){
+    const want = (paused || serving || over || !running) ? '▶' : '⏸';
+    if (goGlyph.textContent !== want) { goGlyph.textContent = want; goBtn.classList.toggle('go', want === '▶'); goBtn.setAttribute('aria-label', want === '▶' ? 'play' : 'pause'); }
+  }
+  goBtn.onclick = goPress;
   pauseBtn.onclick = togglePause;
   document.getElementById('sides').onclick = switchSides;
   document.getElementById('reset').onclick = function(){ paused=false; reflectPause(); running=false; newMatch(); };
