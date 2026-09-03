@@ -1107,7 +1107,8 @@ END IC SHIP PASS
     paused = true; running = false;
     clearTimeout(serveTimer);
     reflectPause();
-    showToast('PAUSED', 'press <span class="key">▶</span> or <span class="key">P</span> to resume.');
+    let coarse = false; try { coarse = matchMedia('(pointer: coarse)').matches } catch (_) {}   // 15:00 — the phone rail has no ▶; the court is the button
+    showToast('PAUSED', coarse ? '<span class="key">tap the court</span> to resume.' : 'press <span class="key">▶</span> or <span class="key">P</span> to resume.');
   }
   function resume(){
     if (!paused) return;
@@ -1132,7 +1133,12 @@ END IC SHIP PASS
   try { window.togglePause = togglePause; Object.defineProperty(window, 'state', { get: function () { return paused ? 'pause' : 'play' }, configurable: true }) } catch (_) {}
   try {
     const upright = matchMedia('(pointer: coarse) and (orientation: portrait)');
-    const onTurn = () => { if (upright.matches) pause(); else if (paused) resume(); };
+    // ⚠ CORRECTION 3 Sep 15:00 — the 13:05 'sideways resumes' half is withdrawn (Sum: "on un-rotate, leave paused till I press play
+    //    again — no rotate into a game in progress; give us a chance to settle and hit play"). The 13:05 problem was the DESK holding
+    //    Ping frozen, and the handshake fixed that on its own; the auto-resume was the extra. So the original rule stands: turning
+    //    upright pauses, turning back does nothing — the court (tap) or the desk's ▶ resumes, with the board on screen and every
+    //    control live meanwhile.
+    const onTurn = () => { if (upright.matches) pause(); };
     if (upright.addEventListener) upright.addEventListener('change', onTurn); else if (upright.addListener) upright.addListener(onTurn);
   } catch (_) {}
 
