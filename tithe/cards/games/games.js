@@ -57,7 +57,9 @@
       .arc-curtain[hidden]{display:none}
       .arc-pause[aria-pressed="true"]{border-color:#48d597;color:#48d597}
       .arc-cabinet{margin-left:auto;display:flex;align-items:center;gap:8px}
-      .arc-fab{display:none;position:absolute;top:8px;left:8px;width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(11,14,19,.72);color:#e9eef3;font-size:20px;cursor:pointer;z-index:2;place-items:center}
+      .arc-hud{display:none;position:absolute;top:8px;right:8px;gap:8px;z-index:2;align-items:center}
+      .arc-fab,.arc-home{height:44px;min-width:44px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(11,14,19,.78);color:#e9eef3;font:inherit;font-weight:700;font-size:18px;cursor:pointer;padding:0 12px}
+      .arc-home[hidden]{display:none}
     `
     document.head.appendChild(s)
   }
@@ -73,7 +75,7 @@
       </div>
       <div class="arc-play" style="display:none">
         <div class="arc-pbar"><button class="arc-back">‹ arcade</button><button class="arc-back arc-pause" aria-pressed="false">⏸ pause</button><span class="arc-title"></span></div>
-        <div class="arc-stage"><iframe class="arc-frame" allow="autoplay"></iframe><button class="arc-fab" aria-label="pause" title="pause — the desk comes back">⏸</button><button class="arc-curtain" hidden>paused — tap to resume</button></div>
+        <div class="arc-stage"><iframe class="arc-frame" allow="autoplay"></iframe><div class="arc-hud"><button class="arc-home" hidden>‹ arcade</button><button class="arc-fab" aria-label="pause" title="pause">⏸</button></div><button class="arc-curtain" hidden>paused — tap to resume</button></div>
       </div>`
     const grid = body.querySelector('.arc-grid')
     const menu = body.querySelector('.arc-menu'), play = body.querySelector('.arc-play')
@@ -82,7 +84,7 @@
     //    never knows: cabinet.js rigs EVERY game with a timer shim (rAF · setInterval · setTimeout hold while paused) and
     //    listens for cabinet-ctl pause/resume; the curtain covers the frame so a thumb cannot poke a frozen board. Same
     //    button resumes; tapping the curtain resumes. Leaving the game clears it.
-    const pauseBtn = body.querySelector('.arc-pause'), curtain = body.querySelector('.arc-curtain'), fab = body.querySelector('.arc-fab')
+    const pauseBtn = body.querySelector('.arc-pause'), curtain = body.querySelector('.arc-curtain'), fab = body.querySelector('.arc-fab'), home = body.querySelector('.arc-home')
     let paused = false
     // ⭐ 3 Sep 2026 — THE PAUSE BUTTON TOGGLES THE NAV (Sum: "pause button toggles nav, done"). Two states, one switch:
     //    PLAY  → html[data-game="play"]: on the phone the nav, the card head and the play bar fold away and the frame owns the
@@ -94,12 +96,18 @@
       try { frame.contentWindow && frame.contentWindow.postMessage({ oz: 'cabinet-ctl', cmd: paused ? 'pause' : 'resume' }, '*') } catch (_) {}
       curtain.hidden = true   // 3 Sep 10:55 — no curtain: the paused game stays visible in its card with its own pause screen and buttons (Sum: "no new thing")
       pauseBtn.textContent = paused ? '▶ resume' : '⏸ pause'; pauseBtn.setAttribute('aria-pressed', String(paused))
-      try { if (paused) delete document.documentElement.dataset.game; else document.documentElement.dataset.game = 'play' } catch (_) {}
+      // 3 Sep 11:10 (Sum: "then we never leave game play… pause screen needs full paint but not 0z, just a back to arcade button
+      //    simplifies all nav, no zoom out needed"). The play view stays for the whole game — pause no longer brings the desk back.
+      //    Paused → html[data-game-paused]: the ⏸ reads ▶ and ‹ arcade appears beside it, top-right; the game paints its own pause
+      //    screen under them (cabinet.js lets a game with its own pause keep drawing). Back is the only way out.
+      try { if (paused) document.documentElement.dataset.gamePaused = '1'; else delete document.documentElement.dataset.gamePaused } catch (_) {}
+      fab.textContent = paused ? '▶' : '⏸'; fab.setAttribute('aria-label', paused ? 'resume' : 'pause'); home.hidden = !paused
       if (!paused) { try { frame.contentWindow && frame.contentWindow.focus() } catch (_) {} }
       setTimeout(fit, 0)
     }
     pauseBtn.addEventListener('click', () => setPaused(!paused))
-    fab.addEventListener('click', () => setPaused(true))
+    fab.addEventListener('click', () => setPaused(!paused))
+    home.addEventListener('click', () => body.querySelector('.arc-back').click())
     curtain.addEventListener('click', () => setPaused(false))
     // the game's own pause button / P key → the desk follows (cabinet.js posts cabinet-paused). Idempotent: an echo changes nothing.
     window.addEventListener('message', e => { try { if (e.source !== frame.contentWindow) return; const d = e.data; if (!d || d.oz !== 'cabinet-paused') return; if (!!d.paused !== paused) setPaused(!!d.paused) } catch (_) {} })
@@ -108,7 +116,7 @@
     const stage = body.querySelector('.arc-stage')
     // 10:45 — the stage's HEIGHT is CSS now (top 0 → bottom var(--play-gutter)): Chrome iOS overlays its bottom bar and every JS
     //    height counts the strip under it. fit() only follows the visual viewport's top offset (the collapsing URL bar).
-    const fit = () => { try { const vv = window.visualViewport; if (!paused && document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { stage.style.top = Math.round(vv.offsetTop || 0) + 'px' } else { stage.style.top = '' } stage.style.height = '' } catch (_) {} }
+    const fit = () => { try { const vv = window.visualViewport; if (document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { stage.style.top = Math.round(vv.offsetTop || 0) + 'px' } else { stage.style.top = '' } stage.style.height = '' } catch (_) {} }
     try { if (window.visualViewport) { window.visualViewport.addEventListener('resize', fit); window.visualViewport.addEventListener('scroll', fit) } } catch (_) {}
     window.addEventListener('resize', fit)
 
@@ -124,15 +132,15 @@
         frame.srcdoc = window.OZ_CABINET ? window.OZ_CABINET.rig(g.key, html) : html
         if (window.OZ_CABINET) window.OZ_CABINET.opened(g.key, frame, body.querySelector('.arc-pbar'))
         menu.style.display = 'none'; play.style.display = 'flex'
-        setPaused(false)
-        try { document.documentElement.dataset.arcade = 'play' } catch (_) {}   // portrait: the hull goes near-fullscreen for the game (skin/mobile.css)
+        try { document.documentElement.dataset.arcade = 'play'; document.documentElement.dataset.game = 'play' } catch (_) {}   // the play view, for the whole game
+        setPaused(false)   // portrait: the hull goes near-fullscreen for the game (skin/mobile.css)
       })
       grid.appendChild(c)
     })
     body.querySelector('.arc-back').addEventListener('click', () => {
       if (window.OZ_CABINET) window.OZ_CABINET.closed()   // the 🤖 controls leave with the game
       frame.srcdoc = ''; play.style.display = 'none'; menu.style.display = 'block'   // stop the running game
-      setPaused(true); try { delete document.documentElement.dataset.arcade; delete document.documentElement.dataset.game } catch (_) {}   // leaving: nav on, flags off
+      setPaused(true); try { delete document.documentElement.dataset.arcade; delete document.documentElement.dataset.game; delete document.documentElement.dataset.gamePaused } catch (_) {}   // leaving: the desk returns, flags off
     })
 
     return window.makeCard({ id: 'games', icon: 'cards/games/games.png', title: 'ARCADE', body, bottom: true })

@@ -119,7 +119,7 @@
   html[data-game="play"] { --play-gutter: 56px; }
   html[data-game="play"] .card[data-card="games"] .arc-stage { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: calc(100dvh - var(--play-gutter)); z-index: 60; background: #000; }
   html[data-game="play"] .card[data-card="games"] .arc-frame { width: 100%; height: 100%; }
-  html[data-game="play"] .card[data-card="games"] .arc-fab { display: grid; top: calc(8px + env(safe-area-inset-top)); }
+  html[data-game="play"] .card[data-card="games"] .arc-hud { display: flex; top: calc(8px + env(safe-area-inset-top)); }
 
   @media (display-mode: standalone) { html[data-game="play"] { --play-gutter: max(env(safe-area-inset-bottom), 16px); } }
 
