@@ -105,6 +105,12 @@
   // the probe door — G is closure-private (the driver is SPLICED inside the game's IIFE); this is
   // the one window into it, for tests and the curious
   window.__cabProbe = () => ({ state: G.state, score: G.score, tier: G.level + 1, lives: G.ship.lives, dead: G.dead, win: G.win })
+  // 3 Sep 2026 — ONE PAUSE for a closure game (Sum: "unpause is stuck"): togglePause and G.state live inside this IIFE, so the
+  //    desk's shim (a separate script) could neither drive nor hear them — the game blur-paused itself when the desk's ⏸ took
+  //    focus, the desk's ▶ unfroze the timers but the game stayed in its own pause, and its own button was hidden. Exporting the
+  //    two names in the shape the shim already understands (a global togglePause and a state getter) makes this game read
+  //    exactly like Butcher: the desk's ⏸/▶ drive the game's pause, and the convergence loop hears its blur-pause.
+  try { window.togglePause = togglePause; Object.defineProperty(window, 'state', { get: function () { return G.state }, configurable: true }) } catch (_) {}
   function begin(){ post('start','the cabinet takes the controls — space colonialism'); T=setInterval(step,50) }
   function step(){
     if(!ON) return
