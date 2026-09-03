@@ -454,10 +454,12 @@ function drawHUDStrip(){
     ctx.fillStyle="#f0e2c0"; ctx.font='bold 15px "Trebuchet MS",sans-serif'; ctx.fillText(val,x,y+6);
     x+=Math.max(ctx.measureText(val).width, ctx.measureText(lbl).width)+16;
   };
-  put("SCORE",String(score)); put("LINES",String(lines)); put("LEVEL",String(level)); put("BLOCK",blockRows.length+'"');
-  if(flashT>0){ ctx.fillStyle="#e7c98a"; ctx.font='bold 13px "Trebuchet MS",sans-serif'; ctx.fillText(flash,x,y); }
-  // NEXT — a thumbnail slab of its species, right of centre, left of this game's ⏸ (38px at 10px)
+  // NEXT — a thumbnail slab of its species, left of this game's ⏸ (38px at 10px); the stats stop before it (BLOCK is the first to go on a narrow glass)
   const box=Math.floor((TOP-10)/4), bw=box*4+6, bx=W-58-bw, by=Math.floor((TOP-(box*4+6))/2);
+  const room=bx-12;
+  const fits=(lbl,val)=>{ ctx.font='bold 15px "Trebuchet MS",sans-serif'; const w=Math.max(ctx.measureText(val).width, 44); return x+w<=room; };
+  [["SCORE",String(score)],["LINES",String(lines)],["LEVEL",String(level)],["BLOCK",blockRows.length+'"']].forEach(([l,v])=>{ if(fits(l,v)) put(l,v); });
+  if(flashT>0 && x+60<=room){ ctx.fillStyle="#e7c98a"; ctx.font='bold 13px "Trebuchet MS",sans-serif'; ctx.fillText(flash,x,y); }
   ctx.fillStyle="#1c1710"; ctx.fillRect(bx,by,bw,box*4+6);
   const sh=SHAPES[nextType][0];
   let minx=4,maxx=0,miny=4,maxy=0;
@@ -606,9 +608,10 @@ function resize(){
   //    Landscape and the desktop are exactly as before: seven HUD columns to the right.
   PORTRAIT = W < H; TOP = PORTRAIT ? 44 : 0;
   const hudCols = PORTRAIT ? 0 : 7;
-  cell=Math.max(10,Math.floor(Math.min((H-40-TOP)/ROWS,(W-20)/(COLS+hudCols))));
+  const BOTTOM = PORTRAIT ? 28 : 0;   // 3 Sep — room under the board on a phone (Sum: "need to leave more padding at bottom")
+  cell=Math.max(10,Math.floor(Math.min((H-40-TOP-BOTTOM)/ROWS,(W-20)/(COLS+hudCols))));
   ox=Math.max(8,Math.floor((W-(COLS+hudCols)*cell)/2));
-  oy=Math.max(8+TOP,Math.floor((H-ROWS*cell+TOP)/2));
+  oy=Math.max(8+TOP,Math.floor((H-BOTTOM-ROWS*cell+TOP)/2));
 }
 window.addEventListener("resize",resize);
 

@@ -95,10 +95,19 @@
       curtain.hidden = !paused; pauseBtn.textContent = paused ? '▶ resume' : '⏸ pause'; pauseBtn.setAttribute('aria-pressed', String(paused))
       try { if (paused) delete document.documentElement.dataset.game; else document.documentElement.dataset.game = 'play' } catch (_) {}
       if (!paused) { try { frame.contentWindow && frame.contentWindow.focus() } catch (_) {} }
+      setTimeout(fit, 0)
     }
     pauseBtn.addEventListener('click', () => setPaused(!paused))
     fab.addEventListener('click', () => setPaused(true))
     curtain.addEventListener('click', () => setPaused(false))
+    // the game's own pause button / P key → the desk follows (cabinet.js posts cabinet-paused). Idempotent: an echo changes nothing.
+    window.addEventListener('message', e => { try { if (e.source !== frame.contentWindow) return; const d = e.data; if (!d || d.oz !== 'cabinet-paused') return; if (!!d.paused !== paused) setPaused(!!d.paused) } catch (_) {} })
+    // 3 Sep 10:30 — THE VISIBLE VIEWPORT. On his iPhone Chrome's bottom bar clipped the board: the pinned stage was 100dvh and the
+    //    bar did not count against it. visualViewport is the honest number; the stage takes it while a game plays and lets go on pause.
+    const stage = body.querySelector('.arc-stage')
+    const fit = () => { try { const vv = window.visualViewport; if (!paused && document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { stage.style.height = Math.round(vv.height) + 'px'; stage.style.top = Math.round(vv.offsetTop || 0) + 'px' } else { stage.style.height = ''; stage.style.top = '' } } catch (_) {} }
+    try { if (window.visualViewport) { window.visualViewport.addEventListener('resize', fit); window.visualViewport.addEventListener('scroll', fit) } } catch (_) {}
+    window.addEventListener('resize', fit)
 
     GAMES.forEach(g => {
       const c = document.createElement('button'); c.className = 'arc-card'; c.style.setProperty('--ac', g.accent)
