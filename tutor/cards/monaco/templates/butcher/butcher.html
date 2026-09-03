@@ -120,6 +120,8 @@ END IC SHIP PASS
 
   /* the BENCH — save / load / restart, top-left. big targets, no fiddle. */
   #bench{position:fixed;top:10px;left:10px;z-index:5;display:none;gap:8px;}
+  /* 3 Sep 2026 — portrait: the bench lives in the top band (44px), compact, one row; the desk offsets it past its buttons */
+  @media (max-width: 500px){ #bench{top:3px;gap:4px;right:6px;flex-wrap:nowrap;} #bench button{height:38px;padding:0 7px;font-size:12px;} }
   #bench button, #slots button{font:inherit;font-weight:bold;font-size:15px;height:38px;
     padding:0 14px;border-radius:8px;cursor:pointer;user-select:none;
     background:rgba(30,23,14,0.85);color:#e7d6b3;border:1px solid #6b5836;
@@ -447,15 +449,20 @@ function drawSlab(cells,type,alpha,px,py,size){
 // top-left over the frame) and NEXT hugs the right, clear of this game's own ⏸ at top-right.
 function drawHUDStrip(){
   ctx.fillStyle="rgba(10,8,5,0.82)"; ctx.fillRect(0,0,W,TOP);
+  // 3 Sep 11:20 — inside the 0z desk the band's left holds the desk's 🕹️ and ⏸ (window.__OZ_DESK.left, set by the desk before this
+  //    script); standalone, this game's own ⏸ sits top-right instead. While paused (or on the start / over screens) the BENCH
+  //    (save · load · fame · restart) takes the band, so the stats and NEXT stand down — one band, the buttons change.
+  const desk = window.__OZ_DESK || null;
+  if(state!=='play'){ return; }
   ctx.textBaseline="middle"; ctx.textAlign="left";
-  const y=TOP/2; let x=60;
+  const y=TOP/2; let x=desk ? desk.left : 8;
   const put=(lbl,val)=>{
     ctx.fillStyle="#7a6a4c"; ctx.font='11px "Trebuchet MS",sans-serif'; ctx.fillText(lbl,x,y-9); 
     ctx.fillStyle="#f0e2c0"; ctx.font='bold 15px "Trebuchet MS",sans-serif'; ctx.fillText(val,x,y+6);
     x+=Math.max(ctx.measureText(val).width, ctx.measureText(lbl).width)+16;
   };
   // NEXT — a thumbnail slab of its species, left of this game's ⏸ (38px at 10px); the stats stop before it (BLOCK is the first to go on a narrow glass)
-  const box=Math.floor((TOP-10)/4), bw=box*4+6, bx=W-58-bw, by=Math.floor((TOP-(box*4+6))/2);
+  const box=Math.floor((TOP-10)/4), bw=box*4+6, bx=W-(desk?8:58)-bw, by=Math.floor((TOP-(box*4+6))/2);
   const room=bx-12;
   const fits=(lbl,val)=>{ ctx.font='bold 15px "Trebuchet MS",sans-serif'; const w=Math.max(ctx.measureText(val).width, 44); return x+w<=room; };
   [["SCORE",String(score)],["LINES",String(lines)],["LEVEL",String(level)],["BLOCK",blockRows.length+'"']].forEach(([l,v])=>{ if(fits(l,v)) put(l,v); });
@@ -607,6 +614,7 @@ function resize(){
   //    carries score · lines · level · block and a thumbnail of NEXT, and the board is sized to the full width under it.
   //    Landscape and the desktop are exactly as before: seven HUD columns to the right.
   PORTRAIT = W < H; TOP = PORTRAIT ? 44 : 0;
+  try{ const b=document.getElementById('bench'); if(b) b.style.left = (PORTRAIT && window.__OZ_DESK) ? window.__OZ_DESK.left+'px' : ''; }catch(_){}
   const hudCols = PORTRAIT ? 0 : 7;
   const BOTTOM = PORTRAIT ? 28 : 0;   // 3 Sep — room under the board on a phone (Sum: "need to leave more padding at bottom")
   cell=Math.max(10,Math.floor(Math.min((H-40-TOP-BOTTOM)/ROWS,(W-20)/(COLS+hudCols))));

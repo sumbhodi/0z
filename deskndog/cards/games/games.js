@@ -57,9 +57,9 @@
       .arc-curtain[hidden]{display:none}
       .arc-pause[aria-pressed="true"]{border-color:#48d597;color:#48d597}
       .arc-cabinet{margin-left:auto;display:flex;align-items:center;gap:8px}
-      .arc-hud{display:none;position:absolute;top:8px;right:8px;gap:8px;z-index:2;align-items:center}
-      .arc-fab,.arc-home{height:44px;min-width:44px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(11,14,19,.78);color:#e9eef3;font:inherit;font-weight:700;font-size:18px;cursor:pointer;padding:0 12px}
-      .arc-home[hidden]{display:none}
+      .arc-hud{display:none;position:absolute;top:0;left:0;height:44px;padding:0 0 0 6px;gap:6px;z-index:2;align-items:center}
+      .arc-fab,.arc-home{height:40px;width:44px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:rgba(11,14,19,.6);color:#e9eef3;font:inherit;font-weight:700;font-size:18px;cursor:pointer;padding:0;display:grid;place-items:center}
+      .arc-home img{width:30px;height:30px;object-fit:contain;pointer-events:none}
     `
     document.head.appendChild(s)
   }
@@ -75,7 +75,7 @@
       </div>
       <div class="arc-play" style="display:none">
         <div class="arc-pbar"><button class="arc-back">‹ arcade</button><button class="arc-back arc-pause" aria-pressed="false">⏸ pause</button><span class="arc-title"></span></div>
-        <div class="arc-stage"><iframe class="arc-frame" allow="autoplay"></iframe><div class="arc-hud"><button class="arc-home" hidden>‹ arcade</button><button class="arc-fab" aria-label="pause" title="pause">⏸</button></div><button class="arc-curtain" hidden>paused — tap to resume</button></div>
+        <div class="arc-stage"><iframe class="arc-frame" allow="autoplay"></iframe><div class="arc-hud"><button class="arc-home" aria-label="back to the arcade" title="back to the arcade (pauses first)"><img src="cards/games/games.png" alt=""></button><button class="arc-fab" aria-label="pause" title="pause">⏸</button></div><button class="arc-curtain" hidden>paused — tap to resume</button></div>
       </div>`
     const grid = body.querySelector('.arc-grid')
     const menu = body.querySelector('.arc-menu'), play = body.querySelector('.arc-play')
@@ -101,13 +101,13 @@
       //    Paused → html[data-game-paused]: the ⏸ reads ▶ and ‹ arcade appears beside it, top-right; the game paints its own pause
       //    screen under them (cabinet.js lets a game with its own pause keep drawing). Back is the only way out.
       try { if (paused) document.documentElement.dataset.gamePaused = '1'; else delete document.documentElement.dataset.gamePaused } catch (_) {}
-      fab.textContent = paused ? '▶' : '⏸'; fab.setAttribute('aria-label', paused ? 'resume' : 'pause'); home.hidden = !paused
+      fab.textContent = paused ? '▶' : '⏸'; fab.setAttribute('aria-label', paused ? 'resume' : 'pause')   // 11:20 — the joystick is always there now (Sum: "joystick icon pauses and returns to arcade, if paused already just returns")
       if (!paused) { try { frame.contentWindow && frame.contentWindow.focus() } catch (_) {} }
       setTimeout(fit, 0)
     }
     pauseBtn.addEventListener('click', () => setPaused(!paused))
     fab.addEventListener('click', () => setPaused(!paused))
-    home.addEventListener('click', () => body.querySelector('.arc-back').click())
+    home.addEventListener('click', () => { const back = () => body.querySelector('.arc-back').click(); if (!paused) { setPaused(true); setTimeout(back, 160) } else back() })   // pause first: a game with its own pause autosaves on it (Butcher)
     curtain.addEventListener('click', () => setPaused(false))
     // the game's own pause button / P key → the desk follows (cabinet.js posts cabinet-paused). Idempotent: an echo changes nothing.
     window.addEventListener('message', e => { try { if (e.source !== frame.contentWindow) return; const d = e.data; if (!d || d.oz !== 'cabinet-paused') return; if (!!d.paused !== paused) setPaused(!!d.paused) } catch (_) {} })
