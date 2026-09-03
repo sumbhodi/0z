@@ -290,6 +290,12 @@ const CONFIG = {
   conceptDescentRate: 0.9, // px/frame the concept line falls. FIXED. input cannot change it.
                            //   ~11s from top to player. it WILL reach you. that is the point.
   conceptCols: 9,          // how many concept glyphs span the line (incl. one blank)
+
+  // — THE STORY (Sum, 3 Sep 2026: "no bombs — the blue aliens usher in passive resistance and long scroll. I like that
+  //   story line better for both"). Born on the phone, kept for every screen: bombs fall only through this tier (3 = the
+  //   green alien); from the blue alien on nobody fights back — the fight is keeping up. And tiers 6-9 are ONE conveyor:
+  //   a quota met retools the lanes to the next species without clearing the sky (see retoolConveyor). —
+  bombsUntilTier: 3,
 };
 
 // ════════════════════════════════════════════════════════════════════════
@@ -448,9 +454,10 @@ let W=0,H=0,DPR=1;
 //  Why: at phone width the 9-column grid was ~348px in a 393px field — 45px of side room against ~500px on a desk — so the
 //  formation hit an edge almost every step and every hit lurched it half a cell down. Same tuning, no room. So: smaller aliens
 //  and tighter gaps (three times the side room), a cheaper lurch and creep (the same march takes ~2× as long to reach you), a
-//  touch slower everywhere, and no bombs from the mouse tier on — the conveyor is still a fight, just a shooting one.
+//  touch slower everywhere. (The bomb cutoff and the one long conveyor began here too, then became the game's story on every
+//  screen at 12:30 — see CONFIG.bombsUntilTier and retoolConveyor.)
 const PORTRAIT=()=>W<H;
-const PHONE={ cellMul:0.85, cellMin:22, gapX:0.35, edgeDropMul:0.30, driftPxFrame:0.08, tempo:1.25, descentMul:0.8, bombsUntilTier:3 };   // 11:58 — Sum: "at blue alien stop bombs is even better than at ant": bombs through the green alien only
+const PHONE={ cellMul:0.85, cellMin:22, gapX:0.35, edgeDropMul:0.30, driftPxFrame:0.08, tempo:1.25, descentMul:0.8 };   // room and tempo only — the bomb cutoff and the long conveyor moved to CONFIG (12:30): they are the story, on every screen
 const knob=(k)=>(PORTRAIT()&&PHONE[k]!=null)?PHONE[k]:CONFIG[k];
 
 function resize(){
@@ -1282,7 +1289,7 @@ function stepGrid(dt){
   // bombs — one per living ROW rhythm (so rows×bombs scales exactly)
   const rowsAlive=new Set(alive.map(e=>e.row)).size;
   G.bombTimer+=dt*16.667;
-  const bombsOn=!(PORTRAIT()&&curTier().n>PHONE.bombsUntilTier);   // phone: bombs only through tier 3 (green alien); from the blue alien on it is a shooting fight
+  const bombsOn=curTier().n<=CONFIG.bombsUntilTier;   // bombs only through the green alien; from the blue alien on nobody fights back (every screen, 12:30)
   if(bombsOn && G.bombTimer>=bombInterval(rowsAlive)){
     G.bombTimer=0;
     const shooter=alive[(Math.random()*alive.length)|0];
@@ -1298,7 +1305,8 @@ function stepGrid(dt){
 //    lizards, so you just keep shooting, more things keep falling, no reset levels, just one long scroll till end"). Portrait only.
 //    When a conveyor tier's quota is met and the next tier is also a conveyor, nothing is cleared: the level advances, the lanes
 //    retool to the next tier's count and tempo, the timers restagger, and the enemies already falling keep falling as what they
-//    are (each remembers its species). The humanoid's quota still hands off to the Concepts as before. Desk: levels as ever.
+//    are (each remembers its species). The humanoid's quota still hands off to the Concepts as before.
+//  CORRECTION 12:30 — no longer portrait-only: Sum, \"I like that story line better for both\". The desk scrolls too.
 function retoolConveyor(){
   G.level=Math.min(G.level+1,TIERS.length-1);
   const tier=curTier(), cfg=CONFIG.conveyor[tier.n], cell=G.cell;
@@ -1329,7 +1337,7 @@ function stepConveyor(dt){
   // bombs — one per living ROW-equivalent (living lanes)
   const lanesAlive=new Set(G.enemies.filter(e=>e.alive).map(e=>e.lane)).size;
   G.bombTimer+=dt*16.667;
-  const bombsOn=!(PORTRAIT()&&curTier().n>PHONE.bombsUntilTier);   // phone: the conveyor (ants on) throws nothing — Sum: "turn off bombs once ants start too"
+  const bombsOn=curTier().n<=CONFIG.bombsUntilTier;   // bombs only through the green alien; from the blue alien on nobody fights back (every screen, 12:30)
   if(bombsOn && lanesAlive>0 && G.bombTimer>=bombInterval(lanesAlive)){
     G.bombTimer=0;
     const alive=G.enemies.filter(e=>e.alive);
@@ -1347,7 +1355,7 @@ function stepConveyor(dt){
   // quota met -> advance. phone: the next conveyor tier joins the same scroll; the desk (and the hand-off to the Concepts) rebuilds
   if(G.killsThisLevel>=CONFIG.conveyorQuota){
     const nt=TIERS[Math.min(G.level+1,TIERS.length-1)];
-    if(PORTRAIT()&&nt.form==="conveyor") retoolConveyor(); else nextLevel();
+    if(nt.form==="conveyor") retoolConveyor(); else nextLevel();   // 12:30 — the long scroll on every screen (was portrait-only)
   }
 }
 
