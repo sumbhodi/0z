@@ -110,7 +110,9 @@
     home.addEventListener('click', () => { const back = () => body.querySelector('.arc-back').click(); if (!paused) { setPaused(true); setTimeout(back, 160) } else back() })   // pause first: a game with its own pause autosaves on it (Butcher)
     curtain.addEventListener('click', () => setPaused(false))
     // the game's own pause button / P key → the desk follows (cabinet.js posts cabinet-paused). Idempotent: an echo changes nothing.
-    window.addEventListener('message', e => { try { if (e.source !== frame.contentWindow) return; const d = e.data; if (!d || d.oz !== 'cabinet-paused') return; if (!!d.paused !== paused) setPaused(!!d.paused) } catch (_) {} })
+    window.addEventListener('message', e => { try { if (e.source !== frame.contentWindow) return; const d = e.data; if (!d) return
+      if (d.oz === 'cabinet-side') { try { if (d.side) document.documentElement.dataset.gameSide = String(d.side); else delete document.documentElement.dataset.gameSide } catch (_) {} return }   // 3 Sep: a game says which side the player holds — the column goes to the other (skin/mobile.css)
+      if (d.oz !== 'cabinet-paused') return; if (!!d.paused !== paused) setPaused(!!d.paused) } catch (_) {} })
     // 3 Sep 10:30 — THE VISIBLE VIEWPORT. On his iPhone Chrome's bottom bar clipped the board: the pinned stage was 100dvh and the
     //    bar did not count against it. visualViewport is the honest number; the stage takes it while a game plays and lets go on pause.
     const stage = body.querySelector('.arc-stage')
@@ -140,7 +142,7 @@
     body.querySelector('.arc-back').addEventListener('click', () => {
       if (window.OZ_CABINET) window.OZ_CABINET.closed()   // the 🤖 controls leave with the game
       frame.srcdoc = ''; play.style.display = 'none'; menu.style.display = 'block'   // stop the running game
-      setPaused(true); try { delete document.documentElement.dataset.arcade; delete document.documentElement.dataset.game; delete document.documentElement.dataset.gamePaused } catch (_) {}   // leaving: the desk returns, flags off
+      setPaused(true); try { delete document.documentElement.dataset.arcade; delete document.documentElement.dataset.game; delete document.documentElement.dataset.gamePaused; delete document.documentElement.dataset.gameSide } catch (_) {}   // leaving: the desk returns, flags off
     })
 
     return window.makeCard({ id: 'games', icon: 'cards/games/games.png', title: 'ARCADE', body, bottom: true })
