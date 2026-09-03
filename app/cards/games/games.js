@@ -119,7 +119,11 @@
     const stage = body.querySelector('.arc-stage')
     // 10:45 — the stage's HEIGHT is CSS now (top 0 → bottom var(--play-gutter)): Chrome iOS overlays its bottom bar and every JS
     //    height counts the strip under it. fit() only follows the visual viewport's top offset (the collapsing URL bar).
-    const fit = () => { try { const vv = window.visualViewport; if (document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { stage.style.top = Math.round(vv.offsetTop || 0) + 'px' } else { stage.style.top = '' } stage.style.height = '' } catch (_) {} }
+    // 3 Sep 14:05 (Sum, sideways Ping: "bottom of play is offscreen on my iPhone again"): in LANDSCAPE Chrome iOS puts its bar on TOP and
+    //    the visual viewport starts ~50–75px down the layout (vv.offsetTop). fit() pushed the stage down by that much and left its CSS
+    //    height alone, so the same amount fell off the bottom. Whatever offset the stage takes at the top it now gives back at the
+    //    bottom: height = calc(100dvh - gutter - offsetTop). offsetTop is 0 in portrait (bar at the bottom), so the 10:45 rule holds there.
+    const fit = () => { try { const vv = window.visualViewport; if (document.documentElement.dataset.game === 'play' && vv && getComputedStyle(stage).position === 'fixed') { const off = Math.round(vv.offsetTop || 0); stage.style.top = off + 'px'; stage.style.height = off ? 'calc(100dvh - var(--play-gutter) - ' + off + 'px)' : '' } else { stage.style.top = ''; stage.style.height = '' } stage.style.height = '' } catch (_) {} }
     try { if (window.visualViewport) { window.visualViewport.addEventListener('resize', fit); window.visualViewport.addEventListener('scroll', fit) } } catch (_) {}
     window.addEventListener('resize', fit)
 

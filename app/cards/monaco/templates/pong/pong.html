@@ -168,8 +168,9 @@ END IC SHIP PASS
     .hud{position:fixed;top:100px;left:2px;width:40px;z-index:5;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:6px}
     /* 13:40 (Sum: "the green play button is what we need on the side rail sideways — add pause to it"): ▶ joins the rail,
        one button — serve · resume · pause. #pause stays hidden here; the desk's own ⏸ in the column does that job too. */
-    .hud .mode,#pause,.lbl{display:none !important}
-    #play{order:-1}
+    /* 14:05 (Sum: "remove green button, now that tap actually works we don't need it"): #play is off the rail again — the court is
+       the serve button. goPress stays on the desk's Play (serve · resume · pause), so the 13:40 note above is still true there. */
+    .hud .mode,#play,#pause,.lbl{display:none !important}
     /* 13:25 (Sum: "score overlay top of play, keep the board the same size — left and right clear, mid-top can be cluttered"):
        the scoreboard floats top-centre over the court, small, and never takes the pointer. */
     .hud .board{display:flex !important;position:fixed;top:4px;left:50%;transform:translateX(-50%);gap:14px;z-index:6;pointer-events:none;
@@ -181,6 +182,10 @@ END IC SHIP PASS
   }
   @media (pointer: coarse) and (orientation: portrait) {
     .court{display:none}
+    /* 3 Sep 14:35 (Sum: "lose the buttons in portrait on phone, just how to play and the turn-your-phone tip"): upright is the pause
+       screen — scoreboard, the how-to, the tip. No Play / Sides / New match (they live on the sideways rail), and no mode label
+       (it sat under the desk's column). */
+    .ctrls,.mode{display:none !important}
     .wrap{justify-content:flex-start;padding-top:24px}
     .hud{flex-direction:column;gap:12px}
     #turn{display:flex;inset:auto 0 0 0;flex-direction:row;gap:12px;padding:14px 18px;font-size:16px;background:rgba(7,11,15,.96);border-top:1px solid #1f2a36}
@@ -1073,6 +1078,11 @@ END IC SHIP PASS
   }
   function updateHint(){
     const you = playerSide, botSide = (playerSide==='left'?'right':'left');
+    // 3 Sep 14:35 — on a phone the how-to says thumb, not mouse (the desk text below is unchanged): the hint is what portrait shows.
+    let coarse = false; try { coarse = matchMedia('(pointer: coarse)').matches } catch (_) {}
+    if (coarse) { hintEl.innerHTML = 'you are <b class="g">green</b> ('+you+') · <b class="r">red</b> is the bot ('+botSide+
+      ') · <b>drag up/down</b> on your edge to aim &amp; spin · <b>swing toward the ball</b> to smash · <b>pull away</b> for a soft drop · <b>tap the court</b> to serve · <b>turn upright</b> to pause'
+      + ' · <span style="color:var(--dim)">it learns you — vary your game or it reads you.</span>'; return; }
     hintEl.innerHTML = 'you are <b class="g">green</b> ('+you+', mouse) · <b class="r">red</b> is the bot ('+botSide+
       ') · <b>mouse up/down</b> aims &amp; spins · <b>swing toward the ball</b> to smash · <b>pull away</b> for a soft drop · <b>↑/↓ arrows</b> for a plain move · <b>P</b> pauses'
       + ' · <span style="color:var(--dim)">it learns you — vary your game or it reads you.</span>';
