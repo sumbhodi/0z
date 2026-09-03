@@ -111,8 +111,13 @@
      play stage stops 96px above the layout bottom; the board is shorter and stays full width. Installed as a PWA there is no
      bar, so the gutter is only the home indicator. Safari counts its bar out of the viewport already, so there the gutter
      is 96px of dark — the price of never clipping, and his call. */
-  html[data-game="play"] { --play-gutter: 96px; }
-  html[data-game="play"] .card[data-card="games"] .arc-stage { position: fixed; inset: 0 0 var(--play-gutter) 0; height: auto; z-index: 60; background: #000; }
+  /* CORRECTION 10:50 — Sum, one screenshot later: "something else changed, the something else is the fix." It was `height:
+     auto` with top+bottom: on WebKit the frame's `height: 100%` stopped resolving against it, the game got a short frame and
+     a black hole under it, and the board shrank to 17px cells. The stage keeps an EXPLICIT height (100dvh minus the gutter).
+     And the middle way on the gutter: 56px is the least that clears a ~95px bar once Butcher's own 28px bottom padding and
+     the board's centring are counted (board bottom ≥ 112px above the layout bottom at 724 tall) — cells of 27, not 25. */
+  html[data-game="play"] { --play-gutter: 56px; }
+  html[data-game="play"] .card[data-card="games"] .arc-stage { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: calc(100dvh - var(--play-gutter)); z-index: 60; background: #000; }
   html[data-game="play"] .card[data-card="games"] .arc-frame { width: 100%; height: 100%; }
   html[data-game="play"] .card[data-card="games"] .arc-fab { display: grid; top: calc(8px + env(safe-area-inset-top)); }
 
